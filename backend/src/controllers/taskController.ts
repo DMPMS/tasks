@@ -5,26 +5,30 @@ import { ERROR_MESSAGES } from "../utils/messages";
 import { validateDto } from "../utils/validation";
 import { TaskService } from "../services/taskService";
 import { CreateTaskDto } from "../dtos/creates/createTaskDto";
-import { RelationsOptionsType } from "../types/RelationsOptions.type";
+import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
 
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
-  async getTasks(req: Request, res: Response): Promise<void> {
+  async getUserTasks(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
       const {
         page = PAGINATION.DEFAULT_PAGE,
         limit = PAGINATION.DEFAULT_LIMIT,
       } = req.query;
 
-      const relationsOptions: RelationsOptionsType = {
-        user: true,
-      };
+      const userId = req.userId;
+      if (!userId) {
+        res
+          .status(HttpStatusCodeEnum.BAD_REQUEST)
+          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+        return;
+      }
 
-      const returnTasksDto = await this.taskService.getTasks(
+      const returnTasksDto = await this.taskService.getUserTasks(
         Number(page),
         Number(limit),
-        relationsOptions
+        userId
       );
 
       res.status(HttpStatusCodeEnum.OK).json(returnTasksDto);
@@ -35,16 +39,27 @@ export class TaskController {
     }
   }
 
-  async createTask(req: Request, res: Response): Promise<void> {
+  async createTask(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
       const createTaskDto = Object.assign(new CreateTaskDto(), req.body);
+      const userId = req.userId;
 
       const isValid = await validateDto(createTaskDto, res);
       if (!isValid) {
         return;
       }
 
-      const returnTaskDto = await this.taskService.createTask(createTaskDto);
+      if (!userId) {
+        res
+          .status(HttpStatusCodeEnum.BAD_REQUEST)
+          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+        return;
+      }
+
+      const returnTaskDto = await this.taskService.createTask(
+        userId,
+        createTaskDto
+      );
 
       res.status(HttpStatusCodeEnum.CREATED).json(returnTaskDto);
     } catch (error) {

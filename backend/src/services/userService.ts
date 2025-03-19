@@ -30,6 +30,22 @@ export class UserService {
     return users.map((user) => new ReturnUserDto(user));
   }
 
+  async getUserById(
+    userId: number,
+    relationsOptions?: RelationsOptionsType
+  ): Promise<ReturnUserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: relationsOptions,
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+    }
+
+    return new ReturnUserDto(user);
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<ReturnUserDto> {
     const existingUser = await this.userRepository.findOneBy({
       email: createUserDto.email,
