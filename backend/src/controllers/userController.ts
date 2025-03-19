@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
 import { plainToInstance } from "class-transformer";
-import { CreateUserDTO } from "../dtos/creates/createUserDto";
-import { validate } from "class-validator";
-import { ReturnUserDTO } from "../dtos/returns/returnUserDto";
+import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { UserService } from "../services/userService";
 import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
 import { PAGINATION } from "../config/constants";
 import { ERROR_MESSAGES } from "../utils/messages";
+import { validateDto } from "../utils/validation";
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -18,46 +17,35 @@ export class UserController {
         limit = PAGINATION.DEFAULT_LIMIT,
       } = req.query;
 
-      const returnUsersDTO = await this.userService.getUsers(
+      const returnUsersDto = await this.userService.getUsers(
         Number(page),
         Number(limit)
       );
 
-      res.status(HttpStatusCodeEnum.OK).json(returnUsersDTO);
+      res.status(HttpStatusCodeEnum.OK).json(returnUsersDto);
     } catch (error) {
       res
         .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
-        .send(ERROR_MESSAGES.SELECT_USER_ERROR);
+        .send(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
     }
   }
 
   async createUser(req: Request, res: Response): Promise<void> {
     try {
-      const createUserDTO = plainToInstance(CreateUserDTO, req.body);
+      const createUserDto = plainToInstance(CreateUserDto, req.body);
 
-      const errors = await validate(createUserDTO);
-      if (errors.length > 0) {
-        const formattedErrors = errors.map((error) => ({
-          property: error.property,
-          constraints: error.constraints,
-        }));
-        res
-          .status(HttpStatusCodeEnum.BAD_REQUEST)
-          .json({ errors: formattedErrors });
+      const isValid = await validateDto(createUserDto, res);
+      if (!isValid) {
         return;
       }
 
-      const savedUser = await this.userService.createUser(createUserDTO);
+      const returnUserDto = await this.userService.createUser(createUserDto);
 
-      const returnUserDTO = plainToInstance(ReturnUserDTO, savedUser, {
-        excludeExtraneousValues: true,
-      });
-
-      res.status(HttpStatusCodeEnum.CREATED).json(returnUserDTO);
+      res.status(HttpStatusCodeEnum.CREATED).json(returnUserDto);
     } catch (error) {
       res
         .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
-        .send(ERROR_MESSAGES.CREATE_USER_ERROR);
+        .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
     }
   }
 }

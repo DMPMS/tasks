@@ -23,6 +23,13 @@ export class User {
   })
   email!: string;
 
+  @Column({
+    name: "password",
+    length: USER.PASSWORD_LENGTH.MAX,
+    nullable: false,
+  })
+  password!: string;
+
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;
 

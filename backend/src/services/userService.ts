@@ -2,9 +2,10 @@ import { plainToInstance } from "class-transformer";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/orm";
 import { User } from "../entities/userEntity";
-import { CreateUserDTO } from "../dtos/creates/createUserDto";
-import { ReturnUserDTO } from "../dtos/returns/returnUserDto";
+import { CreateUserDto } from "../dtos/creates/createUserDto";
+import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 import { ERROR_MESSAGES } from "../utils/messages";
+import { createPasswordHashed } from "../utils/password";
 
 export class UserService {
   constructor(
@@ -13,7 +14,7 @@ export class UserService {
     )
   ) {}
 
-  async getUsers(page: number, limit: number): Promise<ReturnUserDTO[]> {
+  async getUsers(page: number, limit: number): Promise<ReturnUserDto[]> {
     const skip = (page - 1) * limit;
 
     const users = await this.userRepository.find({
@@ -21,21 +22,35 @@ export class UserService {
       take: limit,
     });
 
-    return plainToInstance(ReturnUserDTO, users, {
+    return plainToInstance(ReturnUserDto, users, {
       excludeExtraneousValues: true,
     });
   }
 
-  async createUser(createUserDTO: CreateUserDTO): Promise<User> {
+  async createUser(createUserDto: CreateUserDto): Promise<ReturnUserDto> {
     const existingUser = await this.userRepository.findOneBy({
-      email: createUserDTO.email,
+      email: createUserDto.email,
     });
 
     if (existingUser) {
-      throw new Error(ERROR_MESSAGES.EMAIL_ALREADY_EXISTS);
+      throw new Error(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
     }
 
-    const user = this.userRepository.create(createUserDTO);
-    return await this.userRepository.save(user);
+    if (createUserDto.password !== createUserDto.confirmPassword) {
+      throw new Error(ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH);
+    }
+
+    const passwordHashed = await createPasswordHashed(createUserDto.password);
+
+    const user = this.userRepository.create({
+      ...createUserDto,
+      password: passwordHashed,
+    });
+
+    const savedUser = await this.userRepository.save(user);
+
+    return plainToInstance(ReturnUserDto, savedUser, {
+      excludeExtraneousValues: true,
+    });
   }
 }

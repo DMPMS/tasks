@@ -16,4 +16,8 @@ export const USER = {
     MIN: 1,
     MAX: 255,
   },
+  PASSWORD_LENGTH: {
+    MIN: 1,
+    MAX: 255,
+  },
 };
