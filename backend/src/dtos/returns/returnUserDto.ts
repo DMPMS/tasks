@@ -1,12 +1,20 @@
-import { Expose } from "class-transformer";
+import { ReturnTaskDto } from "./returnTaskDto";
+import { UserEntity } from "../../entities/userEntity";
 
 export class ReturnUserDto {
-  @Expose()
-  id!: number;
+  id: number;
+  name: string;
+  email: string;
+  
+  tasks?: ReturnTaskDto[];
 
-  @Expose()
-  name!: string;
+  constructor(userEntity: UserEntity) {
+    this.id = userEntity.id;
+    this.name = userEntity.name;
+    this.email = userEntity.email;
 
-  @Expose()
-  email!: string;
+    this.tasks = userEntity.tasks
+      ? userEntity.tasks.map((task) => new ReturnTaskDto(task))
+      : undefined;
+  }
 }

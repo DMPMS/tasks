@@ -21,3 +21,10 @@ export const USER = {
     MAX: 255,
   },
 };
+
+export const TASK = {
+  TITLE_LENGTH: {
+    MIN: 1,
+    MAX: 60,
+  },
+};

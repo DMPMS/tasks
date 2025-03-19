@@ -1,4 +1,3 @@
-import { plainToInstance } from "class-transformer";
 import { AuthService } from "../services/authService";
 import { LoginDto } from "../dtos/others/loginDto";
 import { ERROR_MESSAGES } from "../utils/messages";
@@ -11,7 +10,7 @@ export class AuthController {
 
   async login(req: Request, res: Response): Promise<void> {
     try {
-      const loginDto = plainToInstance(LoginDto, req.body);
+      const loginDto = Object.assign(new LoginDto(), req.body);
 
       const isValid = await validateDto(loginDto, res);
       if (!isValid) {

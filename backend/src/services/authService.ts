@@ -1,19 +1,18 @@
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/orm";
-import { User } from "../entities/userEntity";
+import { UserEntity } from "../entities/userEntity";
 import { validatePassword } from "../utils/password";
 import jwt from "jsonwebtoken";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { LoginDto } from "../dtos/others/loginDto";
 import { StringValue } from "ms";
-import { ReturnLoginDto } from "../dtos/returns/ReturnLoginDto";
-import { plainToInstance } from "class-transformer";
+import { ReturnLoginDto } from "../dtos/returns/returnLoginDto";
 import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 
 export class AuthService {
   constructor(
-    private readonly userRepository: Repository<User> = AppDataSource.getRepository(
-      User
+    private readonly userRepository: Repository<UserEntity> = AppDataSource.getRepository(
+      UserEntity
     )
   ) {}
 
@@ -41,15 +40,6 @@ export class AuthService {
       expiresIn: expiresIn,
     });
 
-    return plainToInstance(
-      ReturnLoginDto,
-      {
-        user: plainToInstance(ReturnUserDto, user, {
-          excludeExtraneousValues: true,
-        }),
-        token,
-      },
-      { excludeExtraneousValues: true }
-    );
+    return { user: new ReturnUserDto(user), token: token };
   }
 }

@@ -1,30 +1,33 @@
-import { plainToInstance } from "class-transformer";
 import { Repository } from "typeorm";
 import { AppDataSource } from "../config/orm";
-import { User } from "../entities/userEntity";
+import { UserEntity } from "../entities/userEntity";
 import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { createPasswordHashed } from "../utils/password";
+import { RelationsOptionsType } from "../types/RelationsOptions.type";
 
 export class UserService {
   constructor(
-    private readonly userRepository: Repository<User> = AppDataSource.getRepository(
-      User
+    private readonly userRepository: Repository<UserEntity> = AppDataSource.getRepository(
+      UserEntity
     )
   ) {}
 
-  async getUsers(page: number, limit: number): Promise<ReturnUserDto[]> {
+  async getUsers(
+    page: number,
+    limit: number,
+    relationsOptions?: RelationsOptionsType
+  ): Promise<ReturnUserDto[]> {
     const skip = (page - 1) * limit;
 
     const users = await this.userRepository.find({
       skip,
       take: limit,
+      relations: relationsOptions,
     });
 
-    return plainToInstance(ReturnUserDto, users, {
-      excludeExtraneousValues: true,
-    });
+    return users.map((user) => new ReturnUserDto(user));
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<ReturnUserDto> {
@@ -49,8 +52,6 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(user);
 
-    return plainToInstance(ReturnUserDto, savedUser, {
-      excludeExtraneousValues: true,
-    });
+    return new ReturnUserDto(savedUser);
   }
 }

@@ -6,6 +6,10 @@ export const ERROR_MESSAGES = {
     SELECT_USER_ERROR: "Error fetching users.",
     PASSWORDS_DO_NOT_MATCH: "Passwords do not match.",
   },
+  TASK: {
+    CREATE_TASK_ERROR: "Error creating task.",
+    SELECT_TASK_ERROR: "Error fetching tasks.",
+  },
   AUTH: {
     INVALID_CREDENTIALS: "Invalid email or password.",
     MISSING_JWT_SECRET: "JWT secret is missing or empty.",

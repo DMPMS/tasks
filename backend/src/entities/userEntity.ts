@@ -4,11 +4,13 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 import { USER } from "../config/constants";
+import { TaskEntity } from "./taskEntity";
 
 @Entity("user")
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn("rowid")
   id!: number;
 
@@ -35,4 +37,7 @@ export class User {
 
   @UpdateDateColumn({ name: "updated_at" })
   updatedAt!: Date;
+
+  @OneToMany(() => TaskEntity, (task) => task.user)
+  tasks?: TaskEntity[];
 }
