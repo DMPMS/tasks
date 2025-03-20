@@ -30,15 +30,19 @@ export class AuthService {
     }
 
     if (!process.env.JWT_SECRET) {
-      throw new Error(ERROR_MESSAGES.AUTH.MISSING_JWT_SECRET);
+      throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
     }
 
     const jwtSecret = process.env.JWT_SECRET;
     const expiresIn = process.env.JWT_EXPIRES_IN as StringValue;
 
-    const token = jwt.sign({ id: user.id, email: user.email }, jwtSecret, {
-      expiresIn: expiresIn,
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, userType: user.userType },
+      jwtSecret,
+      {
+        expiresIn: expiresIn,
+      }
+    );
 
     return { user: new ReturnUserDto(user), token: token };
   }

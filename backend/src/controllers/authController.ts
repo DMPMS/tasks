@@ -21,9 +21,13 @@ export class AuthController {
 
       res.status(HttpStatusCodeEnum.CREATED).json(returnLoginDto);
     } catch (error) {
-      res
-        .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
-        .send(ERROR_MESSAGES.USER.LOGIN_USER_ERROR);
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .send(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
+      }
     }
   }
 }

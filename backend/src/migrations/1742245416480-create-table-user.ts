@@ -9,6 +9,7 @@ export class CreateTableUser1742245416480 implements MigrationInterface {
         name VARCHAR(${USER.NAME_LENGTH.MAX}) NOT NULL,
         email VARCHAR(${USER.EMAIL_LENGTH.MAX}) NOT NULL,
         password VARCHAR (${USER.PASSWORD_LENGTH.MAX}) NOT NULL,
+        user_type INTEGER NOT NULL,
 
         created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,

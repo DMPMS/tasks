@@ -33,9 +33,13 @@ export class TaskController {
 
       res.status(HttpStatusCodeEnum.OK).json(returnTasksDto);
     } catch (error) {
-      res
-        .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
-        .send(ERROR_MESSAGES.TASK.SELECT_TASK_ERROR);
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .send(ERROR_MESSAGES.TASK.SELECT_TASK_ERROR);
+      }
     }
   }
 
@@ -63,9 +67,13 @@ export class TaskController {
 
       res.status(HttpStatusCodeEnum.CREATED).json(returnTaskDto);
     } catch (error) {
-      res
-        .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
-        .send(ERROR_MESSAGES.TASK.CREATE_TASK_ERROR);
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .send(ERROR_MESSAGES.TASK.CREATE_TASK_ERROR);
+      }
     }
   }
 }

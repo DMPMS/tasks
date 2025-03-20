@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { USER } from "../config/constants";
 import { TaskEntity } from "./taskEntity";
+import { UserTypeEnum } from "../enums/UserTypeEnum";
 
 @Entity("user")
 export class UserEntity {
@@ -31,6 +32,14 @@ export class UserEntity {
     nullable: false,
   })
   password!: string;
+
+  @Column({
+    name: "user_type",
+    type: "enum",
+    enum: UserTypeEnum,
+    nullable: false,
+  })
+  userType!: UserTypeEnum;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

@@ -6,6 +6,7 @@ import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { createPasswordHashed } from "../utils/password";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
+import { UserTypeEnum } from "../enums/UserTypeEnum";
 
 export class UserService {
   constructor(
@@ -25,6 +26,7 @@ export class UserService {
       skip,
       take: limit,
       relations: relationsOptions,
+      where: { userType: UserTypeEnum.USER },
     });
 
     return users.map((user) => new ReturnUserDto(user));
@@ -46,9 +48,13 @@ export class UserService {
     return new ReturnUserDto(user);
   }
 
-  async createUser(createUserDto: CreateUserDto): Promise<ReturnUserDto> {
-    const existingUser = await this.userRepository.findOneBy({
-      email: createUserDto.email,
+  async createUser(
+    createUserDto: CreateUserDto,
+    userId?: number,
+    userType?: UserTypeEnum
+  ): Promise<ReturnUserDto> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
     });
 
     if (existingUser) {
@@ -61,10 +67,29 @@ export class UserService {
 
     const passwordHashed = await createPasswordHashed(createUserDto.password);
 
-    const user = this.userRepository.create({
-      ...createUserDto,
-      password: passwordHashed,
-    });
+    let user;
+
+    if (userId && userType === UserTypeEnum.ROOT) {
+      const userRoot = await this.userRepository.findOne({
+        where: { id: userId, userType: userType },
+      });
+
+      if (!userRoot) {
+        throw new Error(ERROR_MESSAGES.USER.USER_ROOT_ID_NOT_FOUND(userId));
+      } else {
+        user = this.userRepository.create({
+          ...createUserDto,
+          userType: UserTypeEnum.ADMIN,
+          password: passwordHashed,
+        });
+      }
+    } else {
+      user = this.userRepository.create({
+        ...createUserDto,
+        userType: UserTypeEnum.USER,
+        password: passwordHashed,
+      });
+    }
 
     const savedUser = await this.userRepository.save(user);
 
