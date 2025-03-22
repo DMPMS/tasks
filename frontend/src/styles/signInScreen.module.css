@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.h2 {
+  margin: 0px 0px 20px 0px;
+  text-align: center;
+}
+
+.cardForm {
+  width: 300px;
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  margin: 0px 0px 5px 5px;
+}
+
+.input {
+  margin: 0px 0px 10px 0px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.button {
+  margin: 10px 0px 0px 0px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.button:hover {
+  background-color: #0068d6;
+}
+
+.button:disabled {
+  background-color: #003063;
+  cursor: not-allowed;
+}
+
+.buttonContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  position: absolute;
+  right: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
