@@ -33,25 +33,25 @@ export const verifyLoggedIn = (userType?: UserTypeEnum): LoaderFunction => {
   return async () => {
     const token = getAuthorizationToken();
     if (!token) {
-      return redirect(SignInRoutesEnum.SIGN_IN);
+      return redirect(SignInRoutesEnum.SignIn);
     }
 
     if (!isValidToken(token)) {
       unsetAuthorizationToken();
-      return redirect(SignInRoutesEnum.SIGN_IN);
+      return redirect(SignInRoutesEnum.SignIn);
     }
 
     const decodedToken = jwtDecode<TokenType>(token);
 
     if (userType && decodedToken.userType !== userType) {
       unsetAuthorizationToken();
-      return redirect(SignInRoutesEnum.SIGN_IN);
+      return redirect(SignInRoutesEnum.SignIn);
     }
 
     const currentTime = Math.floor(Date.now() / 1000);
     if (decodedToken.exp && decodedToken.exp < currentTime) {
       unsetAuthorizationToken();
-      return redirect(SignInRoutesEnum.SIGN_IN);
+      return redirect(SignInRoutesEnum.SignIn);
     }
 
     return null;
@@ -60,5 +60,5 @@ export const verifyLoggedIn = (userType?: UserTypeEnum): LoaderFunction => {
 
 export const logout = (navigate: NavigateFunction) => {
   unsetAuthorizationToken();
-  navigate(SignInRoutesEnum.SIGN_IN);
+  navigate(SignInRoutesEnum.SignIn);
 };

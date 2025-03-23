@@ -4,9 +4,9 @@ import { UserEntity } from "../entities/userEntity";
 import { validatePassword } from "../utils/password";
 import jwt from "jsonwebtoken";
 import { ERROR_MESSAGES } from "../utils/messages";
-import { LoginDto } from "../dtos/others/loginDto";
+import { CreateAuthDto } from "../dtos/creates/createAuthDto";
 import { StringValue } from "ms";
-import { ReturnLoginDto } from "../dtos/returns/returnLoginDto";
+import { ReturnAuthDto } from "../dtos/returns/returnAuthDto";
 import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 
 export class AuthService {
@@ -16,14 +16,19 @@ export class AuthService {
     )
   ) {}
 
-  async login(loginDto: LoginDto): Promise<ReturnLoginDto> {
-    const user = await this.userRepository.findOneBy({ email: loginDto.email });
+  async login(createAuthDto: CreateAuthDto): Promise<ReturnAuthDto> {
+    const user = await this.userRepository.findOne({
+      where: { email: createAuthDto.email.toLowerCase() },
+    });
 
     if (!user) {
       throw new Error(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
     }
 
-    const isMatch = await validatePassword(loginDto.password, user.password);
+    const isMatch = await validatePassword(
+      createAuthDto.password,
+      user.password
+    );
 
     if (!isMatch) {
       throw new Error(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);

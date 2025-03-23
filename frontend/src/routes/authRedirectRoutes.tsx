@@ -2,12 +2,12 @@ import { RouteObject } from "react-router-dom";
 import AuthRedirectScreen from "../screens/authRedirectScreen";
 
 export enum AuthRedirectRoutesEnum {
-  AUTH_REDIRECT = "/",
+  AuthRedirect = "/",
 }
 
 export const authRedirectRoutes: RouteObject[] = [
   {
-    path: AuthRedirectRoutesEnum.AUTH_REDIRECT,
+    path: AuthRedirectRoutesEnum.AuthRedirect,
     element: <AuthRedirectScreen />,
   },
 ];

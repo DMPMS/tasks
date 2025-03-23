@@ -1,7 +1,7 @@
 export enum HttpStatusCodeEnum {
-  OK = 200,
-  CREATED = 201,
-  BAD_REQUEST = 400,
-  INTERNAL_SERVER_ERROR = 500,
-  UNAUTHORIZED = 401,
+  Ok = 200,
+  Created = 201,
+  BadRequest = 400,
+  InternalServerError = 500,
+  Unauthorized = 401,
 }

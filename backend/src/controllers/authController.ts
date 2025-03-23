@@ -1,5 +1,5 @@
 import { AuthService } from "../services/authService";
-import { LoginDto } from "../dtos/others/loginDto";
+import { CreateAuthDto } from "../dtos/creates/createAuthDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
 import { Request, Response } from "express";
@@ -10,22 +10,22 @@ export class AuthController {
 
   async login(req: Request, res: Response): Promise<void> {
     try {
-      const loginDto = Object.assign(new LoginDto(), req.body);
+      const createAuthDto = Object.assign(new CreateAuthDto(), req.body);
 
-      const isValid = await validateDto(loginDto, res);
+      const isValid = await validateDto(createAuthDto, res);
       if (!isValid) {
         return;
       }
 
-      const returnLoginDto = await this.authService.login(loginDto);
+      const returnAuthDto = await this.authService.login(createAuthDto);
 
-      res.status(HttpStatusCodeEnum.CREATED).json(returnLoginDto);
+      res.status(HttpStatusCodeEnum.Created).json(returnAuthDto);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
       }
     }

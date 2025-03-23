@@ -1,30 +1,30 @@
 export const ERROR_MESSAGES = {
   USER: {
-    EMAIL_ALREADY_EXISTS: "User with this email already exists.",
-    CREATE_USER_ERROR: "Error creating user.",
-    LOGIN_USER_ERROR: "Error login user.",
-    SELECT_USER_ERROR: "Error fetching users.",
-    PASSWORDS_DO_NOT_MATCH: "Passwords do not match.",
+    EMAIL_ALREADY_EXISTS: "Já existe um usuário com esse e-mail.",
+    CREATE_USER_ERROR: "Erro ao criar usuário.",
+    SELECT_USER_ERROR: "Erro ao buscar usuários.",
+    PASSWORDS_DO_NOT_MATCH: "As senhas não coincidem.",
     USER_ROOT_ID_NOT_FOUND: (userId: number) =>
-      `User root with id ${userId} not found.`,
-    USER_ID_NOT_FOUND: (userId: number) => `User with id ${userId} not found.`,
-    USER_ID_IS_REQUIRED: "userId is required.",
-    USER_TYPE_IS_REQUIRED: "userType is required.",
+      `O usuário root com id ${userId} não foi encontrado.`,
+    USER_ID_NOT_FOUND: (userId: number) =>
+      `O usuário com id ${userId} não foi encontrado.`,
+    USER_ID_IS_REQUIRED: "O userId é obrigatório.",
+    USER_TYPE_IS_REQUIRED: "O userType é obrigatório.",
   },
   TASK: {
-    CREATE_TASK_ERROR: "Error creating task.",
-    SELECT_TASK_ERROR: "Error fetching tasks.",
-    USER_ID_IS_REQUIRED: "userId is required.",
+    CREATE_TASK_ERROR: "Erro ao criar tarefa.",
+    SELECT_TASK_ERROR: "Erro ao buscar tarefas.",
+    USER_ID_IS_REQUIRED: "O userId é obrigatório.",
   },
   AUTH: {
-    INVALID_CREDENTIALS: "Invalid email or password.",
-    ACCESS_DENIED: "Access denied.",
+    INVALID_CREDENTIALS: "E-mail ou senha inválidos.",
+    ACCESS_DENIED: "Acesso negado.",
   },
   ENV: {
-    MISSING_JWT_SECRET: "JWT secret is missing or empty.",
+    MISSING_JWT_SECRET: "O JWT secret está ausente ou vazio.",
     MISSING_ROOT_EMAIL_OR_PASSWORD:
-      "ROOT_EMAIL or ROOT_PASSWORD not defined in .env file.",
-    MISSING_ROOT_EMAIL: "ROOT_EMAIL not defined in .env file.",
+      "ROOT_EMAIL ou ROOT_PASSWORD não definidos no arquivo .env.",
+    MISSING_ROOT_EMAIL: "ROOT_EMAIL não definido no arquivo .env.",
   },
 };
 

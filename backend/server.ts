@@ -6,7 +6,7 @@ import { LOG_MESSAGES } from "./src/utils/messages";
 
 dotenv.config();
 
-const PORT = Number(process.env.API_PORT) || SERVER.DEFAULT_PORT;
+const PORT = Number(process.env.API_PORT) || SERVER.DEFAULT_API_PORT;
 
 AppDataSource.initialize()
   .then(async () => {

@@ -12,9 +12,7 @@ export async function validateDto(
       property: error.property,
       constraints: error.constraints,
     }));
-    res
-      .status(HttpStatusCodeEnum.BAD_REQUEST)
-      .json({ errors: formattedErrors });
+    res.status(HttpStatusCodeEnum.BadRequest).json({ errors: formattedErrors });
     return false;
   }
   return true;

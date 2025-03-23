@@ -13,14 +13,14 @@ const taskController = new TaskController(taskService);
 taskRoutes.get(
   "/task",
   authMiddleware,
-  roleMiddleware([UserTypeEnum.USER]),
+  roleMiddleware([UserTypeEnum.User]),
   (req, res) => taskController.getUserTasks(req, res)
 );
 
 taskRoutes.post(
   "/task",
   authMiddleware,
-  roleMiddleware([UserTypeEnum.USER]),
+  roleMiddleware([UserTypeEnum.User]),
   (req, res) => taskController.createTask(req, res)
 );
 

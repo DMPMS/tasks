@@ -11,8 +11,12 @@ import { URL_AUTH } from "../config/urls";
 import { SignUpRoutesEnum } from "../routes/signUpRoutes";
 import { setAuthorizationToken } from "../utils/functions/auth";
 import { AuthRedirectRoutesEnum } from "../routes/authRedirectRoutes";
+import { AxiosError } from "axios";
+import { NotificationEnum } from "../enums/NotificationEnum";
+import { ERROR_MESSAGES, FIELD_VALIDATION_MESSAGES } from "../utils/messages";
 
 export const useSignIn = () => {
+  const { setNotification } = useGlobalReducer();
   const { setUser } = useGlobalReducer();
 
   const { request, loadingRequest } = useRequest();
@@ -20,6 +24,7 @@ export const useSignIn = () => {
 
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [signIn, setSignIn] = useState<SignInDto>(DEFAULT_SIGN_IN);
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
 
   useEffect(() => {
     if (signIn.email && signIn.password && isValidEmail(signIn.email)) {
@@ -29,40 +34,72 @@ export const useSignIn = () => {
     }
   }, [signIn]);
 
+  const validateField = (
+    name: string,
+    value: string,
+    input: HTMLInputElement
+  ) => {
+    if (!value) {
+      input.setCustomValidity(FIELD_VALIDATION_MESSAGES.REQUIRED);
+      setInvalidFields((prev) => [...prev, name]);
+    } else if (name === "email" && !isValidEmail(value)) {
+      input.setCustomValidity(FIELD_VALIDATION_MESSAGES.SIGN_IN.EMAIL_INVALID);
+      setInvalidFields((prev) => [...prev, name]);
+    } else {
+      input.setCustomValidity("");
+      setInvalidFields((prev) => prev.filter((item) => item !== name));
+    }
+
+    input.reportValidity();
+  };
+
   const handleOnChangeInput = (
     e: React.ChangeEvent<HTMLInputElement>,
-    nameObject: string
+    name: string
   ) => {
-    const inputValue = e.target.value;
+    const input = e.target;
+    const value = input.value;
 
     setSignIn({
       ...signIn,
-      [nameObject]:
-        nameObject === "email" ? inputValue.toLowerCase() : inputValue,
+      [name]: name === "email" ? value.toLowerCase() : value,
     });
+
+    validateField(name, value, input);
   };
 
-  const handleOnSignIn = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleOnSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     await request<AuthType>({
-      method: MethodEnum.POST,
+      method: MethodEnum.Post,
       url: URL_AUTH,
       body: signIn,
-    }).then((data) => {
-      setUser(data.user);
-      setAuthorizationToken(data.token);
-      navigate(AuthRedirectRoutesEnum.AUTH_REDIRECT);
-    });
+    })
+      .then((data) => {
+        setUser(data.user);
+        setAuthorizationToken(data.token);
+        navigate(AuthRedirectRoutesEnum.AuthRedirect);
+      })
+      .catch((error: AxiosError) => {
+        const responseErrorMessage =
+          (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+        setNotification({
+          message: responseErrorMessage,
+          type: NotificationEnum.Error,
+        });
+      });
   };
 
   const handleOnSignUp = () => {
-    navigate(SignUpRoutesEnum.SIGN_UP);
+    navigate(SignUpRoutesEnum.SignUp);
   };
 
   return {
     loadingRequest,
     disabledButton,
+    invalidFields,
     handleOnChangeInput,
     handleOnSignIn,
     handleOnSignUp,

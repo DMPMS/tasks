@@ -2,12 +2,12 @@ import { RouteObject } from "react-router-dom";
 import TasksScreen from "../screens/tasksScreen";
 
 export enum TaskRoutesEnum {
-  TASKS = "/tasks",
+  Tasks = "/tasks",
 }
 
 export const taskRoutes: RouteObject[] = [
   {
-    path: TaskRoutesEnum.TASKS,
+    path: TaskRoutesEnum.Tasks,
     element: <TasksScreen />,
   },
 ];

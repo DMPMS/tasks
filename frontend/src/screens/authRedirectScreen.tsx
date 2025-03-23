@@ -20,24 +20,24 @@ const AuthRedirectScreen = () => {
   useEffect(() => {
     const token = getAuthorizationToken();
     if (!token) {
-      navigate(SignInRoutesEnum.SIGN_IN);
+      navigate(SignInRoutesEnum.SignIn);
     } else if (!isValidToken(token)) {
       unsetAuthorizationToken();
-      navigate(SignInRoutesEnum.SIGN_IN);
+      navigate(SignInRoutesEnum.SignIn);
     } else {
       const decodedToken = jwtDecode<TokenType>(token);
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedToken.exp && decodedToken.exp < currentTime) {
         unsetAuthorizationToken();
-        navigate(SignInRoutesEnum.SIGN_IN);
-      } else if (decodedToken.userType === UserTypeEnum.USER) {
-        navigate(TaskRoutesEnum.TASKS);
-      } else if (decodedToken.userType === UserTypeEnum.ADMIN) {
-        navigate(UserRoutesEnum.USERS);
+        navigate(SignInRoutesEnum.SignIn);
+      } else if (decodedToken.userType === UserTypeEnum.User) {
+        navigate(TaskRoutesEnum.Tasks);
+      } else if (decodedToken.userType === UserTypeEnum.Admin) {
+        navigate(UserRoutesEnum.Users);
       } else {
         unsetAuthorizationToken();
-        navigate(SignInRoutesEnum.SIGN_IN);
+        navigate(SignInRoutesEnum.SignIn);
       }
     }
   }, [user]);

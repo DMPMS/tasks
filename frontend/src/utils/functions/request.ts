@@ -2,8 +2,6 @@ import { useState } from "react";
 import { MethodEnum } from "../../enums/MethodEnum";
 import { getAuthorizationToken } from "./auth";
 import axios from "axios";
-import { useGlobalReducer } from "../../store/reducers/globalReducer/useGlobalReducer";
-import { NotificationEnum } from "../../enums/NotificationEnum";
 
 interface RequestOptions {
   method: MethodEnum;
@@ -13,8 +11,6 @@ interface RequestOptions {
 }
 
 export const useRequest = () => {
-  const { setNotification } = useGlobalReducer();
-
   const [loadingRequest, setLoadingRequest] = useState<boolean>(false);
 
   const request = async <T>({
@@ -41,7 +37,6 @@ export const useRequest = () => {
 
       return response.data;
     } catch (error) {
-      setNotification({ message: String(error), type: NotificationEnum.ERROR });
       return Promise.reject(error);
     } finally {
       setLoadingRequest(false);

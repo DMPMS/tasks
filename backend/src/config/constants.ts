@@ -1,5 +1,5 @@
 export const SERVER = {
-  DEFAULT_PORT: 3000,
+  DEFAULT_API_PORT: 3000,
 };
 
 export const PAGINATION = {

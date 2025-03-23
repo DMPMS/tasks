@@ -14,7 +14,7 @@ export const authMiddleware = (
 
   if (!authorizationHeader) {
     res
-      .status(HttpStatusCodeEnum.UNAUTHORIZED)
+      .status(HttpStatusCodeEnum.Unauthorized)
       .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
     return;
   }
@@ -33,7 +33,7 @@ export const authMiddleware = (
     next();
   } catch (error) {
     res
-      .status(HttpStatusCodeEnum.UNAUTHORIZED)
+      .status(HttpStatusCodeEnum.Unauthorized)
       .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   }
 };

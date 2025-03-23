@@ -5,9 +5,9 @@ const SignInScreen = () => {
   const {
     loadingRequest,
     disabledButton,
+    invalidFields,
     handleOnChangeInput,
     handleOnSignIn,
-    handleOnSignUp,
   } = useSignIn();
 
   return (
@@ -20,8 +20,9 @@ const SignInScreen = () => {
             <input
               type="email"
               onChange={(e) => handleOnChangeInput(e, "email")}
-              required
-              className={styles.input}
+              className={`${styles.input} ${
+                invalidFields.includes("email") ? styles.invalidField : ""
+              }`}
             />
           </div>
 
@@ -30,8 +31,9 @@ const SignInScreen = () => {
             <input
               type="password"
               onChange={(e) => handleOnChangeInput(e, "password")}
-              required
-              className={styles.input}
+              className={`${styles.input} ${
+                invalidFields.includes("password") ? styles.invalidField : ""
+              }`}
             />
           </div>
 

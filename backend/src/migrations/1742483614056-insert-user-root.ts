@@ -16,7 +16,9 @@ export class InsertUserRoot1742483614056 implements MigrationInterface {
 
     await queryRunner.query(`
       INSERT INTO public.user (name, email, password, user_type)
-      VALUES ('Root', '${rootEmail}', '${passwordHash}', ${UserTypeEnum.ROOT});
+      VALUES ('Root', '${rootEmail.toLowerCase()}', '${passwordHash}', ${
+      UserTypeEnum.Root
+    });
     `);
   }
 
@@ -28,7 +30,7 @@ export class InsertUserRoot1742483614056 implements MigrationInterface {
     }
 
     await queryRunner.query(`
-      DELETE FROM public.user WHERE email = '${rootEmail}';
+      DELETE FROM public.user WHERE email = '${rootEmail.toLowerCase()}';
     `);
   }
 }

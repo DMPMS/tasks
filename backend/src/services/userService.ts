@@ -26,7 +26,7 @@ export class UserService {
       skip,
       take: limit,
       relations: relationsOptions,
-      where: { userType: UserTypeEnum.USER },
+      where: { userType: UserTypeEnum.User },
     });
 
     return users.map((user) => new ReturnUserDto(user));
@@ -54,7 +54,7 @@ export class UserService {
     userType?: UserTypeEnum
   ): Promise<ReturnUserDto> {
     const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
+      where: { email: createUserDto.email.toLowerCase() },
     });
 
     if (existingUser) {
@@ -66,10 +66,11 @@ export class UserService {
     }
 
     const passwordHashed = await createPasswordHashed(createUserDto.password);
+    createUserDto.email = createUserDto.email.toLowerCase();
 
     let user;
 
-    if (userId && userType === UserTypeEnum.ROOT) {
+    if (userId && userType === UserTypeEnum.Root) {
       const userRoot = await this.userRepository.findOne({
         where: { id: userId, userType: userType },
       });
@@ -79,14 +80,14 @@ export class UserService {
       } else {
         user = this.userRepository.create({
           ...createUserDto,
-          userType: UserTypeEnum.ADMIN,
+          userType: UserTypeEnum.Admin,
           password: passwordHashed,
         });
       }
     } else {
       user = this.userRepository.create({
         ...createUserDto,
-        userType: UserTypeEnum.USER,
+        userType: UserTypeEnum.User,
         password: passwordHashed,
       });
     }

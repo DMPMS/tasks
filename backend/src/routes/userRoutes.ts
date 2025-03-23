@@ -13,7 +13,7 @@ const userController = new UserController(userService);
 userRoutes.get(
   "/user",
   authMiddleware,
-  roleMiddleware([UserTypeEnum.ADMIN]),
+  roleMiddleware([UserTypeEnum.Admin]),
   (req, res) => userController.getUsers(req, res)
 );
 
@@ -22,7 +22,7 @@ userRoutes.post("/user", (req, res) => userController.createUser(req, res));
 userRoutes.post(
   "/user/admin",
   authMiddleware,
-  roleMiddleware([UserTypeEnum.ROOT]),
+  roleMiddleware([UserTypeEnum.Root]),
   (req, res) => userController.createAdmin(req, res)
 );
 

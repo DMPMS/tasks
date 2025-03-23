@@ -28,13 +28,13 @@ export class UserController {
         relationsOptions
       );
 
-      res.status(HttpStatusCodeEnum.OK).json(returnUsersDto);
+      res.status(HttpStatusCodeEnum.Ok).json(returnUsersDto);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
       }
     }
@@ -51,13 +51,13 @@ export class UserController {
 
       const returnUserDto = await this.userService.createUser(createUserDto);
 
-      res.status(HttpStatusCodeEnum.CREATED).json(returnUserDto);
+      res.status(HttpStatusCodeEnum.Created).json(returnUserDto);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
@@ -76,14 +76,14 @@ export class UserController {
 
       if (!userId) {
         res
-          .status(HttpStatusCodeEnum.BAD_REQUEST)
+          .status(HttpStatusCodeEnum.BadRequest)
           .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!userType) {
         res
-          .status(HttpStatusCodeEnum.BAD_REQUEST)
+          .status(HttpStatusCodeEnum.BadRequest)
           .send(ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED);
         return;
       }
@@ -94,13 +94,13 @@ export class UserController {
         userType
       );
 
-      res.status(HttpStatusCodeEnum.CREATED).json(returnUserDto);
+      res.status(HttpStatusCodeEnum.Created).json(returnUserDto);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BAD_REQUEST).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR)
+          .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
