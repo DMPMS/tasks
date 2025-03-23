@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { TASK } from "../config/constants";
 import { UserEntity } from "./userEntity";
+import { PriorityEnum } from "../enums/PriorityEnum";
 
 @Entity("task")
 export class TaskEntity {
@@ -24,8 +25,19 @@ export class TaskEntity {
   @Column({ name: "description", nullable: true })
   description?: string;
 
-  @Column({ name: "completed", default: false })
-  completed!: boolean;
+  @Column({
+    name: "priority",
+    type: "enum",
+    enum: PriorityEnum,
+    nullable: false,
+  })
+  priority!: PriorityEnum;
+
+  @Column({ name: "completed_date", nullable: true })
+  completedDate?: Date;
+
+  @Column({ name: "limit_date", nullable: false })
+  limitDate!: Date;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

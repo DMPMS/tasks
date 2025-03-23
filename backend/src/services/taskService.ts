@@ -46,7 +46,7 @@ export class TaskService {
     const task = this.taskRepository.create({
       ...createTaskDto,
       userId: userId,
-      completed: false,
+      completedDate: undefined,
     });
 
     const savedTask = await this.taskRepository.save(task);

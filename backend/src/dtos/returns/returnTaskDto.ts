@@ -1,11 +1,14 @@
 import { ReturnUserDto } from "./returnUserDto";
 import { TaskEntity } from "../../entities/taskEntity";
+import { PriorityEnum } from "../../enums/PriorityEnum";
 
 export class ReturnTaskDto {
   id: number;
   title: string;
   description: string;
-  completed: boolean;
+  priority: PriorityEnum;
+  completedDate?: Date;
+  limitDate: Date;
 
   user?: ReturnUserDto;
 
@@ -13,7 +16,11 @@ export class ReturnTaskDto {
     this.id = taskEntity.id;
     this.title = taskEntity.title;
     this.description = taskEntity.description ? taskEntity.description : "";
-    this.completed = taskEntity.completed;
+    this.priority = taskEntity.priority;
+    this.completedDate = taskEntity.completedDate
+      ? taskEntity.completedDate
+      : undefined;
+    this.limitDate = taskEntity.limitDate;
 
     this.user = taskEntity.user
       ? new ReturnUserDto(taskEntity.user)

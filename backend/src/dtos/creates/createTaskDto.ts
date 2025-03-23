@@ -1,5 +1,14 @@
-import { IsOptional, IsString, Length } from "class-validator";
+import {
+  IsDate,
+  IsEnum,
+  IsOptional,
+  IsString,
+  Length,
+  Validate,
+} from "class-validator";
 import { TASK } from "../../config/constants";
+import { PriorityEnum } from "../../enums/PriorityEnum";
+import { IsCustomTimestamp } from "../../validators/isCustomTimestamp";
 
 export class CreateTaskDto {
   @IsString()
@@ -9,4 +18,10 @@ export class CreateTaskDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @IsEnum(PriorityEnum)
+  priority!: PriorityEnum;
+
+  @Validate(IsCustomTimestamp)
+  limitDate!: Date;
 }
