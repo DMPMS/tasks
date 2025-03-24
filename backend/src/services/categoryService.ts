@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { DeleteResult, Repository } from "typeorm";
 import { UserService } from "./userService";
 import { CategoryEntity } from "../entities/categoryEntity";
 import { AppDataSource } from "../config/orm";
@@ -79,5 +79,14 @@ export class CategoryService {
     const savedCategory = await this.categoryRepository.save(category);
 
     return new ReturnCategoryDto(savedCategory);
+  }
+
+  async deleteCategory(
+    userId: number,
+    categoryId: number
+  ): Promise<DeleteResult> {
+    await this.getUserCategoryById(userId, categoryId);
+
+    return this.categoryRepository.delete({ id: categoryId });
   }
 }

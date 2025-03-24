@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
 import { PAGINATION } from "../config/constants";
-import { ERROR_MESSAGES } from "../utils/messages";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { validateDto } from "../utils/validation";
 import { TaskService } from "../services/taskService";
 import { CreateTaskDto } from "../dtos/creates/createTaskDto";
@@ -79,6 +79,50 @@ export class TaskController {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.TASK.CREATE_TASK_ERROR);
+      }
+    }
+  }
+
+  async deleteTask(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const userId = req.userId;
+      const { taskId } = req.params;
+
+      if (!userId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+        return;
+      }
+
+      if (!taskId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+        return;
+      }
+
+      const taskIdNumber = Number(taskId);
+
+      if (isNaN(taskIdNumber)) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+        return;
+      }
+
+      await this.taskService.deleteTask(userId, taskIdNumber);
+
+      res
+        .status(HttpStatusCodeEnum.Ok)
+        .send(SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.InternalServerError)
+          .send(ERROR_MESSAGES.TASK.DELETE_TASK_ERROR);
       }
     }
   }

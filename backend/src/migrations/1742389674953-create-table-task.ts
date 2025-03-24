@@ -20,7 +20,7 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
 
         PRIMARY KEY (id),
         foreign key (user_id) references public.user(id),
-        foreign key (category_id) references public.category(id)
+        foreign key (category_id) references public.category(id) ON DELETE SET NULL
         );
     `);
   }

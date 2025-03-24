@@ -24,4 +24,11 @@ categoryRoutes.post(
   (req, res) => categoryController.createCategory(req, res)
 );
 
+categoryRoutes.delete(
+  "/category/:categoryId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => categoryController.deleteCategory(req, res)
+);
+
 export default categoryRoutes;

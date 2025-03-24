@@ -24,4 +24,11 @@ taskRoutes.post(
   (req, res) => taskController.createTask(req, res)
 );
 
+taskRoutes.delete(
+  "/task/:taskId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => taskController.deleteTask(req, res)
+);
+
 export default taskRoutes;

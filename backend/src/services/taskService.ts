@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { DeleteResult, Repository } from "typeorm";
 import { AppDataSource } from "../config/orm";
 import { TaskEntity } from "../entities/taskEntity";
 import { ReturnTaskDto } from "../dtos/returns/returnTaskDto";
@@ -6,6 +6,7 @@ import { CreateTaskDto } from "../dtos/creates/createTaskDto";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserService } from "./userService";
 import { CategoryService } from "./categoryService";
+import { ERROR_MESSAGES } from "../utils/messages";
 
 export class TaskService {
   private readonly userService: UserService;
@@ -40,6 +41,23 @@ export class TaskService {
     return tasks.map((task) => new ReturnTaskDto(task));
   }
 
+  async getUserTaskById(
+    userId: number,
+    taskId: number,
+    relationsOptions?: RelationsOptionsType
+  ): Promise<ReturnTaskDto> {
+    const task = await this.taskRepository.findOne({
+      where: { id: taskId, userId: userId },
+      relations: relationsOptions,
+    });
+
+    if (!task) {
+      throw new Error(ERROR_MESSAGES.TASK.TASK_ID_NOT_FOUND(taskId, userId));
+    }
+
+    return new ReturnTaskDto(task);
+  }
+
   async createTask(
     userId: number,
     createTaskDto: CreateTaskDto
@@ -65,5 +83,11 @@ export class TaskService {
     const savedTask = await this.taskRepository.save(task);
 
     return new ReturnTaskDto(savedTask);
+  }
+
+  async deleteTask(userId: number, taskId: number): Promise<DeleteResult> {
+    await this.getUserTaskById(userId, taskId);
+
+    return this.taskRepository.delete({ id: taskId });
   }
 }
