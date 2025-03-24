@@ -18,17 +18,12 @@ export class UserController {
         limit = PAGINATION.DEFAULT_LIMIT,
       } = req.query;
 
-      const relationsOptions: RelationsOptionsType = {
-        tasks: true,
-      };
-
-      const returnUsersDto = await this.userService.getUsers(
+      const users = await this.userService.getUsers(
         Number(page),
-        Number(limit),
-        relationsOptions
+        Number(limit)
       );
 
-      res.status(HttpStatusCodeEnum.Ok).json(returnUsersDto);
+      res.status(HttpStatusCodeEnum.Ok).json(users);
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
@@ -49,9 +44,9 @@ export class UserController {
         return;
       }
 
-      const returnUserDto = await this.userService.createUser(createUserDto);
+      const savedUser = await this.userService.createUser(createUserDto);
 
-      res.status(HttpStatusCodeEnum.Created).json(returnUserDto);
+      res.status(HttpStatusCodeEnum.Created).json(savedUser);
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
@@ -88,13 +83,13 @@ export class UserController {
         return;
       }
 
-      const returnUserDto = await this.userService.createUser(
+      const savedUser = await this.userService.createUser(
         createUserDto,
         userId,
         userType
       );
 
-      res.status(HttpStatusCodeEnum.Created).json(returnUserDto);
+      res.status(HttpStatusCodeEnum.Created).json(savedUser);
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCodeEnum.BadRequest).send(error.message);

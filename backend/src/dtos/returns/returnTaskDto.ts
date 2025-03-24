@@ -1,6 +1,7 @@
 import { ReturnUserDto } from "./returnUserDto";
 import { TaskEntity } from "../../entities/taskEntity";
 import { PriorityEnum } from "../../enums/PriorityEnum";
+import { ReturnCategoryDto } from "./returnCategoryDto";
 
 export class ReturnTaskDto {
   id: number;
@@ -11,6 +12,7 @@ export class ReturnTaskDto {
   limitDate: Date;
 
   user?: ReturnUserDto;
+  category?: ReturnCategoryDto;
 
   constructor(taskEntity: TaskEntity) {
     this.id = taskEntity.id;
@@ -24,6 +26,10 @@ export class ReturnTaskDto {
 
     this.user = taskEntity.user
       ? new ReturnUserDto(taskEntity.user)
+      : undefined;
+
+    this.category = taskEntity.category
+      ? new ReturnCategoryDto(taskEntity.category)
       : undefined;
   }
 }

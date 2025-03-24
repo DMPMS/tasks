@@ -16,6 +16,14 @@ export const ERROR_MESSAGES = {
     SELECT_TASK_ERROR: "Erro ao buscar tarefas.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",
   },
+  CATEGORY: {
+    CREATE_CATEGORY_ERROR: "Erro ao criar categoria.",
+    SELECT_CATEGORY_ERROR: "Erro ao buscar categorias.",
+    USER_ID_IS_REQUIRED: "O userId é obrigatório.",
+    CATEGORY_ALREADY_EXISTS: "Já existe uma categoria com esse nome.",
+    CATEGORY_ID_NOT_FOUND: (categoryId: number, userId: number) =>
+      `A categoria com id ${categoryId} não foi encontrada para o userId ${userId}.`,
+  },
   AUTH: {
     INVALID_CREDENTIALS: "E-mail ou senha inválidos.",
     ACCESS_DENIED: "Acesso negado.",

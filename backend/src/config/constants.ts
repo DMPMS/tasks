@@ -28,3 +28,10 @@ export const TASK = {
     MAX: 60,
   },
 };
+
+export const CATEGORY = {
+  NAME_LENGTH: {
+    MIN: 1,
+    MAX: 20,
+  },
+};

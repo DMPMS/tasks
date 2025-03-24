@@ -10,6 +10,7 @@ import {
 import { TASK } from "../config/constants";
 import { UserEntity } from "./userEntity";
 import { PriorityEnum } from "../enums/PriorityEnum";
+import { CategoryEntity } from "./categoryEntity";
 
 @Entity("task")
 export class TaskEntity {
@@ -18,6 +19,9 @@ export class TaskEntity {
 
   @Column({ name: "user_id", nullable: false })
   userId!: number;
+
+  @Column({ name: "category_id", nullable: true })
+  categoryId!: number;
 
   @Column({ name: "title", length: TASK.TITLE_LENGTH.MAX, nullable: false })
   title!: string;
@@ -48,4 +52,8 @@ export class TaskEntity {
   @ManyToOne(() => UserEntity, (user) => user.tasks)
   @JoinColumn({ name: "user_id", referencedColumnName: "id" })
   user?: UserEntity;
+
+  @ManyToOne(() => CategoryEntity, (category) => category.tasks)
+  @JoinColumn({ name: "category_id", referencedColumnName: "id" })
+  category?: CategoryEntity;
 }

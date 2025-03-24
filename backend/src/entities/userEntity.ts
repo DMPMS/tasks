@@ -9,6 +9,7 @@ import {
 import { USER } from "../config/constants";
 import { TaskEntity } from "./taskEntity";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
+import { CategoryEntity } from "./categoryEntity";
 
 @Entity("user")
 export class UserEntity {
@@ -49,4 +50,7 @@ export class UserEntity {
 
   @OneToMany(() => TaskEntity, (task) => task.user)
   tasks?: TaskEntity[];
+
+  @OneToMany(() => CategoryEntity, (category) => category.user)
+  categories?: CategoryEntity[];
 }

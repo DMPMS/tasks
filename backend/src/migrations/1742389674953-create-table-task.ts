@@ -7,6 +7,8 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         CREATE TABLE public.task (
         id SERIAL NOT NULL,
         user_id INTEGER NOT NULL,
+        category_id INTEGER,
+        
         title VARCHAR(${TASK.TITLE_LENGTH.MAX}) NOT NULL,
         description TEXT,
         priority INTEGER NOT NULL,
@@ -17,7 +19,8 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
 
         PRIMARY KEY (id),
-        foreign key (user_id) references public.user(id)
+        foreign key (user_id) references public.user(id),
+        foreign key (category_id) references public.category(id)
         );
     `);
   }

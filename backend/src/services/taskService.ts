@@ -5,9 +5,11 @@ import { ReturnTaskDto } from "../dtos/returns/returnTaskDto";
 import { CreateTaskDto } from "../dtos/creates/createTaskDto";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserService } from "./userService";
+import { CategoryService } from "./categoryService";
 
 export class TaskService {
   private readonly userService: UserService;
+  private readonly categoryService: CategoryService;
 
   constructor(
     private readonly taskRepository: Repository<TaskEntity> = AppDataSource.getRepository(
@@ -15,6 +17,7 @@ export class TaskService {
     )
   ) {
     this.userService = new UserService();
+    this.categoryService = new CategoryService();
   }
 
   async getUserTasks(
@@ -43,9 +46,19 @@ export class TaskService {
   ): Promise<ReturnTaskDto> {
     await this.userService.getUserById(userId);
 
+    if (createTaskDto.categoryId) {
+      await this.categoryService.getUserCategoryById(
+        userId,
+        createTaskDto.categoryId
+      );
+    }
+
     const task = this.taskRepository.create({
       ...createTaskDto,
       userId: userId,
+      categoryId: createTaskDto.categoryId
+        ? createTaskDto.categoryId
+        : undefined,
       completedDate: undefined,
     });
 

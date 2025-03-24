@@ -1,6 +1,6 @@
 import {
-  IsDate,
   IsEnum,
+  IsInt,
   IsOptional,
   IsString,
   Length,
@@ -11,6 +11,10 @@ import { PriorityEnum } from "../../enums/PriorityEnum";
 import { IsCustomTimestamp } from "../../validators/isCustomTimestamp";
 
 export class CreateTaskDto {
+  @IsInt()
+  @IsOptional()
+  categoryId?: number;
+
   @IsString()
   @Length(TASK.TITLE_LENGTH.MIN, TASK.TITLE_LENGTH.MAX)
   title!: string;

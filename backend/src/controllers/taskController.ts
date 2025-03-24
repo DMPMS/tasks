@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
 import { PAGINATION } from "../config/constants";
 import { ERROR_MESSAGES } from "../utils/messages";
@@ -6,6 +6,7 @@ import { validateDto } from "../utils/validation";
 import { TaskService } from "../services/taskService";
 import { CreateTaskDto } from "../dtos/creates/createTaskDto";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
+import { RelationsOptionsType } from "../types/RelationsOptions.type";
 
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -17,6 +18,10 @@ export class TaskController {
         limit = PAGINATION.DEFAULT_LIMIT,
       } = req.query;
 
+      const relationsOptions: RelationsOptionsType = {
+        category: true,
+      };
+
       const userId = req.userId;
       if (!userId) {
         res
@@ -25,13 +30,14 @@ export class TaskController {
         return;
       }
 
-      const returnTasksDto = await this.taskService.getUserTasks(
+      const tasks = await this.taskService.getUserTasks(
         Number(page),
         Number(limit),
-        userId
+        userId,
+        relationsOptions
       );
 
-      res.status(HttpStatusCodeEnum.Ok).json(returnTasksDto);
+      res.status(HttpStatusCodeEnum.Ok).json(tasks);
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
@@ -60,12 +66,12 @@ export class TaskController {
         return;
       }
 
-      const returnTaskDto = await this.taskService.createTask(
+      const savedTask = await this.taskService.createTask(
         userId,
         createTaskDto
       );
 
-      res.status(HttpStatusCodeEnum.Created).json(returnTaskDto);
+      res.status(HttpStatusCodeEnum.Created).json(savedTask);
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
