@@ -75,6 +75,7 @@ export const useSignIn = () => {
       method: MethodEnum.Post,
       url: URL_AUTH,
       body: signIn,
+      timeout: 2000,
     })
       .then((data) => {
         setUser(data.user);

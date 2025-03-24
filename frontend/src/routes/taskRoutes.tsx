@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import TasksScreen from "../screens/tasksScreen";
 
 export enum TaskRoutesEnum {
-  Tasks = "/tasks",
+  Tasks = "/task",
 }
 
 export const taskRoutes: RouteObject[] = [

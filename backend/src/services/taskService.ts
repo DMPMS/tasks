@@ -32,8 +32,8 @@ export class TaskService {
     const skip = (page - 1) * limit;
 
     const tasks = await this.taskRepository.find({
-      skip,
-      take: limit,
+      // skip,
+      // take: limit,
       where: { userId: userId },
       relations: relationsOptions,
     });

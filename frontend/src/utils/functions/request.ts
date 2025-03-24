@@ -8,6 +8,7 @@ interface RequestOptions {
   url: string;
   body?: object;
   params?: object;
+  timeout?: number;
 }
 
 export const useRequest = () => {
@@ -18,8 +19,11 @@ export const useRequest = () => {
     url,
     body,
     params,
+    timeout,
   }: RequestOptions): Promise<T> => {
     setLoadingRequest(true);
+
+    await new Promise((resolve) => setTimeout(resolve, timeout));
 
     const headers = {
       Authorization: getAuthorizationToken(),

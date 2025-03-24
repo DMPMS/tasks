@@ -1,3 +1,4 @@
+import { CategoryType } from "./CategoryType";
 import { TaskType } from "./TaskType";
 
 export interface UserType {
@@ -6,4 +7,5 @@ export interface UserType {
   email: string;
 
   tasks?: TaskType[];
+  categories?: CategoryType[];
 }

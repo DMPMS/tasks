@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.cardTasks {
+  width: 1000px;
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.h2 {
+  margin: 0px 0px 20px 0px;
+  text-align: center;
+}
+
+.input {
+  margin: 0px 0px 10px 0px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #007bff;
+  outline: none;
+}

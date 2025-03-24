@@ -1,5 +1,70 @@
-const TasksScreen = () => {
-  return <div>Tarefas</div>;
+import styles from "../styles/taskScreen.module.css";
+import Table from "../components/table/table";
+import { useTask } from "../hooks/useTask";
+import { TableHeaderType } from "../types/TableHeaderType";
+import Modal from "../components/modal/modal";
+import { TableActionEnum } from "../enums/TableActionEnum";
+
+const TaskScreen = () => {
+  const {
+    loadingRequest,
+    tasks,
+    handleOnSearch,
+    handleOnDelete,
+    openModalDelete,
+    handleOnOpenModalDelete,
+    handleOnCloseModalDelete,
+  } = useTask();
+
+  const tableHeaders: TableHeaderType[] = [
+    { th: "Nome", td: "title" },
+    { th: "Prazo", td: "limitDate" },
+    { th: "Categoria", td: "category" },
+  ];
+
+  const tableActions: TableActionEnum[] = [TableActionEnum.Delete];
+
+  const tableData = tasks.map((task) => ({
+    id: task.id,
+    title: task.title,
+    limitDate:
+      new Date(task.limitDate).toLocaleDateString("pt-BR") +
+      " às " +
+      new Date(task.limitDate).toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    category: task.category?.name,
+  }));
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.cardTasks}>
+        <h2 className={styles.h2}>Minhas Tarefas</h2>
+        <input
+          type="text"
+          placeholder="Buscar"
+          onChange={(e) => handleOnSearch(e.target.value)}
+          className={styles.input}
+        />
+        <Table
+          data={tableData}
+          headers={tableHeaders}
+          actions={tableActions}
+          handleOnDelete={handleOnOpenModalDelete}
+        />
+      </div>
+
+      <Modal
+        title="Deseja realmente excluir essa tarefa?"
+        description="Esta ação será irreversível."
+        isOpen={openModalDelete}
+        onConfirm={handleOnDelete}
+        onClose={handleOnCloseModalDelete}
+        loading={loadingRequest}
+      />
+    </div>
+  );
 };
 
-export default TasksScreen;
+export default TaskScreen;
