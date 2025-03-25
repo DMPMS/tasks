@@ -6,8 +6,8 @@
   height: 100vh;
 }
 
-.cardSignIn {
-  width: 300px;
+.cardCreateTask {
+  width: 400px;
   padding: 16px;
   margin: 16px;
   border-radius: 8px;
@@ -33,7 +33,11 @@
   margin: 0px 0px 5px 5px;
 }
 
-.input {
+.asterisk {
+  color: #ff0000;
+}
+
+.field {
   margin: 0px 0px 10px 0px;
   padding: 8px;
   border-radius: 8px;
@@ -41,7 +45,7 @@
   transition: border-color 0.3s;
 }
 
-.input:focus {
+.field:focus {
   border-color: #007bff;
   outline: none;
 }
@@ -51,11 +55,32 @@
   border-color: #ff0000;
 }
 
+.warningField,
+.warningField:focus {
+  border-color: #ffd000;
+}
+
+.textarea {
+  resize: none;
+}
+
+.actions {
+  margin: "10px 0px 0px 0px";
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.containerResetAndCancel {
+  display: flex;
+  gap: 5px;
+}
+
 .button {
   margin: 10px 0px 0px 0px;
   padding: 10px;
   border-radius: 8px;
-  background-color: #007bff;
   color: #ffffff;
   border: none;
   cursor: pointer;
@@ -63,12 +88,33 @@
   position: relative;
 }
 
-.button:hover {
+.submitButton {
+  width: 130px;
+  background-color: #007bff;
+}
+
+.submitButton:hover {
   background-color: #0068d6;
 }
 
-.button:disabled {
+.submitButton:disabled {
   background-color: #003063;
+  cursor: not-allowed;
+}
+
+.cancelButton,
+.resetButton {
+  background-color: #8a8a8a;
+}
+
+.cancelButton:hover,
+.resetButton:hover {
+  background-color: #636363;
+}
+
+.cancelButton:disabled,
+.resetButton:disabled {
+  background-color: #3c3c3c;
   cursor: not-allowed;
 }
 

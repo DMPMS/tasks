@@ -12,7 +12,7 @@ const SignInScreen = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.cardForm}>
+      <div className={styles.cardSignIn}>
         <h2 className={styles.h2}>Entrar</h2>
         <form onSubmit={handleOnSignIn} className={styles.form}>
           <div className={styles.formGroup}>

@@ -10,7 +10,7 @@ const NotFoundScreen = () => {
         <h2 className={styles.h2}>Erro 404</h2>
         <text className={styles.text}>Página não encontrada</text>
         <button
-          type="submit"
+          type="button"
           onClick={handleOnClickButton}
           className={styles.button}
         >

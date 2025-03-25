@@ -28,6 +28,7 @@ const Modal = ({
         )}
         <div className={styles.actions}>
           <button
+            type="button"
             className={`${styles.button} ${styles.confirmButton}`}
             disabled={loading}
             onClick={onConfirm}
@@ -39,6 +40,7 @@ const Modal = ({
           </button>
 
           <button
+            type="button"
             className={`${styles.button} ${styles.cancelButton}`}
             disabled={loading}
             onClick={onClose}

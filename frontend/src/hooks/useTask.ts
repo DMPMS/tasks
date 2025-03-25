@@ -52,6 +52,10 @@ export const useTask = () => {
     }
   }, []);
 
+  const handleOnCreate = () => {
+    navigate(TaskRoutesEnum.CreateTask);
+  };
+
   const handleOnSearch = (value: string) => {
     setSearchValue(value);
   };
@@ -94,10 +98,12 @@ export const useTask = () => {
   return {
     loadingRequest,
     tasks: tasksFiltered,
+    handleOnCreate,
     handleOnSearch,
     handleOnDelete,
     openModalDelete: !!taskIdDelete,
     handleOnOpenModalDelete,
     handleOnCloseModalDelete,
+    fetchTasks,
   };
 };

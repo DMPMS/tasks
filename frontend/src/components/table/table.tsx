@@ -41,14 +41,16 @@ const Table = ({ data, headers, actions, handleOnDelete }: TableProps) => {
           <td key={index}>{row[header.td]}</td>
         ))}
         {actions && actions.length > 0 && (
-          <td className={styles.tdActions}>
-            {actions.includes(TableActionEnum.Delete) && (
-              <TrashIcon
-                className={styles.actionItem}
-                onClick={() => handleOnDelete(row.id)}
-                width={25}
-              />
-            )}
+          <td>
+            <div className={styles.contentTdActions}>
+              {actions.includes(TableActionEnum.Delete) && (
+                <TrashIcon
+                  className={styles.actionItem}
+                  onClick={() => handleOnDelete(row.id)}
+                  width={25}
+                />
+              )}
+            </div>
           </td>
         )}
       </tr>

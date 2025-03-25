@@ -4,13 +4,24 @@ export const ERROR_MESSAGES = {
 
 export const SUCCESS_MESSAGES = {
   TASK: {
+    TASK_CREATED_SUCCESSFULLY: "Tarefa criada.",
     TASK_DELETED_SUCCESSFULLY: "Tarefa deletada.",
   },
 };
 
 export const FIELD_VALIDATION_MESSAGES = {
+  NOT_FOUND: (name: string) => `O campo '${name}' não foi encontrado.`,
   REQUIRED: "Preencha este campo.",
   SIGN_IN: {
     EMAIL_INVALID: "Insira um e-mail válido.",
+  },
+  TASK: {
+    TITLE: {
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+    },
+    LIMIT_DATE: {
+      PAST_DATE: "A data limite é anterior a data atual.",
+    },
   },
 };

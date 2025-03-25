@@ -9,6 +9,7 @@ const TaskScreen = () => {
   const {
     loadingRequest,
     tasks,
+    handleOnCreate,
     handleOnSearch,
     handleOnDelete,
     openModalDelete,
@@ -41,12 +42,21 @@ const TaskScreen = () => {
     <div className={styles.container}>
       <div className={styles.cardTasks}>
         <h2 className={styles.h2}>Minhas Tarefas</h2>
-        <input
-          type="text"
-          placeholder="Buscar"
-          onChange={(e) => handleOnSearch(e.target.value)}
-          className={styles.input}
-        />
+        <div className={styles.containerSearchAndCreate}>
+          <input
+            type="text"
+            placeholder="Buscar"
+            onChange={(e) => handleOnSearch(e.target.value)}
+            className={styles.input}
+          />
+          <button
+            type="button"
+            onClick={handleOnCreate}
+            className={styles.button}
+          >
+            Criar Tarefa
+          </button>
+        </div>
         <Table
           data={tableData}
           headers={tableHeaders}
