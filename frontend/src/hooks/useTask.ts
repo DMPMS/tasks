@@ -18,6 +18,7 @@ export const useTask = () => {
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
 
+  const [loadingTasks, setLoadingTasks] = useState<boolean>(true);
   const [taskIdDelete, setTaskIdDelete] = useState<number | undefined>(
     undefined
   );
@@ -27,13 +28,15 @@ export const useTask = () => {
     task.title.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (timetout: number) => {
     await request<TaskType[]>({
       method: MethodEnum.Get,
       url: URL_TASK,
+      timeout: timetout,
     })
       .then((data) => {
         setTasks(data);
+        setLoadingTasks(false);
       })
       .catch((error: AxiosError) => {
         const responseErrorMessage =
@@ -48,12 +51,18 @@ export const useTask = () => {
 
   useEffect(() => {
     if (!tasks || tasks.length === 0) {
-      fetchTasks();
+      fetchTasks(1000);
+    } else {
+      setLoadingTasks(false);
     }
   }, []);
 
   const handleOnCreate = () => {
     navigate(TaskRoutesEnum.CreateTask);
+  };
+
+  const handleOnUpdate = (taskId: number) => {
+    navigate(TaskRoutesEnum.UpdateTask.replace(":taskId", `${taskId}`));
   };
 
   const handleOnSearch = (value: string) => {
@@ -64,15 +73,15 @@ export const useTask = () => {
     await request<void>({
       method: MethodEnum.Delete,
       url: URL_TASK_ID.replace(":taskId", `${taskIdDelete}`),
-      timeout: 2000,
+      timeout: 1000,
     })
       .then(async () => {
+        await fetchTasks(0);
+
         setNotification({
           message: SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY,
           type: NotificationEnum.Success,
         });
-
-        fetchTasks();
       })
       .catch((error: AxiosError) => {
         const responseErrorMessage =
@@ -96,9 +105,11 @@ export const useTask = () => {
   };
 
   return {
+    loadingTasks,
     loadingRequest,
     tasks: tasksFiltered,
     handleOnCreate,
+    handleOnUpdate,
     handleOnSearch,
     handleOnDelete,
     openModalDelete: !!taskIdDelete,

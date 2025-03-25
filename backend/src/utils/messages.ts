@@ -13,7 +13,9 @@ export const ERROR_MESSAGES = {
   },
   TASK: {
     CREATE_TASK_ERROR: "Erro ao criar tarefa.",
+    UPDATE_TASK_ERROR: "Erro ao editar tarefa.",
     SELECT_TASK_ERROR: "Erro ao buscar tarefas.",
+    SELECT_TASK_BY_ID_ERROR: "Erro ao buscar tarefa.",
     DELETE_TASK_ERROR: "Erro ao deletar tarefa.",
     INVALID_TASK_ID: "taskId inválido.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",

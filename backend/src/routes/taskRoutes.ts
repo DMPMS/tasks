@@ -17,11 +17,25 @@ taskRoutes.get(
   (req, res) => taskController.getUserTasks(req, res)
 );
 
+taskRoutes.get(
+  "/task/:taskId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => taskController.getUserTaskById(req, res)
+);
+
 taskRoutes.post(
   "/task",
   authMiddleware,
   roleMiddleware([UserTypeEnum.User]),
   (req, res) => taskController.createTask(req, res)
+);
+
+taskRoutes.put(
+  "/task/:taskId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => taskController.updateTask(req, res)
 );
 
 taskRoutes.delete(

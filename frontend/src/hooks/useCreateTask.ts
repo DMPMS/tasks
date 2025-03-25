@@ -11,25 +11,90 @@ import {
 } from "../utils/messages";
 import { TaskType } from "../types/TaskType";
 import { MethodEnum } from "../enums/MethodEnum";
-import { URL_TASK } from "../config/urls";
+import { URL_TASK, URL_TASK_ID } from "../config/urls";
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { TaskRoutesEnum } from "../routes/taskRoutes";
 import { useTask } from "./useTask";
 import { AxiosError } from "axios";
 import { TASK } from "../config/constants";
+import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
+import { FieldValidationType } from "../types/FieldValidationType";
 
-export const useCreateTask = () => {
+export const useCreateTask = (taskId?: string) => {
   const { setNotification } = useGlobalReducer();
+
+  const { task: taskReducer, setTask: setTaskReducer } = useTaskReducer();
 
   const { fetchTasks } = useTask();
 
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
 
+  const [loadingTask, setLoadingTask] = useState<boolean>(true);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
   const [task, setTask] = useState<CreateTaskDto>(DEFAULT_CREATE_TASK);
+
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (taskId) {
+      const findAndSetTaskReducer = async (taskId: string) => {
+        await request<TaskType>({
+          method: MethodEnum.Get,
+          url: URL_TASK_ID.replace(":taskId", taskId),
+          timeout: 1000,
+        })
+          .then(async (data) => {
+            setTaskReducer(data);
+            setLoadingTask(false);
+          })
+          .catch((error: AxiosError) => {
+            const responseErrorMessage =
+              (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+            setNotification({
+              message: responseErrorMessage,
+              type: NotificationEnum.Error,
+            });
+          });
+      };
+
+      setIsEdit(true);
+      findAndSetTaskReducer(taskId);
+    } else {
+      setIsEdit(false);
+      setTaskReducer(undefined);
+      setLoadingTask(false);
+    }
+  }, [taskId]);
+
+  useEffect(() => {
+    if (taskReducer) {
+      setTask({
+        title: taskReducer.title,
+        description: taskReducer.description,
+        priority: taskReducer.priority,
+        limitDate: String(taskReducer.limitDate).slice(0, 16),
+        categoryId: taskReducer.category?.id,
+      });
+
+      const fieldsToValidate: FieldValidationType[] = [
+        { id: "title", value: taskReducer.title },
+        {
+          id: "limitDate",
+          value: String(taskReducer.limitDate).slice(0, 16),
+        },
+      ];
+
+      fieldsToValidate.forEach((item) => {
+        handleValidateOnEdit(item);
+      });
+    } else {
+      setTask(DEFAULT_CREATE_TASK);
+    }
+  }, [taskReducer]);
 
   useEffect(() => {
     if (
@@ -49,6 +114,10 @@ export const useCreateTask = () => {
     value: string,
     input: HTMLInputElement
   ) => {
+    if (!["title", "limitDate"].includes(name)) {
+      return;
+    }
+
     const isValid = () => {
       input.setCustomValidity("");
       setInvalidFields((prev) => prev.filter((item) => item !== name));
@@ -92,6 +161,14 @@ export const useCreateTask = () => {
     input.reportValidity();
   };
 
+  const handleValidateOnEdit = ({ id, value }: FieldValidationType) => {
+    const input = document.getElementById(id) as HTMLInputElement;
+
+    if (!input) return;
+
+    validateInputField(id, value, input);
+  };
+
   const handleOnChangeInput = (
     e: React.ChangeEvent<HTMLInputElement>,
     name: string
@@ -104,9 +181,7 @@ export const useCreateTask = () => {
       [name]: value,
     });
 
-    if (["title", "limitDate"].includes(name)) {
-      validateInputField(name, value, input);
-    }
+    validateInputField(name, value, input);
   };
 
   const handleOnChangeTextArea = (
@@ -150,31 +225,59 @@ export const useCreateTask = () => {
 
     task.limitDate = task.limitDate.replace("T", " ");
 
-    await request<TaskType>({
-      method: MethodEnum.Post,
-      url: URL_TASK,
-      body: task,
-      timeout: 2000,
-    })
-      .then(() => {
-        setNotification({
-          message: SUCCESS_MESSAGES.TASK.TASK_CREATED_SUCCESSFULLY,
-          type: NotificationEnum.Success,
-        });
-
-        fetchTasks();
-
-        navigate(TaskRoutesEnum.Tasks);
+    if (taskId) {
+      await request<TaskType>({
+        method: MethodEnum.Put,
+        url: URL_TASK_ID.replace(":taskId", taskId),
+        body: task,
+        timeout: 1000,
       })
-      .catch((error: AxiosError) => {
-        const responseErrorMessage =
-          (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+        .then(async () => {
+          await fetchTasks(0);
 
-        setNotification({
-          message: responseErrorMessage,
-          type: NotificationEnum.Error,
+          setNotification({
+            message: SUCCESS_MESSAGES.TASK.TASK_UPDATE_SUCCESSFULLY,
+            type: NotificationEnum.Success,
+          });
+
+          navigate(TaskRoutesEnum.Tasks);
+        })
+        .catch((error: AxiosError) => {
+          const responseErrorMessage =
+            (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+          setNotification({
+            message: responseErrorMessage,
+            type: NotificationEnum.Error,
+          });
         });
-      });
+    } else {
+      await request<TaskType>({
+        method: MethodEnum.Post,
+        url: URL_TASK,
+        body: task,
+        timeout: 1000,
+      })
+        .then(async () => {
+          await fetchTasks(0);
+
+          setNotification({
+            message: SUCCESS_MESSAGES.TASK.TASK_CREATED_SUCCESSFULLY,
+            type: NotificationEnum.Success,
+          });
+
+          navigate(TaskRoutesEnum.Tasks);
+        })
+        .catch((error: AxiosError) => {
+          const responseErrorMessage =
+            (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+          setNotification({
+            message: responseErrorMessage,
+            type: NotificationEnum.Error,
+          });
+        });
+    }
   };
 
   const handleOnReset = () => {
@@ -187,8 +290,10 @@ export const useCreateTask = () => {
 
   return {
     task,
+    loadingTask,
     loadingRequest,
     disabledButton,
+    isEdit,
     invalidFields,
     warningFields,
     handleOnChangeInput,

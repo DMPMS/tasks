@@ -19,8 +19,8 @@ export class CategoryController {
         page = PAGINATION.DEFAULT_PAGE,
         limit = PAGINATION.DEFAULT_LIMIT,
       } = req.query;
-
       const userId = req.userId;
+
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)

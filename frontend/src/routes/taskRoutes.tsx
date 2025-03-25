@@ -5,6 +5,7 @@ import CreateTaskScreen from "../screens/createTaskScreen";
 export enum TaskRoutesEnum {
   Tasks = "/task",
   CreateTask = "/task/create",
+  UpdateTask = "/task/:taskId",
 }
 
 export const taskRoutes: RouteObject[] = [
@@ -14,6 +15,10 @@ export const taskRoutes: RouteObject[] = [
   },
   {
     path: TaskRoutesEnum.CreateTask,
+    element: <CreateTaskScreen />,
+  },
+  {
+    path: TaskRoutesEnum.UpdateTask,
     element: <CreateTaskScreen />,
   },
 ];

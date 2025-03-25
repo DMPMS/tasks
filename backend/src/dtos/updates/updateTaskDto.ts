@@ -10,10 +10,10 @@ import { TASK } from "../../config/constants";
 import { PriorityEnum } from "../../enums/PriorityEnum";
 import { IsCustomTimestamp } from "../../validators/isCustomTimestamp";
 
-export class CreateTaskDto {
+export class UpdateTaskDto {
   @IsInt()
   @IsOptional()
-  categoryId?: number;
+  categoryId?: number | null;
 
   @IsString()
   @Length(TASK.TITLE_LENGTH.MIN, TASK.TITLE_LENGTH.MAX)
@@ -28,4 +28,8 @@ export class CreateTaskDto {
 
   @Validate(IsCustomTimestamp)
   limitDate!: Date;
+
+  @Validate(IsCustomTimestamp)
+  @IsOptional()
+  completedDate?: Date | null;
 }

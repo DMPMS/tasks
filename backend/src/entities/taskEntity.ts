@@ -20,14 +20,14 @@ export class TaskEntity {
   @Column({ name: "user_id", nullable: false })
   userId!: number;
 
-  @Column({ name: "category_id", nullable: true })
-  categoryId!: number;
+  @Column({ name: "category_id", type: "integer", nullable: true })
+  categoryId!: number | null;
 
   @Column({ name: "title", length: TASK.TITLE_LENGTH.MAX, nullable: false })
   title!: string;
 
-  @Column({ name: "description", nullable: true })
-  description?: string;
+  @Column({ name: "description", type: "text", nullable: true })
+  description!: string | null;
 
   @Column({
     name: "priority",
@@ -37,8 +37,12 @@ export class TaskEntity {
   })
   priority!: PriorityEnum;
 
-  @Column({ name: "completed_date", nullable: true })
-  completedDate?: Date;
+  @Column({
+    name: "completed_date",
+    type: "timestamp without time zone",
+    nullable: true,
+  })
+  completedDate!: Date | null;
 
   @Column({ name: "limit_date", nullable: false })
   limitDate!: Date;

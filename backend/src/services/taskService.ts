@@ -7,6 +7,7 @@ import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserService } from "./userService";
 import { CategoryService } from "./categoryService";
 import { ERROR_MESSAGES } from "../utils/messages";
+import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
 
 export class TaskService {
   private readonly userService: UserService;
@@ -74,15 +75,44 @@ export class TaskService {
     const task = this.taskRepository.create({
       ...createTaskDto,
       userId: userId,
-      categoryId: createTaskDto.categoryId
-        ? createTaskDto.categoryId
-        : undefined,
-      completedDate: undefined,
+      categoryId: createTaskDto.categoryId ? createTaskDto.categoryId : null,
+      description: createTaskDto.description ? createTaskDto.description : null,
+      completedDate: null,
     });
 
     const savedTask = await this.taskRepository.save(task);
 
     return new ReturnTaskDto(savedTask);
+  }
+
+  async updateTask(
+    userId: number,
+    taskId: number,
+    updateTaskDto: UpdateTaskDto
+  ): Promise<ReturnTaskDto> {
+    await this.userService.getUserById(userId);
+    const task = await this.getUserTaskById(userId, taskId);
+
+    if (updateTaskDto.categoryId) {
+      await this.categoryService.getUserCategoryById(
+        userId,
+        updateTaskDto.categoryId
+      );
+    }
+
+    updateTaskDto.description = updateTaskDto.description ?? null;
+
+    const updatedTask = await this.taskRepository.save({
+      ...task,
+      ...updateTaskDto,
+      categoryId: updateTaskDto.categoryId ? updateTaskDto.categoryId : null,
+      description: updateTaskDto.description ? updateTaskDto.description : null,
+      completedDate: updateTaskDto.completedDate
+        ? updateTaskDto.completedDate
+        : null,
+    });
+
+    return new ReturnTaskDto(updatedTask);
   }
 
   async deleteTask(userId: number, taskId: number): Promise<DeleteResult> {

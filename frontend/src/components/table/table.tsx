@@ -1,6 +1,7 @@
 import { DEFAULT_ROWS_PERS_PAGE_TABLE } from "../../config/constants";
 import { TableActionEnum } from "../../enums/TableActionEnum";
 import { TableHeaderType } from "../../types/TableHeaderType";
+import PencilIcon from "../icons/pencilIcon";
 import TrashIcon from "../icons/trashIcon";
 import styles from "./table.module.css";
 import { useState } from "react";
@@ -10,10 +11,17 @@ interface TableProps {
   data: any;
   headers: TableHeaderType[];
   actions?: TableActionEnum[];
-  handleOnDelete: (id: number) => void;
+  handleOnUpdate: (id: number) => void;
+  handleOnOpenModalDelete: (id: number) => void;
 }
 
-const Table = ({ data, headers, actions, handleOnDelete }: TableProps) => {
+const Table = ({
+  data,
+  headers,
+  actions,
+  handleOnUpdate,
+  handleOnOpenModalDelete,
+}: TableProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const totalPages = Math.ceil(data.length / DEFAULT_ROWS_PERS_PAGE_TABLE);
@@ -43,10 +51,17 @@ const Table = ({ data, headers, actions, handleOnDelete }: TableProps) => {
         {actions && actions.length > 0 && (
           <td>
             <div className={styles.contentTdActions}>
+              {actions.includes(TableActionEnum.Update) && (
+                <PencilIcon
+                  className={styles.actionItem}
+                  onClick={() => handleOnUpdate(row.id)}
+                  width={25}
+                />
+              )}
               {actions.includes(TableActionEnum.Delete) && (
                 <TrashIcon
                   className={styles.actionItem}
-                  onClick={() => handleOnDelete(row.id)}
+                  onClick={() => handleOnOpenModalDelete(row.id)}
                   width={25}
                 />
               )}

@@ -5,6 +5,7 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   TASK: {
     TASK_CREATED_SUCCESSFULLY: "Tarefa criada.",
+    TASK_UPDATE_SUCCESSFULLY: "Tarefa editada.",
     TASK_DELETED_SUCCESSFULLY: "Tarefa deletada.",
   },
 };
