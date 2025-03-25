@@ -1,56 +1,61 @@
 import { useNavigate } from "react-router-dom";
+import { useCategoryReducer } from "../store/reducers/categoryReducer/useCategoryReducer";
 import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReducer";
 import { useRequest } from "../utils/functions/request";
+import { useCategory } from "./useCategory";
 import { useEffect, useState } from "react";
-import { CreateTaskDto } from "../dtos/createTaskDto";
-import { DEFAULT_CREATE_TASK } from "../utils/dtos";
+import { CreateCategoryDto } from "../dtos/createCategoryDto";
+import { DEFAULT_CREATE_CATEGORY } from "../utils/dtos";
+import { CategoryType } from "../types/CategoryType";
+import { MethodEnum } from "../enums/MethodEnum";
+import { URL_CATEGORY, URL_CATEGORY_ID } from "../config/urls";
+import { AxiosError } from "axios";
 import {
   ERROR_MESSAGES,
   FIELD_VALIDATION_MESSAGES,
   SUCCESS_MESSAGES,
 } from "../utils/messages";
-import { TaskType } from "../types/TaskType";
-import { MethodEnum } from "../enums/MethodEnum";
-import { URL_TASK, URL_TASK_ID } from "../config/urls";
 import { NotificationEnum } from "../enums/NotificationEnum";
-import { TaskRoutesEnum } from "../routes/taskRoutes";
-import { useTask } from "./useTask";
-import { AxiosError } from "axios";
-import { TASK } from "../config/constants";
-import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
 import { FieldValidationType } from "../types/FieldValidationType";
-import { useCategory } from "./useCategory";
+import { CATEGORY } from "../config/constants";
+import { CategoryRoutesEnum } from "../routes/categoryRoutes";
+import { useTask } from "./useTask";
 
-export const useCreateTask = (taskId?: string) => {
+export const useCreateCategory = (categoryId?: string) => {
   const { setNotification } = useGlobalReducer();
 
-  const { task: taskReducer, setTask: setTaskReducer } = useTaskReducer();
+  const { category: categoryReducer, setCategory: setCategoryReducer } =
+    useCategoryReducer();
 
+  const { categories, fetchCategories } = useCategory();
   const { fetchTasks } = useTask();
-  const { categories } = useCategory();
 
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
 
-  const [loadingTask, setLoadingTask] = useState<boolean>(true);
+  const [loadingCategory, setLoadingCategory] = useState<boolean>(true);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [task, setTask] = useState<CreateTaskDto>(DEFAULT_CREATE_TASK);
+  const [category, setCategory] = useState<CreateCategoryDto>(
+    DEFAULT_CREATE_CATEGORY
+  );
 
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
 
+  const [userCategoryNames, setUserCategoryNames] = useState<string[]>([]);
+
   useEffect(() => {
-    if (taskId) {
-      const findAndSetTaskReducer = async (taskId: string) => {
-        await request<TaskType>({
+    if (categoryId) {
+      const findAndSetCategoryReducer = async (categoryId: string) => {
+        await request<CategoryType>({
           method: MethodEnum.Get,
-          url: URL_TASK_ID.replace(":taskId", taskId),
+          url: URL_CATEGORY_ID.replace(":categoryId", categoryId),
           timeout: 1000,
         })
           .then(async (data) => {
-            setTaskReducer(data);
-            setLoadingTask(false);
+            setCategoryReducer(data);
+            setLoadingCategory(false);
           })
           .catch((error: AxiosError) => {
             const responseErrorMessage =
@@ -64,59 +69,66 @@ export const useCreateTask = (taskId?: string) => {
       };
 
       setIsEdit(true);
-      findAndSetTaskReducer(taskId);
+      findAndSetCategoryReducer(categoryId);
     } else {
       setIsEdit(false);
-      setTaskReducer(undefined);
-      setLoadingTask(false);
+      setCategoryReducer(undefined);
+      setLoadingCategory(false);
     }
-  }, [taskId]);
+  }, [categoryId]);
 
   useEffect(() => {
-    if (taskReducer) {
-      setTask({
-        title: taskReducer.title,
-        description: taskReducer.description,
-        priority: taskReducer.priority,
-        limitDate: String(taskReducer.limitDate).slice(0, 16),
-        categoryId: taskReducer.category?.id,
-      });
+    if (categoryReducer) {
+      setCategory({ name: categoryReducer.name });
 
       const fieldsToValidate: FieldValidationType[] = [
-        { id: "title", value: taskReducer.title },
-        {
-          id: "limitDate",
-          value: String(taskReducer.limitDate).slice(0, 16),
-        },
+        { id: "name", value: categoryReducer.name },
       ];
 
       fieldsToValidate.forEach((item) => {
         handleValidateOnEdit(item);
       });
     } else {
-      setTask(DEFAULT_CREATE_TASK);
+      setCategory(DEFAULT_CREATE_CATEGORY);
     }
-  }, [taskReducer]);
+  }, [categoryReducer]);
+
+  useEffect(() => {
+    const newUserCategoryNames = categories.map((category) => category.name);
+
+    if (
+      JSON.stringify(newUserCategoryNames) !== JSON.stringify(userCategoryNames)
+    ) {
+      setUserCategoryNames(newUserCategoryNames);
+    }
+  }, [categories]);
 
   useEffect(() => {
     if (
-      task.title.length >= TASK.TITLE_LENGTH.MIN &&
-      task.title.length <= TASK.TITLE_LENGTH.MAX &&
-      task.priority &&
-      task.limitDate
+      category.name.length >= CATEGORY.NAME_LENGTH.MIN &&
+      category.name.length <= CATEGORY.NAME_LENGTH.MAX
     ) {
-      setDisabledButton(false);
+      if (
+        userCategoryNames.includes(category.name) &&
+        category.name === categoryReducer?.name
+      ) {
+        setDisabledButton(false);
+      } else if (!userCategoryNames.includes(category.name)) {
+        setDisabledButton(false);
+      } else {
+        setDisabledButton(true);
+      }
     } else {
       setDisabledButton(true);
     }
-  }, [task]);
+  }, [category]);
 
   const validateInputField = (
     name: string,
     value: string,
     input: HTMLInputElement
   ) => {
-    if (!["title", "limitDate"].includes(name)) {
+    if (!["name"].includes(name)) {
       return;
     }
 
@@ -129,30 +141,29 @@ export const useCreateTask = (taskId?: string) => {
     if (!value) {
       input.setCustomValidity(FIELD_VALIDATION_MESSAGES.REQUIRED);
       setInvalidFields((prev) => [...prev, name]);
-    } else if (name === "title") {
-      if (value.length < TASK.TITLE_LENGTH.MIN) {
+    } else if (name === "name") {
+      if (value.length < CATEGORY.NAME_LENGTH.MIN) {
         input.setCustomValidity(
-          FIELD_VALIDATION_MESSAGES.TASK.TITLE.MIN_CHARACTER(
-            TASK.TITLE_LENGTH.MIN
+          FIELD_VALIDATION_MESSAGES.CATEGORY.NAME.MIN_CHARACTER(
+            CATEGORY.NAME_LENGTH.MIN
           )
         );
         setInvalidFields((prev) => [...prev, name]);
-      } else if (value.length > TASK.TITLE_LENGTH.MAX) {
+      } else if (value.length > CATEGORY.NAME_LENGTH.MAX) {
         input.setCustomValidity(
-          FIELD_VALIDATION_MESSAGES.TASK.TITLE.MAX_CHARACTER(
-            TASK.TITLE_LENGTH.MAX
+          FIELD_VALIDATION_MESSAGES.CATEGORY.NAME.MAX_CHARACTER(
+            CATEGORY.NAME_LENGTH.MAX
           )
         );
         setInvalidFields((prev) => [...prev, name]);
-      } else {
-        isValid();
-      }
-    } else if (name === "limitDate") {
-      if (new Date(value) < new Date()) {
+      } else if (
+        userCategoryNames.includes(value) &&
+        value !== categoryReducer?.name
+      ) {
         input.setCustomValidity(
-          FIELD_VALIDATION_MESSAGES.TASK.LIMIT_DATE.PAST_DATE
+          FIELD_VALIDATION_MESSAGES.CATEGORY.NAME.CATEGORY_ALREADY_EXISTS
         );
-        setWarningFields((prev) => [...prev, name]);
+        setInvalidFields((prev) => [...prev, name]);
       } else {
         isValid();
       }
@@ -178,83 +189,34 @@ export const useCreateTask = (taskId?: string) => {
     const input = e.target;
     const value = input.value;
 
-    setTask({
-      ...task,
+    setCategory({
+      ...category,
       [name]: value,
     });
 
     validateInputField(name, value, input);
   };
 
-  const handleOnChangeTextArea = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    name: string
-  ) => {
-    const textarea = e.target;
-    const value = textarea.value;
-
-    setTask({
-      ...task,
-      [name]: value,
-    });
-  };
-
-  const handleOnChangeCategorySelect = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const select = e.target;
-    const value = select.value ? Number(select.value) : undefined;
-
-    setTask({
-      ...task,
-      categoryId: value,
-    });
-  };
-
-  const handleOnChangePrioritySelect = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const select = e.target;
-    const value = Number(select.value);
-
-    setTask({
-      ...task,
-      priority: value,
-    });
-  };
-
-  const handleOnPreSubmit = () => {
-    const limitDateInput = document.getElementById(
-      "limitDate"
-    ) as HTMLInputElement;
-
-    if (limitDateInput) {
-      limitDateInput.setCustomValidity("");
-      limitDateInput.reportValidity();
-    }
-  };
-
   const handleOnCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    task.limitDate = task.limitDate.replace("T", " ");
-
-    if (taskId) {
-      await request<TaskType>({
+    if (categoryId) {
+      await request<CategoryType>({
         method: MethodEnum.Put,
-        url: URL_TASK_ID.replace(":taskId", taskId),
-        body: task,
+        url: URL_CATEGORY_ID.replace(":categoryId", categoryId),
+        body: category,
         timeout: 1000,
       })
         .then(async () => {
+          await fetchCategories(0);
           await fetchTasks(0);
 
           setNotification({
-            message: SUCCESS_MESSAGES.TASK.TASK_UPDATE_SUCCESSFULLY,
+            message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_UPDATE_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
 
-          navigate(TaskRoutesEnum.Tasks);
+          navigate(CategoryRoutesEnum.Categories);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -266,21 +228,21 @@ export const useCreateTask = (taskId?: string) => {
           });
         });
     } else {
-      await request<TaskType>({
+      await request<CategoryType>({
         method: MethodEnum.Post,
-        url: URL_TASK,
-        body: task,
+        url: URL_CATEGORY,
+        body: category,
         timeout: 1000,
       })
         .then(async () => {
-          await fetchTasks(0);
+          await fetchCategories(0);
 
           setNotification({
-            message: SUCCESS_MESSAGES.TASK.TASK_CREATED_SUCCESSFULLY,
+            message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_CREATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
 
-          navigate(TaskRoutesEnum.Tasks);
+          navigate(CategoryRoutesEnum.Categories);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -295,27 +257,22 @@ export const useCreateTask = (taskId?: string) => {
   };
 
   const handleOnReset = () => {
-    setTask(DEFAULT_CREATE_TASK);
+    setCategory(DEFAULT_CREATE_CATEGORY);
   };
 
   const handleOnCancel = () => {
-    navigate(TaskRoutesEnum.Tasks);
+    navigate(CategoryRoutesEnum.Categories);
   };
 
   return {
-    task,
-    loadingTask,
+    category,
+    loadingCategory,
     loadingRequest,
     disabledButton,
     isEdit,
     invalidFields,
     warningFields,
-    categories,
     handleOnChangeInput,
-    handleOnChangeTextArea,
-    handleOnChangeCategorySelect,
-    handleOnChangePrioritySelect,
-    handleOnPreSubmit,
     handleOnCreate,
     handleOnReset,
     handleOnCancel,

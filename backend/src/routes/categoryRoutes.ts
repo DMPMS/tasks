@@ -17,11 +17,25 @@ categoryRoutes.get(
   (req, res) => categoryController.getUserCategories(req, res)
 );
 
+categoryRoutes.get(
+  "/category/:categoryId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => categoryController.getUserCategoryById(req, res)
+);
+
 categoryRoutes.post(
   "/category",
   authMiddleware,
   roleMiddleware([UserTypeEnum.User]),
   (req, res) => categoryController.createCategory(req, res)
+);
+
+categoryRoutes.put(
+  "/category/:categoryId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => categoryController.updateCategory(req, res)
 );
 
 categoryRoutes.delete(

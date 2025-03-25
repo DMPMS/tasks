@@ -8,6 +8,11 @@ export const SUCCESS_MESSAGES = {
     TASK_UPDATE_SUCCESSFULLY: "Tarefa editada.",
     TASK_DELETED_SUCCESSFULLY: "Tarefa deletada.",
   },
+  CATEGORY: {
+    CATEGORY_CREATED_SUCCESSFULLY: "Categoria criada.",
+    CATEGORY_UPDATE_SUCCESSFULLY: "Categoria editada.",
+    CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",
+  },
 };
 
 export const FIELD_VALIDATION_MESSAGES = {
@@ -23,6 +28,13 @@ export const FIELD_VALIDATION_MESSAGES = {
     },
     LIMIT_DATE: {
       PAST_DATE: "A data limite é anterior a data atual.",
+    },
+  },
+  CATEGORY: {
+    NAME: {
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+      CATEGORY_ALREADY_EXISTS: "Já existe uma categoria com esse nome.",
     },
   },
 };

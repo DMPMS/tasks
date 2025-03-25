@@ -6,6 +6,7 @@ import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { ReturnCategoryDto } from "../dtos/returns/returnCategoryDto";
 import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { ERROR_MESSAGES } from "../utils/messages";
+import { UpdateCategoryDto } from "../dtos/updates/updateCategoryDto";
 
 export class CategoryService {
   private readonly userService: UserService;
@@ -29,8 +30,8 @@ export class CategoryService {
     const skip = (page - 1) * limit;
 
     const categories = await this.categoryRepository.find({
-      skip,
-      take: limit,
+      // skip,
+      // take: limit,
       where: { userId: userId },
       relations: relationsOptions,
     });
@@ -79,6 +80,30 @@ export class CategoryService {
     const savedCategory = await this.categoryRepository.save(category);
 
     return new ReturnCategoryDto(savedCategory);
+  }
+
+  async updateCategory(
+    userId: number,
+    categoryId: number,
+    updateCategoryDto: UpdateCategoryDto
+  ): Promise<ReturnCategoryDto> {
+    await this.userService.getUserById(userId);
+    const category = await this.getUserCategoryById(userId, categoryId);
+
+    const existingCategory = await this.categoryRepository.findOne({
+      where: { name: updateCategoryDto.name, userId: userId },
+    });
+
+    if (existingCategory && existingCategory.id !== categoryId) {
+      throw new Error(ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS);
+    }
+
+    const updatedCategory = await this.categoryRepository.save({
+      ...category,
+      ...updateCategoryDto,
+    });
+
+    return new ReturnCategoryDto(updatedCategory);
   }
 
   async deleteCategory(

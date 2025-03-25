@@ -12,6 +12,7 @@ import { taskRoutes } from "./routes/taskRoutes";
 import { userRoutes } from "./routes/userRoutes";
 import Notification from "./components/notification/notification";
 import NotFoundScreen from "./screens/notFoundScreen";
+import { categoryRoutes } from "./routes/categoryRoutes";
 
 const routesNotLoggedIn: RouteObject[] = [...signInRoutes, ...signUpRoutes];
 
@@ -25,7 +26,10 @@ const routesAdminLoggedIn: RouteObject[] = [...userRoutes].map((route) => ({
   loader: verifyLoggedIn(UserTypeEnum.Admin),
 }));
 
-const routesUserLoggedIn: RouteObject[] = [...taskRoutes].map((route) => ({
+const routesUserLoggedIn: RouteObject[] = [
+  ...taskRoutes,
+  ...categoryRoutes,
+].map((route) => ({
   ...route,
   loader: verifyLoggedIn(UserTypeEnum.User),
 }));

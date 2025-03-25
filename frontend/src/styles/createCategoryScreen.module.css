@@ -6,7 +6,7 @@
   height: 100vh;
 }
 
-.cardCreateTask {
+.cardCreateCategory {
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -47,14 +47,6 @@
   transition: border-color 0.3s;
 }
 
-.fontItalic {
-  font-style: italic;
-}
-
-.fontNormal {
-  font-style: normal;
-}
-
 .field:focus {
   border-color: #007bff;
   outline: none;
@@ -68,10 +60,6 @@
 .warningField,
 .warningField:focus {
   border-color: #ffd000;
-}
-
-.textarea {
-  resize: none;
 }
 
 .actions {

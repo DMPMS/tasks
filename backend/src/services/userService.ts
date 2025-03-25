@@ -23,8 +23,8 @@ export class UserService {
     const skip = (page - 1) * limit;
 
     const users = await this.userRepository.find({
-      skip,
-      take: limit,
+      // skip,
+      // take: limit,
       relations: relationsOptions,
       where: { userType: UserTypeEnum.User },
     });

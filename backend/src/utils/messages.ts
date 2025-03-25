@@ -25,7 +25,9 @@ export const ERROR_MESSAGES = {
   },
   CATEGORY: {
     CREATE_CATEGORY_ERROR: "Erro ao criar categoria.",
+    UPDATE_CATEGORY_ERROR: "Erro ao editar categoria.",
     SELECT_CATEGORY_ERROR: "Erro ao buscar categorias.",
+    SELECT_CATEGORY_BY_ID_ERROR: "Erro ao buscar categoria.",
     DELETE_CATEGORY_ERROR: "Erro ao deletar categoria.",
     INVALID_CATEGORY_ID: "categoryId inválido.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",

@@ -1,0 +1,83 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.cardCategories {
+  display: flex;
+  flex-direction: column;
+  width: 1000px;
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.h2 {
+  margin: 0px 0px 20px 0px;
+  text-align: center;
+}
+
+.containerSearchAndCreate {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 0px 10px 0px;
+}
+
+.input {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  transition: border-color 0.3s;
+}
+
+.input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.button {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #0068d6;
+}
+
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  position: absolute;
+  right: 0px;
+}
+
+.spinnerLoadingScreen {
+  position: unset;
+  right: unset;
+  width: 50px;
+  height: 50px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

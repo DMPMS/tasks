@@ -1,16 +1,16 @@
-import styles from "../styles/tasksScreen.module.css";
+import styles from "../styles/categoriesScreen.module.css";
 import Table from "../components/table/table";
-import { useTask } from "../hooks/useTask";
 import { TableHeaderType } from "../types/TableHeaderType";
 import Modal from "../components/modal/modal";
 import { TableActionEnum } from "../enums/TableActionEnum";
 import Navegation from "../components/navegation/navegation";
+import { useCategory } from "../hooks/useCategory";
 
-const TaskScreen = () => {
+const CategoriesScreen = () => {
   const {
-    loadingTasks,
+    loadingCategories,
     loadingRequest,
-    tasks,
+    categories,
     handleOnCreate,
     handleOnSearch,
     handleOnUpdate,
@@ -18,33 +18,21 @@ const TaskScreen = () => {
     openModalDelete,
     handleOnOpenModalDelete,
     handleOnCloseModalDelete,
-  } = useTask();
+  } = useCategory();
 
-  const tableHeaders: TableHeaderType[] = [
-    { th: "Nome", td: "title" },
-    { th: "Prazo", td: "limitDate" },
-    { th: "Categoria", td: "category" },
-  ];
+  const tableHeaders: TableHeaderType[] = [{ th: "Nome", td: "name" }];
 
   const tableActions: TableActionEnum[] = [
     TableActionEnum.Delete,
     TableActionEnum.Update,
   ];
 
-  const tableData = tasks.map((task) => ({
-    id: task.id,
-    title: task.title,
-    limitDate:
-      new Date(task.limitDate).toLocaleDateString("pt-BR") +
-      " às " +
-      new Date(task.limitDate).toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-    category: task.category?.name,
+  const tableData = categories.map((category) => ({
+    id: category.id,
+    name: category.name,
   }));
 
-  return loadingTasks ? (
+  return loadingCategories ? (
     <div className={styles.container}>
       <span
         className={`${styles.spinner} ${styles.spinnerLoadingScreen}`}
@@ -52,9 +40,9 @@ const TaskScreen = () => {
     </div>
   ) : (
     <div className={styles.container}>
-      <div className={styles.cardTasks}>
+      <div className={styles.cardCategories}>
         <Navegation />
-        <h2 className={styles.h2}>Minhas Tarefas</h2>
+        <h2 className={styles.h2}>Minhas Categorias</h2>
         <div className={styles.containerSearchAndCreate}>
           <input
             type="text"
@@ -67,7 +55,7 @@ const TaskScreen = () => {
             onClick={handleOnCreate}
             className={styles.button}
           >
-            Criar Tarefa
+            Criar Categoria
           </button>
         </div>
         <Table
@@ -80,8 +68,8 @@ const TaskScreen = () => {
       </div>
 
       <Modal
-        title="Deseja realmente excluir essa tarefa?"
-        description="Esta ação será irreversível."
+        title="Deseja realmente excluir essa categoria?"
+        description="Ao excluir esta categoria, todas as tarefas associadas a ela ficarão sem categoria. As tarefas não serão excluídas. Esta ação será irreversível."
         isOpen={openModalDelete}
         onConfirm={handleOnDelete}
         onClose={handleOnCloseModalDelete}
@@ -91,4 +79,4 @@ const TaskScreen = () => {
   );
 };
 
-export default TaskScreen;
+export default CategoriesScreen;

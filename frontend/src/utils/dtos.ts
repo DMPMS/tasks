@@ -12,3 +12,7 @@ export const DEFAULT_CREATE_TASK = {
   priority: PriorityEnum.Medium,
   limitDate: "",
 };
+
+export const DEFAULT_CREATE_CATEGORY = {
+  name: "",
+};

@@ -15,8 +15,10 @@ const CreateTaskScreen = () => {
     isEdit,
     invalidFields,
     warningFields,
+    categories,
     handleOnChangeInput,
     handleOnChangeTextArea,
+    handleOnChangeCategorySelect,
     handleOnChangePrioritySelect,
     handleOnPreSubmit,
     handleOnCreate,
@@ -79,6 +81,31 @@ const CreateTaskScreen = () => {
                 warningFields.includes("limitDate") ? styles.warningField : ""
               }`}
             />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Categoria</label>
+            <select
+              id="categoryId"
+              value={task.categoryId}
+              onChange={(e) => handleOnChangeCategorySelect(e)}
+              className={`${styles.field} ${
+                invalidFields.includes("categoryId") ? styles.invalidField : ""
+              } ${task.categoryId ? styles.fontNormal : styles.fontItalic}`}
+            >
+              <option value="" className={styles.fontItalic}>
+                Nenhuma
+              </option>
+              {categories.map((category) => (
+                <option
+                  key={category.id}
+                  value={category.id}
+                  className={styles.fontNormal}
+                >
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.formGroup}>
