@@ -4,6 +4,7 @@ import { useTask } from "../hooks/useTask";
 import { TableHeaderType } from "../types/TableHeaderType";
 import Modal from "../components/modal/modal";
 import { TableActionEnum } from "../enums/TableActionEnum";
+import Navegation from "../components/navegation/navegation";
 
 const TaskScreen = () => {
   const {
@@ -43,48 +44,49 @@ const TaskScreen = () => {
     category: task.category?.name,
   }));
 
-  return (
+  return loadingTasks ? (
     <div className={styles.container}>
-      {loadingTasks ? (
-        <span
-          className={`${styles.spinner} ${styles.spinnerLoadingScreen}`}
-        ></span>
-      ) : (
-        <div className={styles.cardTasks}>
-          <h2 className={styles.h2}>Minhas Tarefas</h2>
-          <div className={styles.containerSearchAndCreate}>
-            <input
-              type="text"
-              placeholder="Buscar"
-              onChange={(e) => handleOnSearch(e.target.value)}
-              className={styles.input}
-            />
-            <button
-              type="button"
-              onClick={handleOnCreate}
-              className={styles.button}
-            >
-              Criar Tarefa
-            </button>
-          </div>
-          <Table
-            data={tableData}
-            headers={tableHeaders}
-            actions={tableActions}
-            handleOnUpdate={handleOnUpdate}
-            handleOnOpenModalDelete={handleOnOpenModalDelete}
+      <span
+        className={`${styles.spinner} ${styles.spinnerLoadingScreen}`}
+      ></span>
+    </div>
+  ) : (
+    <div className={styles.container}>
+      <div className={styles.cardTasks}>
+        <Navegation />
+        <h2 className={styles.h2}>Minhas Tarefas</h2>
+        <div className={styles.containerSearchAndCreate}>
+          <input
+            type="text"
+            placeholder="Buscar"
+            onChange={(e) => handleOnSearch(e.target.value)}
+            className={styles.input}
           />
-
-          <Modal
-            title="Deseja realmente excluir essa tarefa?"
-            description="Esta ação será irreversível."
-            isOpen={openModalDelete}
-            onConfirm={handleOnDelete}
-            onClose={handleOnCloseModalDelete}
-            loading={loadingRequest}
-          />
+          <button
+            type="button"
+            onClick={handleOnCreate}
+            className={styles.button}
+          >
+            Criar Tarefa
+          </button>
         </div>
-      )}
+        <Table
+          data={tableData}
+          headers={tableHeaders}
+          actions={tableActions}
+          handleOnUpdate={handleOnUpdate}
+          handleOnOpenModalDelete={handleOnOpenModalDelete}
+        />
+      </div>
+
+      <Modal
+        title="Deseja realmente excluir essa tarefa?"
+        description="Esta ação será irreversível."
+        isOpen={openModalDelete}
+        onConfirm={handleOnDelete}
+        onClose={handleOnCloseModalDelete}
+        loading={loadingRequest}
+      />
     </div>
   );
 };

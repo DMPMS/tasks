@@ -1,0 +1,14 @@
+.cardNavegation {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 0px 0px 20px 0px;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 2px solid #f3f3f3;
+}
+
+.item {
+  cursor: pointer;
+}

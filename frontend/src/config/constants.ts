@@ -2,7 +2,7 @@ export const AUTHORIZATION_KEY = "AUTHORIZATION_KEY";
 
 export const NOTIFICATION_TIMEOUT = 3000;
 
-export const DEFAULT_ROWS_PERS_PAGE_TABLE = 10;
+export const DEFAULT_ROWS_PERS_PAGE_TABLE = 5;
 
 export const TASK = {
   TITLE_LENGTH: {
