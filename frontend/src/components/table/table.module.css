@@ -31,6 +31,19 @@
   text-align: left;
 }
 
+.pending {
+  color: #ffae45;
+}
+
+.completed {
+  color: #149113;
+  cursor: pointer;
+}
+
+.overdue {
+  color: #ff3f5b;
+}
+
 .table th {
   background-color: #f2f2f2;
 }
@@ -71,4 +84,34 @@
 
 .pagination a:hover {
   background-color: #0056b3;
+}
+
+.hideAt900px {
+  display: table-cell;
+}
+
+@media (max-width: 900px) {
+  .hideAt900px {
+    display: none;
+  }
+}
+
+.hideAt800px {
+  display: table-cell;
+}
+
+@media (max-width: 800px) {
+  .hideAt800px {
+    display: none;
+  }
+}
+
+.hideAt700px {
+  display: table-cell;
+}
+
+@media (max-width: 700px) {
+  .hideAt700px {
+    display: none;
+  }
 }

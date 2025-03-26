@@ -8,6 +8,7 @@ import { CreateTaskDto } from "../dtos/creates/createTaskDto";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
+import { UpdateTaskCompletedDateDto } from "../dtos/updates/updateTaskCompletedDateDto";
 
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -186,6 +187,64 @@ export class TaskController {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.TASK.UPDATE_TASK_ERROR);
+      }
+    }
+  }
+
+  async updateTaskCompletedDate(
+    req: AuthenticatedRequest,
+    res: Response
+  ): Promise<void> {
+    try {
+      const updateTaskCompletedDateDto = Object.assign(
+        new UpdateTaskCompletedDateDto(),
+        req.body
+      );
+      const userId = req.userId;
+      const { taskId } = req.params;
+
+      const isValid = await validateDto(updateTaskCompletedDateDto, res);
+      if (!isValid) {
+        return;
+      }
+
+      if (!userId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+        return;
+      }
+
+      if (!taskId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+        return;
+      }
+
+      const taskIdNumber = Number(taskId);
+
+      if (isNaN(taskIdNumber)) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+        return;
+      }
+
+      const updatedTask = await this.taskService.updateTaskCompletedDate(
+        userId,
+        taskIdNumber,
+        updateTaskCompletedDateDto
+      );
+
+      res.status(HttpStatusCodeEnum.Ok).json(updatedTask);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.InternalServerError)
+          .send(ERROR_MESSAGES.TASK.UPDATE_TASK_COMPLETED_DATE_ERROR);
       }
     }
   }

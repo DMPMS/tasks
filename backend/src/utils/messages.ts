@@ -14,6 +14,7 @@ export const ERROR_MESSAGES = {
   TASK: {
     CREATE_TASK_ERROR: "Erro ao criar tarefa.",
     UPDATE_TASK_ERROR: "Erro ao editar tarefa.",
+    UPDATE_TASK_COMPLETED_DATE_ERROR: "Erro ao alterar status da tarefa.",
     SELECT_TASK_ERROR: "Erro ao buscar tarefas.",
     SELECT_TASK_BY_ID_ERROR: "Erro ao buscar tarefa.",
     DELETE_TASK_ERROR: "Erro ao deletar tarefa.",

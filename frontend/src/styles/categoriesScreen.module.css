@@ -23,6 +23,8 @@
 
 .containerSearchAndCreate {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
   margin: 0px 0px 10px 0px;
 }

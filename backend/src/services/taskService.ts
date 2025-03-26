@@ -8,6 +8,7 @@ import { UserService } from "./userService";
 import { CategoryService } from "./categoryService";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
+import { UpdateTaskCompletedDateDto } from "../dtos/updates/updateTaskCompletedDateDto";
 
 export class TaskService {
   private readonly userService: UserService;
@@ -36,6 +37,7 @@ export class TaskService {
       // skip,
       // take: limit,
       where: { userId: userId },
+      order: { priority: "DESC", limitDate: "ASC", id: "DESC" },
       relations: relationsOptions,
     });
 
@@ -100,15 +102,30 @@ export class TaskService {
       );
     }
 
-    updateTaskDto.description = updateTaskDto.description ?? null;
-
     const updatedTask = await this.taskRepository.save({
       ...task,
       ...updateTaskDto,
       categoryId: updateTaskDto.categoryId ? updateTaskDto.categoryId : null,
       description: updateTaskDto.description ? updateTaskDto.description : null,
-      completedDate: updateTaskDto.completedDate
-        ? updateTaskDto.completedDate
+      completedDate: task.completedDate,
+    });
+
+    return new ReturnTaskDto(updatedTask);
+  }
+
+  async updateTaskCompletedDate(
+    userId: number,
+    taskId: number,
+    updateTaskCompletedDateDto: UpdateTaskCompletedDateDto
+  ): Promise<ReturnTaskDto> {
+    await this.userService.getUserById(userId);
+    const task = await this.getUserTaskById(userId, taskId);
+
+    const updatedTask = await this.taskRepository.save({
+      ...task,
+      ...updateTaskCompletedDateDto,
+      completedDate: updateTaskCompletedDateDto.completedDate
+        ? updateTaskCompletedDateDto.completedDate
         : null,
     });
 

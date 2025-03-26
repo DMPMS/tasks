@@ -3,13 +3,15 @@ import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
 import { useRequest } from "../utils/functions/request";
 import { useEffect, useState } from "react";
 import { MethodEnum } from "../enums/MethodEnum";
-import { URL_TASK, URL_TASK_ID } from "../config/urls";
+import { URL_TASK, URL_TASK_ID, URL_TASK_ID_STATUS } from "../config/urls";
 import { TaskType } from "../types/TaskType";
 import { TaskRoutesEnum } from "../routes/taskRoutes";
 import { AxiosError } from "axios";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReducer";
+import { TaskStatusEnum } from "../enums/TaskStatusEnum";
+import { format } from "date-fns";
 
 export const useTask = () => {
   const { setNotification } = useGlobalReducer();
@@ -96,6 +98,34 @@ export const useTask = () => {
     setTaskIdDelete(undefined);
   };
 
+  const handleOnAlterTaskStatus = async (
+    taskId: number,
+    status: TaskStatusEnum
+  ) => {
+    const completedDate =
+      status === TaskStatusEnum.Completed
+        ? { completedDate: null }
+        : { completedDate: format(new Date(), "yyyy-MM-dd HH:mm") };
+
+    await request<TaskType>({
+      method: MethodEnum.Patch,
+      url: URL_TASK_ID_STATUS.replace(":taskId", `${taskId}`),
+      body: completedDate,
+    })
+      .then(async () => {
+        await fetchTasks(0);
+      })
+      .catch((error: AxiosError) => {
+        const responseErrorMessage =
+          (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+        setNotification({
+          message: responseErrorMessage,
+          type: NotificationEnum.Error,
+        });
+      });
+  };
+
   const handleOnCloseModalDelete = () => {
     setTaskIdDelete(undefined);
   };
@@ -111,6 +141,7 @@ export const useTask = () => {
     handleOnCreate,
     handleOnUpdate,
     handleOnSearch,
+    handleOnAlterTaskStatus,
     handleOnDelete,
     openModalDelete: !!taskIdDelete,
     handleOnOpenModalDelete,

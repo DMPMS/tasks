@@ -1,7 +1,15 @@
-import { DEFAULT_ROWS_PERS_PAGE_TABLE } from "../../config/constants";
+import { format } from "date-fns";
+import {
+  DEFAULT_NAME_FOR_COMPLETE_TASK,
+  DEFAULT_ROWS_PERS_PAGE_TABLE,
+} from "../../config/constants";
 import { TableActionEnum } from "../../enums/TableActionEnum";
+import { TaskStatusEnum } from "../../enums/TaskStatusEnum";
 import { TableHeaderType } from "../../types/TableHeaderType";
+import CompletedIcon from "../icons/completedIcon";
+import OverdueIcon from "../icons/overdueIcon";
 import PencilIcon from "../icons/pencilIcon";
+import PendingIcon from "../icons/pendingIcon";
 import TrashIcon from "../icons/trashIcon";
 import styles from "./table.module.css";
 import { useState } from "react";
@@ -13,6 +21,7 @@ interface TableProps {
   actions?: TableActionEnum[];
   handleOnUpdate: (id: number) => void;
   handleOnOpenModalDelete: (id: number) => void;
+  handleOnAlterTaskStatus?: (id: number, status: TaskStatusEnum) => void;
 }
 
 const Table = ({
@@ -21,6 +30,7 @@ const Table = ({
   actions,
   handleOnUpdate,
   handleOnOpenModalDelete,
+  handleOnAlterTaskStatus,
 }: TableProps) => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -46,11 +56,86 @@ const Table = ({
     return data.slice(start, end).map((row: typeof data, rowIndex: number) => (
       <tr key={rowIndex}>
         {headers.map((header, index) => (
-          <td key={index}>{row[header.td]}</td>
+          <td
+            key={index}
+            title={
+              row[header.td] === TaskStatusEnum.Completed
+                ? format(row.completedDate, "dd/MM/yyyy 'às' HH:mm")
+                : ""
+            }
+            className={`${
+              row[header.td] === TaskStatusEnum.Pending
+                ? styles.pending
+                : row[header.td] === TaskStatusEnum.Completed
+                ? styles.completed
+                : row[header.td] === TaskStatusEnum.Overdue
+                ? styles.overdue
+                : ""
+            } ${
+              header.hideAtWith && header.hideAtWith === 900
+                ? styles.hideAt900px
+                : header.hideAtWith && header.hideAtWith === 800
+                ? styles.hideAt800px
+                : header.hideAtWith && header.hideAtWith === 700
+                ? styles.hideAt700px
+                : ""
+            }`}
+          >
+            {row[header.td]}
+          </td>
         ))}
         {actions && actions.length > 0 && (
           <td>
             <div className={styles.contentTdActions}>
+              {actions.includes(TableActionEnum.CompleteTask) &&
+                row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
+                  TaskStatusEnum.Pending && (
+                  <PendingIcon
+                    className={styles.actionItem}
+                    onClick={() =>
+                      handleOnAlterTaskStatus
+                        ? handleOnAlterTaskStatus(
+                            row.id,
+                            TaskStatusEnum.Pending
+                          )
+                        : undefined
+                    }
+                    width={25}
+                  />
+                )}
+              {actions.includes(TableActionEnum.CompleteTask) &&
+                row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
+                  TaskStatusEnum.Completed && (
+                  <CompletedIcon
+                    className={styles.actionItem}
+                    onClick={() =>
+                      handleOnAlterTaskStatus
+                        ? handleOnAlterTaskStatus(
+                            row.id,
+                            TaskStatusEnum.Completed
+                          )
+                        : undefined
+                    }
+                    width={25}
+                  />
+                )}
+              {actions.includes(TableActionEnum.CompleteTask) &&
+                row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
+                  TaskStatusEnum.Overdue && (
+                  <OverdueIcon
+                    className={styles.actionItem}
+                    onClick={() =>
+                      handleOnAlterTaskStatus
+                        ? handleOnAlterTaskStatus(
+                            row.id,
+                            TaskStatusEnum.Overdue
+                          )
+                        : undefined
+                    }
+                    width={25}
+                  />
+                )}
+
               {actions.includes(TableActionEnum.Update) && (
                 <PencilIcon
                   className={styles.actionItem}
@@ -107,7 +192,20 @@ const Table = ({
         <thead>
           <tr>
             {headers.map((header, index) => (
-              <th key={index}>{header.th}</th>
+              <th
+                key={index}
+                className={`${
+                  header.hideAtWith && header.hideAtWith === 900
+                    ? styles.hideAt900px
+                    : header.hideAtWith && header.hideAtWith === 800
+                    ? styles.hideAt800px
+                    : header.hideAtWith && header.hideAtWith === 700
+                    ? styles.hideAt700px
+                    : ""
+                }`}
+              >
+                {header.th}
+              </th>
             ))}
             {actions && actions.length > 0 && <th>Ações</th>}
           </tr>

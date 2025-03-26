@@ -33,6 +33,7 @@ export class CategoryService {
       // skip,
       // take: limit,
       where: { userId: userId },
+      order: { name: "ASC", id: "DESC" },
       relations: relationsOptions,
     });
 

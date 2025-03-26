@@ -5,6 +5,10 @@ import { TableHeaderType } from "../types/TableHeaderType";
 import Modal from "../components/modal/modal";
 import { TableActionEnum } from "../enums/TableActionEnum";
 import Navegation from "../components/navegation/navegation";
+import { TaskStatusEnum } from "../enums/TaskStatusEnum";
+import { DEFAULT_NAME_FOR_COMPLETE_TASK } from "../config/constants";
+import { format } from "date-fns";
+import { PriorityEnum } from "../enums/PriorityEnum";
 
 const TaskScreen = () => {
   const {
@@ -14,6 +18,7 @@ const TaskScreen = () => {
     handleOnCreate,
     handleOnSearch,
     handleOnUpdate,
+    handleOnAlterTaskStatus,
     handleOnDelete,
     openModalDelete,
     handleOnOpenModalDelete,
@@ -23,24 +28,33 @@ const TaskScreen = () => {
   const tableHeaders: TableHeaderType[] = [
     { th: "Nome", td: "title" },
     { th: "Prazo", td: "limitDate" },
-    { th: "Categoria", td: "category" },
+    { th: "Status", td: DEFAULT_NAME_FOR_COMPLETE_TASK, hideAtWith: 700 },
+    { th: "Prioridade", td: "priority", hideAtWith: 800 },
+    { th: "Categoria", td: "category", hideAtWith: 900 },
   ];
 
   const tableActions: TableActionEnum[] = [
     TableActionEnum.Delete,
     TableActionEnum.Update,
+    TableActionEnum.CompleteTask,
   ];
 
   const tableData = tasks.map((task) => ({
     id: task.id,
+    completedDate: task.completedDate,
+    taskStatus: task.completedDate
+      ? TaskStatusEnum.Completed
+      : new Date(task.limitDate) < new Date()
+      ? TaskStatusEnum.Overdue
+      : TaskStatusEnum.Pending,
+    priority:
+      task.priority === PriorityEnum.High
+        ? "Alta"
+        : task.priority === PriorityEnum.Medium
+        ? "Média"
+        : "Baixa",
     title: task.title,
-    limitDate:
-      new Date(task.limitDate).toLocaleDateString("pt-BR") +
-      " às " +
-      new Date(task.limitDate).toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
+    limitDate: format(task.limitDate, "dd/MM/yyyy 'às' HH:mm"),
     category: task.category?.name,
   }));
 
@@ -76,6 +90,7 @@ const TaskScreen = () => {
           actions={tableActions}
           handleOnUpdate={handleOnUpdate}
           handleOnOpenModalDelete={handleOnOpenModalDelete}
+          handleOnAlterTaskStatus={handleOnAlterTaskStatus}
         />
       </div>
 

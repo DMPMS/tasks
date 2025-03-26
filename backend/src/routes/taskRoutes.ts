@@ -38,6 +38,13 @@ taskRoutes.put(
   (req, res) => taskController.updateTask(req, res)
 );
 
+taskRoutes.patch(
+  "/task/:taskId/completedDate",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User]),
+  (req, res) => taskController.updateTaskCompletedDate(req, res)
+);
+
 taskRoutes.delete(
   "/task/:taskId",
   authMiddleware,

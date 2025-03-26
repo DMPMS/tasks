@@ -28,8 +28,4 @@ export class UpdateTaskDto {
 
   @Validate(IsCustomTimestamp)
   limitDate!: Date;
-
-  @Validate(IsCustomTimestamp)
-  @IsOptional()
-  completedDate?: Date | null;
 }
