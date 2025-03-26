@@ -95,6 +95,8 @@ export const useCreateTask = (taskId?: string) => {
       });
     } else {
       setTask(DEFAULT_CREATE_TASK);
+      setInvalidFields([]);
+      setWarningFields([]);
     }
   }, [taskReducer]);
 
@@ -296,6 +298,8 @@ export const useCreateTask = (taskId?: string) => {
 
   const handleOnReset = () => {
     setTask(DEFAULT_CREATE_TASK);
+    setInvalidFields([]);
+    setWarningFields([]);
   };
 
   const handleOnCancel = () => {

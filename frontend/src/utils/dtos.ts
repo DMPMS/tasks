@@ -5,6 +5,13 @@ export const DEFAULT_SIGN_IN = {
   password: "",
 };
 
+export const DEFAULT_SIGN_UP = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 export const DEFAULT_CREATE_TASK = {
   categoryId: undefined,
   title: "",

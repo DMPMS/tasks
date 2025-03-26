@@ -8,6 +8,7 @@ const SignInScreen = () => {
     invalidFields,
     handleOnChangeInput,
     handleOnSignIn,
+    handleOnSignUp,
   } = useSignIn();
 
   return (
@@ -35,6 +36,12 @@ const SignInScreen = () => {
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
             />
+          </div>
+
+          <div className={styles.containerSignUp}>
+            <a href="" onClick={handleOnSignUp} className={styles.signUp}>
+              Novo por aqui? Criar conta.
+            </a>
           </div>
 
           <button

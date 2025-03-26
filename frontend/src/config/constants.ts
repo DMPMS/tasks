@@ -6,6 +6,25 @@ export const DEFAULT_ROWS_PERS_PAGE_TABLE = 5;
 
 export const DEFAULT_NAME_FOR_COMPLETE_TASK = "taskStatus";
 
+export const USER = {
+  NAME_LENGTH: {
+    MIN: 1,
+    MAX: 30,
+  },
+  EMAIL_LENGTH: {
+    MIN: 1,
+    MAX: 255,
+  },
+  PASSWORD_LENGTH: {
+    MIN: 1,
+    MAX: 255,
+  },
+  CONFIRM_PASSWORD_LENGTH: {
+    MIN: 1,
+    MAX: 255,
+  },
+};
+
 export const TASK = {
   TITLE_LENGTH: {
     MIN: 1,

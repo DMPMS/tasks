@@ -21,6 +21,26 @@ export const FIELD_VALIDATION_MESSAGES = {
   SIGN_IN: {
     EMAIL_INVALID: "Insira um e-mail válido.",
   },
+  USER: {
+    NAME: {
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+    },
+    EMAIL: {
+      EMAIL_INVALID: "Insira um e-mail válido.",
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+    },
+    PASSWORD: {
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+    },
+    CONFIRM_PASSWORD: {
+      MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,
+      MAX_CHARACTER: (max: number) => `Insira até ${max} caractere(s).`,
+      PASSWORDS_DO_NOT_MATCH: "As senhas não coincidem.",
+    },
+  },
   TASK: {
     TITLE: {
       MIN_CHARACTER: (min: number) => `Insira pelo menos ${min} caractere(s).`,

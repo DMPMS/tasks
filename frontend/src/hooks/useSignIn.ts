@@ -16,8 +16,7 @@ import { NotificationEnum } from "../enums/NotificationEnum";
 import { ERROR_MESSAGES, FIELD_VALIDATION_MESSAGES } from "../utils/messages";
 
 export const useSignIn = () => {
-  const { setNotification } = useGlobalReducer();
-  const { setUser } = useGlobalReducer();
+  const { setUser, setNotification } = useGlobalReducer();
 
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
@@ -93,7 +92,8 @@ export const useSignIn = () => {
       });
   };
 
-  const handleOnSignUp = () => {
+  const handleOnSignUp = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     navigate(SignUpRoutesEnum.SignUp);
   };
 

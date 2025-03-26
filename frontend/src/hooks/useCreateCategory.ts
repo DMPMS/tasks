@@ -90,6 +90,8 @@ export const useCreateCategory = (categoryId?: string) => {
       });
     } else {
       setCategory(DEFAULT_CREATE_CATEGORY);
+      setInvalidFields([]);
+      setWarningFields([]);
     }
   }, [categoryReducer]);
 
@@ -258,6 +260,8 @@ export const useCreateCategory = (categoryId?: string) => {
 
   const handleOnReset = () => {
     setCategory(DEFAULT_CREATE_CATEGORY);
+    setInvalidFields([]);
+    setWarningFields([]);
   };
 
   const handleOnCancel = () => {

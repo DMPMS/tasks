@@ -1,6 +1,6 @@
 export const ERROR_MESSAGES = {
   USER: {
-    EMAIL_ALREADY_EXISTS: "Já existe um usuário com esse e-mail.",
+    EMAIL_ALREADY_EXISTS: "E-mail já cadastrado.",
     CREATE_USER_ERROR: "Erro ao criar usuário.",
     SELECT_USER_ERROR: "Erro ao buscar usuários.",
     PASSWORDS_DO_NOT_MATCH: "As senhas não coincidem.",
