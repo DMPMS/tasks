@@ -3,20 +3,25 @@ export const SERVER = {
 };
 
 export const PAGINATION = {
+  INITIAL_PAGE: 1,
   DEFAULT_PAGE: 1,
-  DEFAULT_LIMIT: 10,
+  DEFAULT_LIMIT: 5,
 };
 
 export const USER = {
   NAME_LENGTH: {
-    MIN: 1,
+    MIN: 8,
     MAX: 30,
   },
   EMAIL_LENGTH: {
-    MIN: 1,
+    MIN: 8,
     MAX: 255,
   },
   PASSWORD_LENGTH: {
+    MIN: 8,
+    MAX: 255,
+  },
+  CONFIRM_PASSWORD_LENGTH: {
     MIN: 1,
     MAX: 255,
   },

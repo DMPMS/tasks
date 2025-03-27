@@ -5,10 +5,8 @@ import { USER } from "../../config/constants";
 export class CreateAuthDto {
   @IsString()
   @Validate(IsCustomEmail)
-  @Length(USER.EMAIL_LENGTH.MIN, USER.EMAIL_LENGTH.MAX)
   email!: string;
 
   @IsString()
-  @Length(USER.PASSWORD_LENGTH.MIN, USER.PASSWORD_LENGTH.MAX)
   password!: string;
 }

@@ -47,6 +47,7 @@ const CreateTaskScreen = () => {
             <input
               id="title"
               type="text"
+              placeholder="Título"
               value={task.title}
               onChange={(e) => handleOnChangeInput(e, "title")}
               className={`${styles.field} ${
@@ -92,6 +93,7 @@ const CreateTaskScreen = () => {
               className={`${styles.field} ${
                 invalidFields.includes("categoryId") ? styles.invalidField : ""
               } ${task.categoryId ? styles.fontNormal : styles.fontItalic}`}
+              disabled={categories.length === 0}
             >
               <option value="" className={styles.fontItalic}>
                 Nenhuma

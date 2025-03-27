@@ -47,6 +47,11 @@
   transition: border-color 0.3s;
 }
 
+.field:disabled {
+  background-color: #d0d0d0;
+  cursor: not-allowed;
+}
+
 .fontItalic {
   font-style: italic;
 }

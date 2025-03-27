@@ -7,6 +7,7 @@ import { ReturnCategoryDto } from "../dtos/returns/returnCategoryDto";
 import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateCategoryDto } from "../dtos/updates/updateCategoryDto";
+import { PAGINATION } from "../config/constants";
 
 export class CategoryService {
   private readonly userService: UserService;
@@ -27,7 +28,7 @@ export class CategoryService {
   ): Promise<ReturnCategoryDto[]> {
     await this.userService.getUserById(userId);
 
-    const skip = (page - 1) * limit;
+    const skip = (page - PAGINATION.INITIAL_PAGE) * limit;
 
     const categories = await this.categoryRepository.find({
       // skip,

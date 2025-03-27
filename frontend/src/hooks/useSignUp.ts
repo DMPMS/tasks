@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReducer";
 import { useRequest } from "../utils/functions/request";
-import { SignUpDto } from "../dtos/createUserDto";
+import { SignUpDto } from "../dtos/signUpDto";
 import { DEFAULT_SIGN_UP } from "../utils/dtos";
 import { isValidEmail } from "../utils/functions/valitadion";
 import { UserType } from "../types/UserType";

@@ -6,9 +6,13 @@ import Modal from "../components/modal/modal";
 import { TableActionEnum } from "../enums/TableActionEnum";
 import Navegation from "../components/navegation/navegation";
 import { TaskStatusEnum } from "../enums/TaskStatusEnum";
-import { DEFAULT_NAME_FOR_COMPLETE_TASK } from "../config/constants";
+import {
+  DATETIME_FORMAT,
+  DEFAULT_NAME_FOR_COMPLETE_TASK,
+} from "../config/constants";
 import { format } from "date-fns";
 import { PriorityEnum } from "../enums/PriorityEnum";
+import { TableHideLevelEnum } from "../enums/TableHideLevelEnum";
 
 const TaskScreen = () => {
   const {
@@ -28,9 +32,13 @@ const TaskScreen = () => {
   const tableHeaders: TableHeaderType[] = [
     { th: "Nome", td: "title" },
     { th: "Prazo", td: "limitDate" },
-    { th: "Status", td: DEFAULT_NAME_FOR_COMPLETE_TASK, hideAtWith: 700 },
-    { th: "Prioridade", td: "priority", hideAtWith: 800 },
-    { th: "Categoria", td: "category", hideAtWith: 900 },
+    {
+      th: "Status",
+      td: DEFAULT_NAME_FOR_COMPLETE_TASK,
+      hideAtWith: TableHideLevelEnum.VerySmall,
+    },
+    { th: "Prioridade", td: "priority", hideAtWith: TableHideLevelEnum.Small },
+    { th: "Categoria", td: "category", hideAtWith: TableHideLevelEnum.Medium },
   ];
 
   const tableActions: TableActionEnum[] = [
@@ -54,7 +62,7 @@ const TaskScreen = () => {
         ? "Média"
         : "Baixa",
     title: task.title,
-    limitDate: format(task.limitDate, "dd/MM/yyyy 'às' HH:mm"),
+    limitDate: String(format(task.limitDate, DATETIME_FORMAT.SHOW)),
     category: task.category?.name,
   }));
 

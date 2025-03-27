@@ -1,5 +1,6 @@
 export const ERROR_MESSAGES = {
   DEFAULT: "Erro.",
+  TOKEN_USER_TYPE_ROOT: "E-mail ou senha inválidos.",
 };
 
 export const SUCCESS_MESSAGES = {

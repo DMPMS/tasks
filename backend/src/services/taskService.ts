@@ -9,6 +9,7 @@ import { CategoryService } from "./categoryService";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
 import { UpdateTaskCompletedDateDto } from "../dtos/updates/updateTaskCompletedDateDto";
+import { PAGINATION } from "../config/constants";
 
 export class TaskService {
   private readonly userService: UserService;
@@ -31,7 +32,7 @@ export class TaskService {
   ): Promise<ReturnTaskDto[]> {
     await this.userService.getUserById(userId);
 
-    const skip = (page - 1) * limit;
+    const skip = (page - PAGINATION.INITIAL_PAGE) * limit;
 
     const tasks = await this.taskRepository.find({
       // skip,

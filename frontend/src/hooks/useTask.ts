@@ -12,6 +12,7 @@ import { NotificationEnum } from "../enums/NotificationEnum";
 import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReducer";
 import { TaskStatusEnum } from "../enums/TaskStatusEnum";
 import { format } from "date-fns";
+import { DATETIME_FORMAT } from "../config/constants";
 
 export const useTask = () => {
   const { setNotification } = useGlobalReducer();
@@ -105,7 +106,7 @@ export const useTask = () => {
     const completedDate =
       status === TaskStatusEnum.Completed
         ? { completedDate: null }
-        : { completedDate: format(new Date(), "yyyy-MM-dd HH:mm") };
+        : { completedDate: format(new Date(), DATETIME_FORMAT.REQUEST) };
 
     await request<TaskType>({
       method: MethodEnum.Patch,

@@ -1,6 +1,6 @@
 import { PriorityEnum } from "../enums/PriorityEnum";
 
-export interface CreateTaskDto {
+export interface TaskDto {
   categoryId?: number;
   title: string;
   description: string;

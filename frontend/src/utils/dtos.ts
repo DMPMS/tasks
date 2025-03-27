@@ -12,7 +12,7 @@ export const DEFAULT_SIGN_UP = {
   confirmPassword: "",
 };
 
-export const DEFAULT_CREATE_TASK = {
+export const DEFAULT_TASK = {
   categoryId: undefined,
   title: "",
   description: "",
@@ -20,6 +20,6 @@ export const DEFAULT_CREATE_TASK = {
   limitDate: "",
 };
 
-export const DEFAULT_CREATE_CATEGORY = {
+export const DEFAULT_CATEGORY = {
   name: "",
 };

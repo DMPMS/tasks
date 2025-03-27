@@ -4,8 +4,8 @@ import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReduc
 import { useRequest } from "../utils/functions/request";
 import { useCategory } from "./useCategory";
 import { useEffect, useState } from "react";
-import { CreateCategoryDto } from "../dtos/createCategoryDto";
-import { DEFAULT_CREATE_CATEGORY } from "../utils/dtos";
+import { CategoryDto } from "../dtos/categoryDto";
+import { DEFAULT_CATEGORY } from "../utils/dtos";
 import { CategoryType } from "../types/CategoryType";
 import { MethodEnum } from "../enums/MethodEnum";
 import { URL_CATEGORY, URL_CATEGORY_ID } from "../config/urls";
@@ -36,9 +36,7 @@ export const useCreateCategory = (categoryId?: string) => {
   const [loadingCategory, setLoadingCategory] = useState<boolean>(true);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [category, setCategory] = useState<CreateCategoryDto>(
-    DEFAULT_CREATE_CATEGORY
-  );
+  const [category, setCategory] = useState<CategoryDto>(DEFAULT_CATEGORY);
 
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
@@ -89,7 +87,7 @@ export const useCreateCategory = (categoryId?: string) => {
         handleValidateOnEdit(item);
       });
     } else {
-      setCategory(DEFAULT_CREATE_CATEGORY);
+      setCategory(DEFAULT_CATEGORY);
       setInvalidFields([]);
       setWarningFields([]);
     }
@@ -259,7 +257,7 @@ export const useCreateCategory = (categoryId?: string) => {
   };
 
   const handleOnReset = () => {
-    setCategory(DEFAULT_CREATE_CATEGORY);
+    setCategory(DEFAULT_CATEGORY);
     setInvalidFields([]);
     setWarningFields([]);
   };

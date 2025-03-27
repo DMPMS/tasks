@@ -1,7 +1,16 @@
 const ExitIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
   return (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <g fill-rule="evenodd">
+    <svg
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ cursor: "default" }}
+      {...props}
+    >
+      <g
+        fill-rule="evenodd"
+        transform="scale(0.975) translate(6, 6)"
+        style={{ cursor: "pointer" }}
+      >
         <path
           fill="#ff3f5b"
           d="M256.5 0C115.342 0 .5 114.84.5 256s114.839 256 256 256 256-114.84 256-256S397.66 0 256.5 0z"

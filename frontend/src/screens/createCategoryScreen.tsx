@@ -40,6 +40,7 @@ const CreateCategoryScreen = () => {
             <input
               id="name"
               type="text"
+              placeholder="Nome"
               value={category.name}
               onChange={(e) => handleOnChangeInput(e, "name")}
               className={`${styles.field} ${

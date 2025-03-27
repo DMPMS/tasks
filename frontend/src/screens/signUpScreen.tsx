@@ -25,6 +25,7 @@ const SignUpScreen = () => {
             <input
               id="name"
               type="text"
+              placeholder="Nome"
               value={signUp.name}
               onChange={(e) => handleOnChangeInput(e, "name")}
               className={`${styles.field} ${
@@ -40,6 +41,7 @@ const SignUpScreen = () => {
             <input
               id="email"
               type="email"
+              placeholder="seuemail@email.com"
               value={signUp.email}
               onChange={(e) => handleOnChangeInput(e, "email")}
               className={`${styles.field} ${
@@ -55,6 +57,7 @@ const SignUpScreen = () => {
             <input
               id="password"
               type="password"
+              placeholder="••••••••"
               value={signUp.password}
               onChange={(e) => handleOnChangeInput(e, "password")}
               className={`${styles.field} ${
@@ -70,6 +73,7 @@ const SignUpScreen = () => {
             <input
               id="confirmPassword"
               type="password"
+              placeholder="••••••••"
               value={signUp.confirmPassword}
               onChange={(e) => handleOnChangeInput(e, "confirmPassword")}
               className={`${styles.field} ${

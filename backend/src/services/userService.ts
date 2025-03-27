@@ -7,6 +7,7 @@ import { ERROR_MESSAGES } from "../utils/messages";
 import { createPasswordHashed } from "../utils/password";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
+import { PAGINATION } from "../config/constants";
 
 export class UserService {
   constructor(
@@ -20,7 +21,7 @@ export class UserService {
     limit: number,
     relationsOptions?: RelationsOptionsType
   ): Promise<ReturnUserDto[]> {
-    const skip = (page - 1) * limit;
+    const skip = (page - PAGINATION.INITIAL_PAGE) * limit;
 
     const users = await this.userRepository.find({
       // skip,
@@ -37,7 +38,7 @@ export class UserService {
     relationsOptions?: RelationsOptionsType
   ): Promise<ReturnUserDto> {
     const user = await this.userRepository.findOne({
-      where: { id: userId },
+      where: { id: userId, userType: UserTypeEnum.User },
       relations: relationsOptions,
     });
 

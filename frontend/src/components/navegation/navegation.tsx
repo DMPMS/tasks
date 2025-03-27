@@ -24,13 +24,9 @@ const Navegation = () => {
 
   return (
     <div className={styles.cardNavegation}>
-      <TaskIcon onClick={handleOnTasks} width={35} className={styles.item} />
-      <CategoryIcon
-        onClick={handleOnCategories}
-        width={35}
-        className={styles.item}
-      />
-      <ExitIcon onClick={handleOnLogout} width={35} className={styles.item} />
+      <TaskIcon onClick={handleOnTasks} width={35} />
+      <CategoryIcon onClick={handleOnCategories} width={35} />
+      <ExitIcon onClick={handleOnLogout} width={35} />
     </div>
   );
 };

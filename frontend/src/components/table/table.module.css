@@ -58,10 +58,6 @@
   text-align: center;
 }
 
-.actionItem {
-  cursor: pointer;
-}
-
 .pagination {
   display: flex;
   justify-content: right;

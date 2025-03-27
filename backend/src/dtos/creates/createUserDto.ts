@@ -17,6 +17,6 @@ export class CreateUserDto {
   password!: string;
 
   @IsString()
-  @Length(USER.PASSWORD_LENGTH.MIN, USER.PASSWORD_LENGTH.MAX)
+  @Length(USER.CONFIRM_PASSWORD_LENGTH.MIN, USER.CONFIRM_PASSWORD_LENGTH.MAX)
   confirmPassword!: string;
 }

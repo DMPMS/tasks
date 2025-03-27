@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReducer";
 import { useRequest } from "../utils/functions/request";
 import { useEffect, useState } from "react";
-import { CreateTaskDto } from "../dtos/createTaskDto";
-import { DEFAULT_CREATE_TASK } from "../utils/dtos";
+import { TaskDto } from "../dtos/taskDto";
+import { DEFAULT_TASK } from "../utils/dtos";
 import {
   ERROR_MESSAGES,
   FIELD_VALIDATION_MESSAGES,
@@ -16,10 +16,11 @@ import { NotificationEnum } from "../enums/NotificationEnum";
 import { TaskRoutesEnum } from "../routes/taskRoutes";
 import { useTask } from "./useTask";
 import { AxiosError } from "axios";
-import { TASK } from "../config/constants";
+import { DATETIME_FORMAT, TASK } from "../config/constants";
 import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
 import { FieldValidationType } from "../types/FieldValidationType";
 import { useCategory } from "./useCategory";
+import { format } from "date-fns";
 
 export const useCreateTask = (taskId?: string) => {
   const { setNotification } = useGlobalReducer();
@@ -35,7 +36,7 @@ export const useCreateTask = (taskId?: string) => {
   const [loadingTask, setLoadingTask] = useState<boolean>(true);
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [task, setTask] = useState<CreateTaskDto>(DEFAULT_CREATE_TASK);
+  const [task, setTask] = useState<TaskDto>(DEFAULT_TASK);
 
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
@@ -78,7 +79,7 @@ export const useCreateTask = (taskId?: string) => {
         title: taskReducer.title,
         description: taskReducer.description,
         priority: taskReducer.priority,
-        limitDate: String(taskReducer.limitDate).slice(0, 16),
+        limitDate: String(format(taskReducer.limitDate, DATETIME_FORMAT.INPUT)),
         categoryId: taskReducer.category?.id,
       });
 
@@ -86,7 +87,7 @@ export const useCreateTask = (taskId?: string) => {
         { id: "title", value: taskReducer.title },
         {
           id: "limitDate",
-          value: String(taskReducer.limitDate).slice(0, 16),
+          value: String(format(taskReducer.limitDate, DATETIME_FORMAT.INPUT)),
         },
       ];
 
@@ -94,7 +95,7 @@ export const useCreateTask = (taskId?: string) => {
         handleValidateOnEdit(item);
       });
     } else {
-      setTask(DEFAULT_CREATE_TASK);
+      setTask(DEFAULT_TASK);
       setInvalidFields([]);
       setWarningFields([]);
     }
@@ -297,7 +298,7 @@ export const useCreateTask = (taskId?: string) => {
   };
 
   const handleOnReset = () => {
-    setTask(DEFAULT_CREATE_TASK);
+    setTask(DEFAULT_TASK);
     setInvalidFields([]);
     setWarningFields([]);
   };

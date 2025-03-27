@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 import {
+  DATETIME_FORMAT,
   DEFAULT_NAME_FOR_COMPLETE_TASK,
-  DEFAULT_ROWS_PERS_PAGE_TABLE,
+  PAGINATION,
 } from "../../config/constants";
 import { TableActionEnum } from "../../enums/TableActionEnum";
 import { TaskStatusEnum } from "../../enums/TaskStatusEnum";
@@ -13,6 +14,7 @@ import PendingIcon from "../icons/pendingIcon";
 import TrashIcon from "../icons/trashIcon";
 import styles from "./table.module.css";
 import { useState } from "react";
+import { TableHideLevelEnum } from "../../enums/TableHideLevelEnum";
 
 interface TableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,9 +34,11 @@ const Table = ({
   handleOnOpenModalDelete,
   handleOnAlterTaskStatus,
 }: TableProps) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [currentPage, setCurrentPage] = useState<number>(
+    PAGINATION.DEFAULT_PAGE
+  );
 
-  const totalPages = Math.ceil(data.length / DEFAULT_ROWS_PERS_PAGE_TABLE);
+  const totalPages = Math.ceil(data.length / PAGINATION.DEFAULT_LIMIT);
 
   const renderTableData = () => {
     if (data.length === 0) {
@@ -50,8 +54,9 @@ const Table = ({
       );
     }
 
-    const start = (currentPage - 1) * DEFAULT_ROWS_PERS_PAGE_TABLE;
-    const end = start + DEFAULT_ROWS_PERS_PAGE_TABLE;
+    const start =
+      (currentPage - PAGINATION.INITIAL_PAGE) * PAGINATION.DEFAULT_LIMIT;
+    const end = start + PAGINATION.DEFAULT_LIMIT;
 
     return data.slice(start, end).map((row: typeof data, rowIndex: number) => (
       <tr key={rowIndex}>
@@ -60,7 +65,7 @@ const Table = ({
             key={index}
             title={
               row[header.td] === TaskStatusEnum.Completed
-                ? format(row.completedDate, "dd/MM/yyyy 'às' HH:mm")
+                ? String(format(row.completedDate, DATETIME_FORMAT.SHOW))
                 : ""
             }
             className={`${
@@ -72,11 +77,14 @@ const Table = ({
                 ? styles.overdue
                 : ""
             } ${
-              header.hideAtWith && header.hideAtWith === 900
+              header.hideAtWith &&
+              header.hideAtWith === TableHideLevelEnum.Medium
                 ? styles.hideAt900px
-                : header.hideAtWith && header.hideAtWith === 800
+                : header.hideAtWith &&
+                  header.hideAtWith === TableHideLevelEnum.Small
                 ? styles.hideAt800px
-                : header.hideAtWith && header.hideAtWith === 700
+                : header.hideAtWith &&
+                  header.hideAtWith === TableHideLevelEnum.VerySmall
                 ? styles.hideAt700px
                 : ""
             }`}
@@ -91,7 +99,6 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Pending && (
                   <PendingIcon
-                    className={styles.actionItem}
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -107,7 +114,6 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Completed && (
                   <CompletedIcon
-                    className={styles.actionItem}
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -123,7 +129,6 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Overdue && (
                   <OverdueIcon
-                    className={styles.actionItem}
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -137,15 +142,10 @@ const Table = ({
                 )}
 
               {actions.includes(TableActionEnum.Update) && (
-                <PencilIcon
-                  className={styles.actionItem}
-                  onClick={() => handleOnUpdate(row.id)}
-                  width={25}
-                />
+                <PencilIcon onClick={() => handleOnUpdate(row.id)} width={25} />
               )}
               {actions.includes(TableActionEnum.Delete) && (
                 <TrashIcon
-                  className={styles.actionItem}
                   onClick={() => handleOnOpenModalDelete(row.id)}
                   width={25}
                 />
@@ -158,12 +158,14 @@ const Table = ({
   };
 
   const renderPagination = () => {
-    const maxPagesToShow = 5;
     let startPage = Math.max(1, currentPage - 2);
-    const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+    const endPage = Math.min(
+      totalPages,
+      startPage + PAGINATION.DEFAULT_LIMIT - 1
+    );
 
-    if (endPage - startPage + 1 < maxPagesToShow) {
-      startPage = Math.max(1, endPage - maxPagesToShow + 1);
+    if (endPage - startPage + 1 < PAGINATION.DEFAULT_LIMIT) {
+      startPage = Math.max(1, endPage - PAGINATION.DEFAULT_LIMIT + 1);
     }
 
     return Array.from(
@@ -195,11 +197,14 @@ const Table = ({
               <th
                 key={index}
                 className={`${
-                  header.hideAtWith && header.hideAtWith === 900
+                  header.hideAtWith &&
+                  header.hideAtWith === TableHideLevelEnum.Medium
                     ? styles.hideAt900px
-                    : header.hideAtWith && header.hideAtWith === 800
+                    : header.hideAtWith &&
+                      header.hideAtWith === TableHideLevelEnum.Small
                     ? styles.hideAt800px
-                    : header.hideAtWith && header.hideAtWith === 700
+                    : header.hideAtWith &&
+                      header.hideAtWith === TableHideLevelEnum.VerySmall
                     ? styles.hideAt700px
                     : ""
                 }`}

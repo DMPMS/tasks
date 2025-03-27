@@ -20,6 +20,7 @@ const SignInScreen = () => {
             <label className={styles.label}>E-mail</label>
             <input
               type="email"
+              placeholder="seuemail@email.com"
               onChange={(e) => handleOnChangeInput(e, "email")}
               className={`${styles.input} ${
                 invalidFields.includes("email") ? styles.invalidField : ""
@@ -31,6 +32,7 @@ const SignInScreen = () => {
             <label className={styles.label}>Senha</label>
             <input
               type="password"
+              placeholder="••••••••"
               onChange={(e) => handleOnChangeInput(e, "password")}
               className={`${styles.input} ${
                 invalidFields.includes("password") ? styles.invalidField : ""

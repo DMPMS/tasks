@@ -1,7 +1,16 @@
 const TrashIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
   return (
-    <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <g fill-rule="evenodd">
+    <svg
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ cursor: "default" }}
+      {...props}
+    >
+      <g
+        fill-rule="evenodd"
+        transform="scale(0.975) translate(6, 6)"
+        style={{ cursor: "pointer" }}
+      >
         <path
           d="m256 0c-141.159 0-256 114.84-256 256s114.84 256 256 256 256-114.84 256-256-114.84-256-256-256z"
           fill="#ff3f5b"

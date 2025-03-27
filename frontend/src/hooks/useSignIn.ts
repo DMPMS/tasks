@@ -23,7 +23,9 @@ export const useSignIn = () => {
 
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [signIn, setSignIn] = useState<SignInDto>(DEFAULT_SIGN_IN);
+
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
+  const [warningFields, setWarningFields] = useState<string[]>([]);
 
   useEffect(() => {
     if (signIn.email && signIn.password && isValidEmail(signIn.email)) {
@@ -33,20 +35,35 @@ export const useSignIn = () => {
     }
   }, [signIn]);
 
-  const validateField = (
+  const validateInputField = (
     name: string,
     value: string,
     input: HTMLInputElement
   ) => {
+    if (!["email", "password"].includes(name)) {
+      return;
+    }
+
+    const isValid = () => {
+      input.setCustomValidity("");
+      setInvalidFields((prev) => prev.filter((item) => item !== name));
+      setWarningFields((prev) => prev.filter((item) => item !== name));
+    };
+
     if (!value) {
       input.setCustomValidity(FIELD_VALIDATION_MESSAGES.REQUIRED);
       setInvalidFields((prev) => [...prev, name]);
-    } else if (name === "email" && !isValidEmail(value)) {
-      input.setCustomValidity(FIELD_VALIDATION_MESSAGES.SIGN_IN.EMAIL_INVALID);
-      setInvalidFields((prev) => [...prev, name]);
+    } else if (name === "email") {
+      if (!isValidEmail(value)) {
+        input.setCustomValidity(
+          FIELD_VALIDATION_MESSAGES.SIGN_IN.EMAIL_INVALID
+        );
+        setInvalidFields((prev) => [...prev, name]);
+      } else {
+        isValid();
+      }
     } else {
-      input.setCustomValidity("");
-      setInvalidFields((prev) => prev.filter((item) => item !== name));
+      isValid();
     }
 
     input.reportValidity();
@@ -64,7 +81,7 @@ export const useSignIn = () => {
       [name]: name === "email" ? value.toLowerCase() : value,
     });
 
-    validateField(name, value, input);
+    validateInputField(name, value, input);
   };
 
   const handleOnSignIn = async (e: React.FormEvent) => {
@@ -101,6 +118,7 @@ export const useSignIn = () => {
     loadingRequest,
     disabledButton,
     invalidFields,
+    warningFields,
     handleOnChangeInput,
     handleOnSignIn,
     handleOnSignUp,
