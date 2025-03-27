@@ -132,4 +132,4 @@ Um projeto simples de controle de tarefas pessoais.
 ```
 
 ## 🏁 Tudo pronto!
-Agora, basta acessar a URL onde a aplicação está sendo executada em seu navegador.
+Agora, basta acessar a URL onde a aplicação está sendo executada em seu navegador. Quando a aplicação é executada pela primeira vez, um usuário root é criado, permitindo a criação de usuários do tipo admin, além da inserção de um usuário admin.
