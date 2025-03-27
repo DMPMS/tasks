@@ -14,7 +14,7 @@ const CompletedIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
         style={{ cursor: "pointer" }}
       />
       <path
-        fill="#149113"
+        fill="#41da36"
         fill-rule="evenodd"
         transform="scale(0.975) translate(6, 6)"
         style={{ cursor: "pointer" }}

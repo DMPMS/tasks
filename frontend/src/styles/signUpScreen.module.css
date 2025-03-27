@@ -11,7 +11,7 @@
   padding: 16px;
   margin: 16px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--color-white-1);
 }
 
 .h2 {
@@ -34,30 +34,30 @@
 }
 
 .asterisk {
-  color: #ff0000;
+  color: var(--color-red-1);
 }
 
 .field {
   margin: 0px 0px 10px 0px;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-white-3);
   transition: border-color 0.3s;
 }
 
 .field:focus {
-  border-color: #007bff;
+  border-color: var(--color-blue-1);
   outline: none;
 }
 
 .invalidField,
 .invalidField:focus {
-  border-color: #ff0000;
+  border-color: var(--color-red-1);
 }
 
 .warningField,
 .warningField:focus {
-  border-color: #ffd000;
+  border-color: var(--color-yellow-1);
 }
 
 .containerSignIn {
@@ -81,7 +81,7 @@
 .button {
   padding: 10px;
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--color-white-1);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -90,28 +90,28 @@
 
 .submitButton {
   width: 160px;
-  background-color: #007bff;
+  background-color: var(--color-blue-1);
 }
 
 .submitButton:hover {
-  background-color: #0068d6;
+  background-color: var(--color-blue-2);
 }
 
 .submitButton:disabled {
-  background-color: #003063;
+  background-color: var(--color-blue-3);
   cursor: not-allowed;
 }
 
 .resetButton {
-  background-color: #8a8a8a;
+  background-color: var(--color-gray-1);
 }
 
 .resetButton:hover {
-  background-color: #636363;
+  background-color: var(--color-gray-2);
 }
 
 .resetButton:disabled {
-  background-color: #3c3c3c;
+  background-color: var(--color-gray-3);
   cursor: not-allowed;
 }
 
@@ -122,8 +122,8 @@
 }
 
 .spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  border: 2px solid var(--color-white-1);
+  border-top: 2px solid var(--color-blue-1);
   border-radius: 50%;
   width: 16px;
   height: 16px;

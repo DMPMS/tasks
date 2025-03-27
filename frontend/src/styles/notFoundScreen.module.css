@@ -14,7 +14,7 @@
   padding: 16px;
   margin: 16px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--color-white-1);
 }
 
 .h2 {
@@ -30,13 +30,13 @@
   width: 100%;
   padding: 10px;
   border-radius: 8px;
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: var(--color-blue-1);
+  color: var(--color-white-1);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .button:hover {
-  background-color: #0068d6;
+  background-color: var(--color-blue-2);
 }

@@ -8,27 +8,27 @@
 .notification {
   margin-bottom: 10px;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-white-3);
   border-radius: 8px;
-  color: #fff;
+  color: var(--color-white-1);
 }
 
 .success {
-  background-color: #4caf50;
+  background-color: var(--color-green-2);
 }
 
 .error {
-  background-color: #f44336;
+  background-color: var(--color-red-2);
 }
 
 .info {
-  background-color: #2196f3;
+  background-color: var(--color-blue-2);
 }
 
 .warning {
-  background-color: #ffc107;
+  background-color: var(--color-yellow-2);
 }
 
 .default {
-  background-color: #e0e0e0;
+  background-color: var(--color-gray-2);
 }

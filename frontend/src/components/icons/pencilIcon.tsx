@@ -12,7 +12,7 @@ const PencilIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
         style={{ cursor: "pointer" }}
       >
         <path
-          fill="#ffae45"
+          fill="#ffd000"
           d="M256 0C114.842 0 0 114.841 0 256s114.84 256 256 256 256-114.84 256-256S397.16 0 256 0z"
           opacity="1"
           data-original="#45f6ff"

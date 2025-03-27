@@ -14,7 +14,7 @@ const PendingIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
         style={{ cursor: "pointer" }}
       />
       <path
-        fill="#ffae45"
+        fill="#ffd000"
         fill-rule="evenodd"
         transform="scale(0.975) translate(6, 6)"
         style={{ cursor: "pointer" }}

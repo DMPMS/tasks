@@ -26,26 +26,26 @@
 
 .table th,
 .table td {
-  border: 1px solid #dddddd;
+  border: 1px solid var(--color-white-3);
   padding: 8px;
   text-align: left;
 }
 
 .pending {
-  color: #ffae45;
+  color: var(--color-yellow-2);
 }
 
 .completed {
-  color: #149113;
+  color: var(--color-green-2);
   cursor: pointer;
 }
 
 .overdue {
-  color: #ff3f5b;
+  color: var(--color-red-2);
 }
 
 .table th {
-  background-color: #f2f2f2;
+  background-color: var(--color-white-2);
 }
 
 .contentTdActions {
@@ -68,18 +68,18 @@
 .pagination a {
   padding: 8px 16px 8px 16px;
   text-decoration: none;
-  background-color: #007bff;
+  background-color: var(--color-blue-1);
   color: white;
   border-radius: 8px;
   transition: background-color 0.3s;
 }
 
 .pagination a.active {
-  background-color: #0056b3;
+  background-color: var(--color-blue-3);
 }
 
 .pagination a:hover {
-  background-color: #0056b3;
+  background-color: var(--color-blue-3);
 }
 
 .hideAt900px {

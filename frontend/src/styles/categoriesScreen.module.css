@@ -13,7 +13,7 @@
   padding: 16px;
   margin: 16px;
   border-radius: 8px;
-  background-color: #ffffff;
+  background-color: var(--color-white-1);
 }
 
 .h2 {
@@ -32,32 +32,32 @@
 .input {
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #cccccc;
+  border: 1px solid var(--color-white-3);
   transition: border-color 0.3s;
 }
 
 .input:focus {
-  border-color: #007bff;
+  border-color: var(--color-blue-1);
   outline: none;
 }
 
 .button {
   padding: 10px;
   border-radius: 8px;
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: var(--color-blue-1);
+  color: var(--color-white-1);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .button:hover {
-  background-color: #0068d6;
+  background-color: var(--color-blue-2);
 }
 
 .spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
+  border: 2px solid var(--color-white-1);
+  border-top: 2px solid var(--color-blue-1);
   border-radius: 50%;
   width: 16px;
   height: 16px;
