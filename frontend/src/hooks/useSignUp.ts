@@ -16,9 +16,13 @@ import { USER } from "../config/constants";
 import { AuthType } from "../types/AuthType";
 import { setAuthorizationToken } from "../utils/functions/auth";
 import { AuthRedirectRoutesEnum } from "../routes/authRedirectRoutes";
+import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
+import { useCategoryReducer } from "../store/reducers/categoryReducer/useCategoryReducer";
 
 export const useSignUp = () => {
   const { setUser, setNotification } = useGlobalReducer();
+  const { setTask, setTasks } = useTaskReducer();
+  const { setCategory, setCategories } = useCategoryReducer();
 
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
@@ -240,6 +244,12 @@ export const useSignUp = () => {
           .then((data) => {
             setUser(data.user);
             setAuthorizationToken(data.token);
+
+            setCategory(undefined);
+            setCategories([]);
+            setTask(undefined);
+            setTasks([]);
+
             navigate(AuthRedirectRoutesEnum.AuthRedirect);
           })
           .catch((error: AxiosError) => {

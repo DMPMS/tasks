@@ -46,6 +46,8 @@ export class CategoryService {
     categoryId: number,
     relationsOptions?: RelationsOptionsType
   ): Promise<ReturnCategoryDto> {
+    await this.userService.getUserById(userId);
+
     const category = await this.categoryRepository.findOne({
       where: { id: categoryId, userId: userId },
       relations: relationsOptions,
@@ -90,6 +92,7 @@ export class CategoryService {
     updateCategoryDto: UpdateCategoryDto
   ): Promise<ReturnCategoryDto> {
     await this.userService.getUserById(userId);
+
     const category = await this.getUserCategoryById(userId, categoryId);
 
     const existingCategory = await this.categoryRepository.findOne({
@@ -112,6 +115,8 @@ export class CategoryService {
     userId: number,
     categoryId: number
   ): Promise<DeleteResult> {
+    await this.userService.getUserById(userId);
+
     await this.getUserCategoryById(userId, categoryId);
 
     return this.categoryRepository.delete({ id: categoryId });

@@ -3,7 +3,7 @@ import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { UserService } from "../services/userService";
 import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
 import { PAGINATION } from "../config/constants";
-import { ERROR_MESSAGES } from "../utils/messages";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { validateDto } from "../utils/validation";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
@@ -97,6 +97,42 @@ export class UserController {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
           .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
+      }
+    }
+  }
+
+  async deleteUser(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const { userDeleteId } = req.params;
+
+      if (!userDeleteId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED);
+        return;
+      }
+
+      const userDeleteIdNumber = Number(userDeleteId);
+
+      if (isNaN(userDeleteIdNumber)) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID);
+        return;
+      }
+
+      await this.userService.deleteUser(userDeleteIdNumber);
+
+      res
+        .status(HttpStatusCodeEnum.Ok)
+        .send(SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.InternalServerError)
+          .send(ERROR_MESSAGES.USER.DELETE_USER_ERROR);
       }
     }
   }

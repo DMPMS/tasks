@@ -26,4 +26,11 @@ userRoutes.post(
   (req, res) => userController.createAdmin(req, res)
 );
 
+userRoutes.delete(
+  "/user/:userDeleteId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.Admin]),
+  (req, res) => userController.deleteUser(req, res)
+);
+
 export default userRoutes;

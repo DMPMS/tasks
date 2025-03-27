@@ -88,7 +88,7 @@ const CreateTaskScreen = () => {
             <label className={styles.label}>Categoria</label>
             <select
               id="categoryId"
-              value={task.categoryId}
+              value={task.categoryId === undefined ? "" : task.categoryId}
               onChange={(e) => handleOnChangeCategorySelect(e)}
               className={`${styles.field} ${
                 invalidFields.includes("categoryId") ? styles.invalidField : ""

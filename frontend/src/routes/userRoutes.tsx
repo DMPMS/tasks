@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import UsersScreen from "../screens/usersScreen";
 
 export enum UserRoutesEnum {
-  Users = "/users",
+  Users = "/user",
 }
 
 export const userRoutes: RouteObject[] = [

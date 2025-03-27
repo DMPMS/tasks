@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { DeleteResult, Repository } from "typeorm";
 import { AppDataSource } from "../config/orm";
 import { UserEntity } from "../entities/userEntity";
 import { CreateUserDto } from "../dtos/creates/createUserDto";
@@ -96,5 +96,11 @@ export class UserService {
     const savedUser = await this.userRepository.save(user);
 
     return new ReturnUserDto(savedUser);
+  }
+
+  async deleteUser(userDeleteId: number): Promise<DeleteResult> {
+    await this.getUserById(userDeleteId);
+
+    return this.userRepository.delete({ id: userDeleteId });
   }
 }

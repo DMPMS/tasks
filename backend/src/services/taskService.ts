@@ -50,6 +50,8 @@ export class TaskService {
     taskId: number,
     relationsOptions?: RelationsOptionsType
   ): Promise<ReturnTaskDto> {
+    await this.userService.getUserById(userId);
+
     const task = await this.taskRepository.findOne({
       where: { id: taskId, userId: userId },
       relations: relationsOptions,
@@ -94,6 +96,7 @@ export class TaskService {
     updateTaskDto: UpdateTaskDto
   ): Promise<ReturnTaskDto> {
     await this.userService.getUserById(userId);
+
     const task = await this.getUserTaskById(userId, taskId);
 
     if (updateTaskDto.categoryId) {
@@ -120,6 +123,7 @@ export class TaskService {
     updateTaskCompletedDateDto: UpdateTaskCompletedDateDto
   ): Promise<ReturnTaskDto> {
     await this.userService.getUserById(userId);
+
     const task = await this.getUserTaskById(userId, taskId);
 
     const updatedTask = await this.taskRepository.save({
@@ -134,6 +138,8 @@ export class TaskService {
   }
 
   async deleteTask(userId: number, taskId: number): Promise<DeleteResult> {
+    await this.userService.getUserById(userId);
+
     await this.getUserTaskById(userId, taskId);
 
     return this.taskRepository.delete({ id: taskId });

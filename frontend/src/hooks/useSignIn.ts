@@ -14,9 +14,15 @@ import { AuthRedirectRoutesEnum } from "../routes/authRedirectRoutes";
 import { AxiosError } from "axios";
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { ERROR_MESSAGES, FIELD_VALIDATION_MESSAGES } from "../utils/messages";
+import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
+import { useCategoryReducer } from "../store/reducers/categoryReducer/useCategoryReducer";
+import { useUserReducer } from "../store/reducers/userReducer/useUserReducer";
 
 export const useSignIn = () => {
   const { setUser, setNotification } = useGlobalReducer();
+  const { setTask, setTasks } = useTaskReducer();
+  const { setCategory, setCategories } = useCategoryReducer();
+  const { setUsers } = useUserReducer();
 
   const { request, loadingRequest } = useRequest();
   const navigate = useNavigate();
@@ -96,6 +102,13 @@ export const useSignIn = () => {
       .then((data) => {
         setUser(data.user);
         setAuthorizationToken(data.token);
+
+        setCategory(undefined);
+        setCategories([]);
+        setTask(undefined);
+        setTasks([]);
+        setUsers([]);
+
         navigate(AuthRedirectRoutesEnum.AuthRedirect);
       })
       .catch((error: AxiosError) => {

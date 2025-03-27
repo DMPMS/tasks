@@ -19,7 +19,7 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
 
         PRIMARY KEY (id),
-        foreign key (user_id) references public.user(id),
+        foreign key (user_id) references public.user(id) ON DELETE CASCADE,
         foreign key (category_id) references public.category(id) ON DELETE SET NULL
         );
     `);

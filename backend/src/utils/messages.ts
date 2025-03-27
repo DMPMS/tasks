@@ -8,7 +8,10 @@ export const ERROR_MESSAGES = {
       `O usuário root com id ${userId} não foi encontrado.`,
     USER_ID_NOT_FOUND: (userId: number) =>
       `O usuário com id ${userId} não foi encontrado.`,
+    DELETE_USER_ERROR: "Erro ao deletar usuário.",
+    INVALID_USER_DELETE_ID: "userDeleteId inválido.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",
+    USER_DELETE_ID_IS_REQUIRED: "O userDeleteId é obrigatório.",
     USER_TYPE_IS_REQUIRED: "O userType é obrigatório.",
   },
   TASK: {
@@ -50,6 +53,9 @@ export const ERROR_MESSAGES = {
 };
 
 export const SUCCESS_MESSAGES = {
+  USER: {
+    USER_DELETED_SUCCESSFULLY: "Usuário deletado.",
+  },
   CATEGORY: {
     CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",
   },

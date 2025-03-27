@@ -21,8 +21,8 @@ interface TableProps {
   data: any;
   headers: TableHeaderType[];
   actions?: TableActionEnum[];
-  handleOnUpdate: (id: number) => void;
-  handleOnOpenModalDelete: (id: number) => void;
+  handleOnUpdate?: (id: number) => void;
+  handleOnOpenModalDelete?: (id: number) => void;
   handleOnAlterTaskStatus?: (id: number, status: TaskStatusEnum) => void;
 }
 
@@ -142,11 +142,20 @@ const Table = ({
                 )}
 
               {actions.includes(TableActionEnum.Update) && (
-                <PencilIcon onClick={() => handleOnUpdate(row.id)} width={25} />
+                <PencilIcon
+                  onClick={() =>
+                    handleOnUpdate ? handleOnUpdate(row.id) : undefined
+                  }
+                  width={25}
+                />
               )}
               {actions.includes(TableActionEnum.Delete) && (
                 <TrashIcon
-                  onClick={() => handleOnOpenModalDelete(row.id)}
+                  onClick={() =>
+                    handleOnOpenModalDelete
+                      ? handleOnOpenModalDelete(row.id)
+                      : undefined
+                  }
                   width={25}
                 />
               )}

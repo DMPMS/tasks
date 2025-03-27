@@ -14,7 +14,7 @@ export class CreateTableCategory1742265142164 implements MigrationInterface {
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
 
         PRIMARY KEY (id),
-        foreign key (user_id) references public.user(id)
+        foreign key (user_id) references public.user(id) ON DELETE CASCADE
         );
     `);
   }
