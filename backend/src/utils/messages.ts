@@ -49,6 +49,10 @@ export const ERROR_MESSAGES = {
     MISSING_ROOT_EMAIL_OR_PASSWORD:
       "ROOT_EMAIL ou ROOT_PASSWORD não definidos no arquivo .env.",
     MISSING_ROOT_EMAIL: "ROOT_EMAIL não definido no arquivo .env.",
+    MISSING_FIRST_ADMIN_EMAIL_OR_PASSWORD:
+      "FIRST_ADMIN_EMAIL ou FIRST_ADMIN_PASSWORD não definidos no arquivo .env.",
+    MISSING_FIRST_ADMIN_EMAIL:
+      "FIRST_ADMIN_EMAIL não definido no arquivo .env.",
   },
 };
 

@@ -9,7 +9,7 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         user_id INTEGER NOT NULL,
         category_id INTEGER,
         
-        title VARCHAR(${TASK.TITLE_LENGTH.MAX}) NOT NULL,
+        title VARCHAR(${TASK.TITLE_LENGTH.MAX}) NOT NULL CHECK (LENGTH(title) >= ${TASK.TITLE_LENGTH.MIN}),
         description TEXT,
         priority INTEGER NOT NULL,
         completed_date TIMESTAMP WITHOUT TIME ZONE,

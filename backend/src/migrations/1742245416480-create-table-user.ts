@@ -7,9 +7,9 @@ export class CreateTableUser1742245416480 implements MigrationInterface {
       CREATE TABLE public.user (
         id SERIAL NOT NULL,
         
-        name VARCHAR(${USER.NAME_LENGTH.MAX}) NOT NULL,
-        email VARCHAR(${USER.EMAIL_LENGTH.MAX}) NOT NULL,
-        password VARCHAR (${USER.PASSWORD_LENGTH.MAX}) NOT NULL,
+        name VARCHAR(${USER.NAME_LENGTH.MAX}) NOT NULL CHECK (LENGTH(name) >= ${USER.NAME_LENGTH.MIN}),
+        email VARCHAR(${USER.EMAIL_LENGTH.MAX}) NOT NULL CHECK (LENGTH(email) >= ${USER.EMAIL_LENGTH.MIN}),
+        password VARCHAR (${USER.PASSWORD_LENGTH.MAX}) NOT NULL CHECK (LENGTH(password) >= ${USER.PASSWORD_LENGTH.MIN}),
         user_type INTEGER NOT NULL,
 
         created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,

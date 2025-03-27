@@ -8,7 +8,7 @@ export class CreateTableCategory1742265142164 implements MigrationInterface {
         id SERIAL NOT NULL,
         user_id INTEGER NOT NULL,
         
-        name VARCHAR(${CATEGORY.NAME_LENGTH.MAX}) NOT NULL,
+        name VARCHAR(${CATEGORY.NAME_LENGTH.MAX}) NOT NULL CHECK (LENGTH(name) >= ${CATEGORY.NAME_LENGTH.MIN}),
 
         created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
