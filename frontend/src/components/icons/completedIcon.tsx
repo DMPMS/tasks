@@ -1,4 +1,7 @@
-const CompletedIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
+const CompletedIcon = ({
+  title,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { title?: string }) => {
   return (
     <svg
       viewBox="0 0 512 512"
@@ -6,6 +9,7 @@ const CompletedIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
       style={{ cursor: "default" }}
       {...props}
     >
+      <title>{title}</title>
       <circle
         cx="256"
         cy="256"

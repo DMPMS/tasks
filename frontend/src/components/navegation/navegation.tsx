@@ -48,15 +48,19 @@ const Navegation = () => {
   return (
     <div className={styles.cardNavegation}>
       {userType === UserTypeEnum.User && (
-        <TaskIcon onClick={handleOnTasks} width={35} />
+        <TaskIcon onClick={handleOnTasks} width={35} title="Minhas Tarefas" />
       )}
       {userType === UserTypeEnum.User && (
-        <CategoryIcon onClick={handleOnCategories} width={35} />
+        <CategoryIcon
+          onClick={handleOnCategories}
+          width={35}
+          title="Minhas Categorias"
+        />
       )}
       {userType === UserTypeEnum.Admin && (
-        <UserIcon onClick={handleOnUsers} width={35} />
+        <UserIcon onClick={handleOnUsers} width={35} title="Usuários" />
       )}
-      <ExitIcon onClick={handleOnLogout} width={35} />
+      <ExitIcon onClick={handleOnLogout} width={35} title="Sair" />
     </div>
   );
 };

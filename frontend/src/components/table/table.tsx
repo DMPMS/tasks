@@ -99,6 +99,7 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Pending && (
                   <PendingIcon
+                    title="Completar"
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -114,6 +115,7 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Completed && (
                   <CompletedIcon
+                    title="Desfazer"
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -129,6 +131,7 @@ const Table = ({
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Overdue && (
                   <OverdueIcon
+                    title="Concluir"
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -143,6 +146,7 @@ const Table = ({
 
               {actions.includes(TableActionEnum.Update) && (
                 <PencilIcon
+                  title="Editar"
                   onClick={() =>
                     handleOnUpdate ? handleOnUpdate(row.id) : undefined
                   }
@@ -151,6 +155,7 @@ const Table = ({
               )}
               {actions.includes(TableActionEnum.Delete) && (
                 <TrashIcon
+                  title="Excluir"
                   onClick={() =>
                     handleOnOpenModalDelete
                       ? handleOnOpenModalDelete(row.id)

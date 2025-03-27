@@ -1,4 +1,7 @@
-const UserIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
+const UserIcon = ({
+  title,
+  ...props
+}: React.SVGProps<SVGSVGElement> & { title?: string }) => {
   return (
     <svg
       viewBox="0 0 512 512"
@@ -6,6 +9,7 @@ const UserIcon = ({ ...props }: React.SVGProps<SVGSVGElement>) => {
       style={{ cursor: "default" }}
       {...props}
     >
+      <title>{title}</title>
       <g
         fill-rule="evenodd"
         transform="scale(0.975) translate(6, 6)"
