@@ -7,14 +7,15 @@ import {
 import { TableActionEnum } from "../../enums/TableActionEnum";
 import { TaskStatusEnum } from "../../enums/TaskStatusEnum";
 import { TableHeaderType } from "../../types/TableHeaderType";
-import CompletedIcon from "../icons/completedIcon";
-import OverdueIcon from "../icons/overdueIcon";
-import PencilIcon from "../icons/pencilIcon";
-import PendingIcon from "../icons/pendingIcon";
-import TrashIcon from "../icons/trashIcon";
+import CompletedIcon from "../icon/svgs/completedIcon";
+import OverdueIcon from "../icon/svgs/overdueIcon";
+import PencilIcon from "../icon/svgs/pencilIcon";
+import PendingIcon from "../icon/svgs/pendingIcon";
+import TrashIcon from "../icon/svgs/trashIcon";
 import styles from "./table.module.css";
 import { useState } from "react";
 import { TableHideLevelEnum } from "../../enums/TableHideLevelEnum";
+import Icon from "../icon/icon";
 
 interface TableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,7 +99,10 @@ const Table = ({
               {actions.includes(TableActionEnum.CompleteTask) &&
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Pending && (
-                  <PendingIcon
+                  <Icon
+                    width={15}
+                    backgroundColor="var(--color-yellow-1)"
+                    backgroundHoveredColor="var(--color-yellow-2)"
                     title="Completar"
                     onClick={() =>
                       handleOnAlterTaskStatus
@@ -108,13 +112,17 @@ const Table = ({
                           )
                         : undefined
                     }
-                    width={25}
-                  />
+                  >
+                    <PendingIcon />
+                  </Icon>
                 )}
               {actions.includes(TableActionEnum.CompleteTask) &&
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Completed && (
-                  <CompletedIcon
+                  <Icon
+                    width={15}
+                    backgroundColor="var(--color-green-1)"
+                    backgroundHoveredColor="var(--color-green-2)"
                     title="Desfazer"
                     onClick={() =>
                       handleOnAlterTaskStatus
@@ -124,14 +132,18 @@ const Table = ({
                           )
                         : undefined
                     }
-                    width={25}
-                  />
+                  >
+                    <CompletedIcon />
+                  </Icon>
                 )}
               {actions.includes(TableActionEnum.CompleteTask) &&
                 row[DEFAULT_NAME_FOR_COMPLETE_TASK] ===
                   TaskStatusEnum.Overdue && (
-                  <OverdueIcon
-                    title="Concluir"
+                  <Icon
+                    width={15}
+                    backgroundColor="var(--color-red-1)"
+                    backgroundHoveredColor="var(--color-red-2)"
+                    title="Completar"
                     onClick={() =>
                       handleOnAlterTaskStatus
                         ? handleOnAlterTaskStatus(
@@ -140,29 +152,38 @@ const Table = ({
                           )
                         : undefined
                     }
-                    width={25}
-                  />
+                  >
+                    <OverdueIcon />
+                  </Icon>
                 )}
 
               {actions.includes(TableActionEnum.Update) && (
-                <PencilIcon
+                <Icon
+                  width={15}
+                  backgroundColor="var(--color-yellow-1)"
+                  backgroundHoveredColor="var(--color-yellow-2)"
                   title="Editar"
                   onClick={() =>
                     handleOnUpdate ? handleOnUpdate(row.id) : undefined
                   }
-                  width={25}
-                />
+                >
+                  <PencilIcon />
+                </Icon>
               )}
               {actions.includes(TableActionEnum.Delete) && (
-                <TrashIcon
+                <Icon
+                  width={15}
+                  backgroundColor="var(--color-red-1)"
+                  backgroundHoveredColor="var(--color-red-2)"
                   title="Excluir"
                   onClick={() =>
                     handleOnOpenModalDelete
                       ? handleOnOpenModalDelete(row.id)
                       : undefined
                   }
-                  width={25}
-                />
+                >
+                  <TrashIcon />
+                </Icon>
               )}
             </div>
           </td>
