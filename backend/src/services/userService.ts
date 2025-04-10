@@ -8,13 +8,23 @@ import { createPasswordHashed } from "../utils/password";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
 import { PAGINATION } from "../config/constants";
+import { CategoryService } from "./categoryService";
 
 export class UserService {
+  private categoryService!: CategoryService;
+
   constructor(
     private readonly userRepository: Repository<UserEntity> = AppDataSource.getRepository(
       UserEntity
     )
   ) {}
+
+  private getCategoryService(): CategoryService {
+    if (!this.categoryService) {
+      this.categoryService = new CategoryService();
+    }
+    return this.categoryService;
+  }
 
   async getUsers(
     page: number,
@@ -94,6 +104,8 @@ export class UserService {
     }
 
     const savedUser = await this.userRepository.save(user);
+
+    await this.getCategoryService().createDefaultCategories(savedUser.id);
 
     return new ReturnUserDto(savedUser);
   }

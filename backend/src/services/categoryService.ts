@@ -7,7 +7,7 @@ import { ReturnCategoryDto } from "../dtos/returns/returnCategoryDto";
 import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateCategoryDto } from "../dtos/updates/updateCategoryDto";
-import { PAGINATION } from "../config/constants";
+import { CATEGORY, PAGINATION } from "../config/constants";
 
 export class CategoryService {
   private readonly userService: UserService;
@@ -84,6 +84,19 @@ export class CategoryService {
     const savedCategory = await this.categoryRepository.save(category);
 
     return new ReturnCategoryDto(savedCategory);
+  }
+
+  async createDefaultCategories(userId: number): Promise<void> {
+    await this.userService.getUserById(userId);
+
+    const defaultCategories = CATEGORY.DEFAULT_CATEGORIES.map((category) => ({
+      name: category,
+      userId: userId,
+    }));
+
+    const categories = this.categoryRepository.create(defaultCategories);
+
+    await this.categoryRepository.save(categories);
   }
 
   async updateCategory(

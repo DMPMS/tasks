@@ -39,4 +39,5 @@ export const CATEGORY = {
     MIN: 1,
     MAX: 20,
   },
+  DEFAULT_CATEGORIES: ["Trabalho", "Estudos", "Pessoal"],
 };
