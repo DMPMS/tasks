@@ -36,6 +36,31 @@ export class UserController {
     }
   }
 
+  async getUserInfo(req: AuthenticatedRequest, res: Response): Promise<void> {
+    try {
+      const userId = req.userId;
+
+      if (!userId) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+        return;
+      }
+
+      const user = await this.userService.getUserInfo(userId);
+
+      res.status(HttpStatusCodeEnum.Ok).json(user);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      } else {
+        res
+          .status(HttpStatusCodeEnum.InternalServerError)
+          .send(ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR);
+      }
+    }
+  }
+
   async createUser(req: Request, res: Response): Promise<void> {
     try {
       const createUserDto = plainToInstance(CreateUserDto, req.body, {

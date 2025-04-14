@@ -5,6 +5,7 @@ const SignInScreen = () => {
   const {
     loadingRequest,
     disabledButton,
+    warningFields,
     invalidFields,
     handleOnChangeInput,
     handleOnSignIn,
@@ -22,9 +23,9 @@ const SignInScreen = () => {
               type="email"
               placeholder="seuemail@email.com"
               onChange={(e) => handleOnChangeInput(e, "email")}
-              className={`${styles.input} ${
-                invalidFields.includes("email") ? styles.invalidField : ""
-              }`}
+              className={`${styles.field} ${
+                warningFields.includes("email") ? styles.warningField : ""
+              } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
             />
           </div>
 
@@ -34,7 +35,9 @@ const SignInScreen = () => {
               type="password"
               placeholder="••••••••"
               onChange={(e) => handleOnChangeInput(e, "password")}
-              className={`${styles.input} ${
+              className={`${styles.field} ${
+                warningFields.includes("password") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
             />

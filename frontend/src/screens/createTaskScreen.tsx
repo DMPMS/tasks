@@ -13,8 +13,8 @@ const CreateTaskScreen = () => {
     loadingRequest,
     disabledButton,
     isEdit,
-    invalidFields,
     warningFields,
+    invalidFields,
     categories,
     handleOnChangeInput,
     handleOnChangeTextArea,
@@ -51,8 +51,8 @@ const CreateTaskScreen = () => {
               value={task.title}
               onChange={(e) => handleOnChangeInput(e, "title")}
               className={`${styles.field} ${
-                invalidFields.includes("title") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("title") ? styles.warningField : ""
+              } ${invalidFields.includes("title") ? styles.invalidField : ""}`}
             />
           </div>
 
@@ -63,8 +63,10 @@ const CreateTaskScreen = () => {
               value={task.description}
               onChange={(e) => handleOnChangeTextArea(e, "description")}
               className={`${styles.field} ${
+                warningFields.includes("description") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("description") ? styles.invalidField : ""
-              } ${styles.textarea}`}
+              }`}
               rows={5}
             />
           </div>
@@ -80,6 +82,8 @@ const CreateTaskScreen = () => {
               onChange={(e) => handleOnChangeInput(e, "limitDate")}
               className={`${styles.field} ${
                 warningFields.includes("limitDate") ? styles.warningField : ""
+              } ${
+                invalidFields.includes("limitDate") ? styles.invalidField : ""
               }`}
             />
           </div>
@@ -91,6 +95,8 @@ const CreateTaskScreen = () => {
               value={task.categoryId === undefined ? "" : task.categoryId}
               onChange={(e) => handleOnChangeCategorySelect(e)}
               className={`${styles.field} ${
+                warningFields.includes("categoryId") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("categoryId") ? styles.invalidField : ""
               } ${task.categoryId ? styles.fontNormal : styles.fontItalic}`}
               disabled={categories.length === 0}
@@ -119,6 +125,8 @@ const CreateTaskScreen = () => {
               value={task.priority}
               onChange={(e) => handleOnChangePrioritySelect(e)}
               className={`${styles.field} ${
+                warningFields.includes("priority") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("priority") ? styles.invalidField : ""
               }`}
             >

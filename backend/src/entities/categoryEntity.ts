@@ -17,10 +17,15 @@ export class CategoryEntity {
   @PrimaryGeneratedColumn("rowid")
   id!: number;
 
-  @Column({ name: "user_id", nullable: false })
+  @Column({ type: "integer", name: "user_id", nullable: false })
   userId!: number;
 
-  @Column({ name: "name", length: CATEGORY.NAME_LENGTH.MAX, nullable: false })
+  @Column({
+    type: "varchar",
+    name: "name",
+    length: CATEGORY.NAME_LENGTH.MAX,
+    nullable: false,
+  })
   name!: string;
 
   @CreateDateColumn({ name: "created_at" })

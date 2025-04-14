@@ -3,6 +3,7 @@ const BACKEND_API_PORT = import.meta.env.VITE_BACKEND_API_PORT;
 export const URL_AUTH = `http://localhost:${BACKEND_API_PORT}/api/auth`;
 
 export const URL_USER = `http://localhost:${BACKEND_API_PORT}/api/user`;
+export const URL_USER_INFO = `http://localhost:${BACKEND_API_PORT}/api/user/info`;
 export const URL_USER_UPDATE = `http://localhost:${BACKEND_API_PORT}/api/user/update`;
 export const URL_USER_ID = `http://localhost:${BACKEND_API_PORT}/api/user/:userId`;
 

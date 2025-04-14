@@ -17,34 +17,42 @@ export class TaskEntity {
   @PrimaryGeneratedColumn("rowid")
   id!: number;
 
-  @Column({ name: "user_id", nullable: false })
+  @Column({ type: "integer", name: "user_id", nullable: false })
   userId!: number;
 
-  @Column({ name: "category_id", type: "integer", nullable: true })
+  @Column({ type: "integer", name: "category_id", nullable: true })
   categoryId!: number | null;
 
-  @Column({ name: "title", length: TASK.TITLE_LENGTH.MAX, nullable: false })
+  @Column({
+    type: "varchar",
+    name: "title",
+    length: TASK.TITLE_LENGTH.MAX,
+    nullable: false,
+  })
   title!: string;
 
-  @Column({ name: "description", type: "text", nullable: true })
+  @Column({ type: "text", name: "description", nullable: true })
   description!: string | null;
 
   @Column({
+    type: "integer",
     name: "priority",
-    type: "enum",
-    enum: PriorityEnum,
     nullable: false,
   })
   priority!: PriorityEnum;
 
   @Column({
-    name: "completed_date",
     type: "timestamp without time zone",
+    name: "completed_date",
     nullable: true,
   })
   completedDate!: Date | null;
 
-  @Column({ name: "limit_date", nullable: false })
+  @Column({
+    type: "timestamp without time zone",
+    name: "limit_date",
+    nullable: false,
+  })
   limitDate!: Date;
 
   @CreateDateColumn({ name: "created_at" })

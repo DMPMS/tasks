@@ -12,7 +12,7 @@ export const authMiddleware = (
 ): void => {
   const authorizationHeader = req.headers.authorization;
 
-  if (!authorizationHeader) {
+  if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
     res
       .status(HttpStatusCodeEnum.Unauthorized)
       .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
@@ -23,13 +23,21 @@ export const authMiddleware = (
     throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
   }
 
+  const token = authorizationHeader.split(" ")[1];
+
   try {
-    const decoded = jwt.verify(authorizationHeader, process.env.JWT_SECRET) as {
-      id: number;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+      userId: number;
+      userName: string;
+      userEmail: string;
       userType: UserTypeEnum;
     };
-    req.userId = decoded.id;
+
+    req.userId = decoded.userId;
+    req.userName = decoded.userName;
+    req.userEmail = decoded.userEmail;
     req.userType = decoded.userType;
+
     next();
   } catch (error) {
     res

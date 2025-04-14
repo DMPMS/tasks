@@ -7,7 +7,6 @@ import { ERROR_MESSAGES } from "../utils/messages";
 import { CreateAuthDto } from "../dtos/creates/createAuthDto";
 import { StringValue } from "ms";
 import { ReturnAuthDto } from "../dtos/returns/returnAuthDto";
-import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 
 export class AuthService {
   constructor(
@@ -42,13 +41,18 @@ export class AuthService {
     const expiresIn = process.env.JWT_EXPIRES_IN as StringValue;
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, userType: user.userType },
+      {
+        userId: user.id,
+        userName: user.name,
+        userEmail: user.email,
+        userType: user.userType,
+      },
       jwtSecret,
       {
         expiresIn: expiresIn,
       }
     );
 
-    return { user: new ReturnUserDto(user), token: token };
+    return new ReturnAuthDto({ token: `Bearer ${token}` });
   }
 }

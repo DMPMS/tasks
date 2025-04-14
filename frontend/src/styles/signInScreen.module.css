@@ -33,7 +33,7 @@
   margin: 0px 0px 5px 5px;
 }
 
-.input {
+.field {
   margin: 0px 0px 10px 0px;
   padding: 8px;
   border-radius: 8px;
@@ -41,7 +41,7 @@
   transition: border-color 0.3s;
 }
 
-.input:focus {
+.field:focus {
   border-color: var(--color-blue-1);
   outline: none;
 }
@@ -49,6 +49,11 @@
 .invalidField,
 .invalidField:focus {
   border-color: var(--color-red-1);
+}
+
+.warningField,
+.warningField:focus {
+  border-color: var(--color-yellow-1);
 }
 
 .containerSignUp {

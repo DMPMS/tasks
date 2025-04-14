@@ -8,6 +8,7 @@ const UpdateUserScreen = () => {
     loadingUser,
     loadingRequest,
     disabledButton,
+    warningFields,
     invalidFields,
     handleOnChangeInput,
     handleOnUpdate,
@@ -37,8 +38,8 @@ const UpdateUserScreen = () => {
               value={user.name}
               onChange={(e) => handleOnChangeInput(e, "name")}
               className={`${styles.field} ${
-                invalidFields.includes("name") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("name") ? styles.warningField : ""
+              } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
             />
           </div>
 
@@ -53,8 +54,8 @@ const UpdateUserScreen = () => {
               value={user.email}
               onChange={(e) => handleOnChangeInput(e, "email")}
               className={`${styles.field} ${
-                invalidFields.includes("email") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("email") ? styles.warningField : ""
+              } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
             />
           </div>
 
@@ -67,6 +68,8 @@ const UpdateUserScreen = () => {
               value={user.newPassword}
               onChange={(e) => handleOnChangeInput(e, "newPassword")}
               className={`${styles.field} ${
+                warningFields.includes("newPassword") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("newPassword") ? styles.invalidField : ""
               }`}
             />
@@ -86,6 +89,10 @@ const UpdateUserScreen = () => {
               value={user.confirmNewPassword}
               onChange={(e) => handleOnChangeInput(e, "confirmNewPassword")}
               className={`${styles.field} ${
+                warningFields.includes("confirmNewPassword")
+                  ? styles.warningField
+                  : ""
+              } ${
                 invalidFields.includes("confirmNewPassword")
                   ? styles.invalidField
                   : ""
@@ -105,6 +112,8 @@ const UpdateUserScreen = () => {
               value={user.password}
               onChange={(e) => handleOnChangeInput(e, "password")}
               className={`${styles.field} ${
+                warningFields.includes("password") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
             />

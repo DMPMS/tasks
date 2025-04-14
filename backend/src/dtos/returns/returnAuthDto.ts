@@ -1,6 +1,7 @@
-import { ReturnUserDto } from "./returnUserDto";
-
 export class ReturnAuthDto {
-  user!: ReturnUserDto;
-  token!: string;
+  token: string;
+
+  constructor(auth: { token: string }) {
+    this.token = auth.token;
+  }
 }

@@ -17,6 +17,10 @@ userRoutes.get(
   (req, res) => userController.getUsers(req, res)
 );
 
+userRoutes.get("/user/info", authMiddleware, (req, res) =>
+  userController.getUserInfo(req, res)
+);
+
 userRoutes.post("/user", (req, res) => userController.createUser(req, res));
 
 userRoutes.post(

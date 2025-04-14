@@ -28,7 +28,7 @@ const AuthRedirectScreen = () => {
       unsetAuthorizationToken();
       navigate(SignInRoutesEnum.SignIn);
     } else {
-      const decodedToken = jwtDecode<TokenType>(token);
+      const decodedToken = jwtDecode<TokenType>(token.split(" ")[1]);
       const currentTime = Math.floor(Date.now() / 1000);
 
       if (decodedToken.exp && decodedToken.exp < currentTime) {

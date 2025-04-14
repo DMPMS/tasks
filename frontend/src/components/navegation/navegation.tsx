@@ -24,7 +24,7 @@ const Navegation = () => {
   useEffect(() => {
     const token = getAuthorizationToken();
 
-    const decodedToken = jwtDecode<TokenType>(token!);
+    const decodedToken = jwtDecode<TokenType>(token!.split(" ")[1]);
 
     setUserType(decodedToken.userType);
   }, [user]);

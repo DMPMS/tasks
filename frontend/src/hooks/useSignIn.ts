@@ -17,6 +17,8 @@ import { ERROR_MESSAGES, FIELD_VALIDATION_MESSAGES } from "../utils/messages";
 import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
 import { useCategoryReducer } from "../store/reducers/categoryReducer/useCategoryReducer";
 import { useUserReducer } from "../store/reducers/userReducer/useUserReducer";
+import { TokenType } from "../types/TokenType";
+import { jwtDecode } from "jwt-decode";
 
 export const useSignIn = () => {
   const { setUser, setNotification } = useGlobalReducer();
@@ -100,8 +102,15 @@ export const useSignIn = () => {
       timeout: 1000,
     })
       .then((data) => {
-        setUser(data.user);
         setAuthorizationToken(data.token);
+
+        const decodedToken = jwtDecode<TokenType>(data.token.split(" ")[1]);
+
+        setUser({
+          id: decodedToken.userId,
+          name: decodedToken.userName,
+          email: decodedToken.userEmail,
+        });
 
         setCategory(undefined);
         setCategories([]);

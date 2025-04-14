@@ -4,6 +4,7 @@ export const ERROR_MESSAGES = {
     CREATE_USER_ERROR: "Erro ao criar usuário.",
     UPDATE_USER_ERROR: "Erro ao editar usuário.",
     SELECT_USER_ERROR: "Erro ao buscar usuários.",
+    SELECT_USER_INFO_ERROR: "Erro ao buscar informações do usuário.",
     PASSWORDS_DO_NOT_MATCH: "As senhas não coincidem.",
     USER_ROOT_ID_NOT_FOUND: (userId: number) =>
       `O usuário root com id ${userId} não foi encontrado.`,

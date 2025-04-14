@@ -9,7 +9,7 @@ import { USER } from "../config/constants";
 import { isValidEmail } from "../utils/functions/valitadion";
 import { UserType } from "../types/UserType";
 import { MethodEnum } from "../enums/MethodEnum";
-import { URL_USER_UPDATE } from "../config/urls";
+import { URL_USER_INFO, URL_USER_UPDATE } from "../config/urls";
 import {
   ERROR_MESSAGES,
   FIELD_VALIDATION_MESSAGES,
@@ -18,9 +18,6 @@ import {
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { UserRoutesEnum } from "../routes/userRoutes";
 import { AxiosError } from "axios";
-import { getAuthorizationToken } from "../utils/functions/auth";
-import { TokenType } from "../types/TokenType";
-import { jwtDecode } from "jwt-decode";
 
 export const useUpdateUser = () => {
   const {
@@ -39,12 +36,38 @@ export const useUpdateUser = () => {
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
 
-  // Temporary fix while unable to update the userReducer on page reload.
+  // Just to retrigger handleValidateOnEdit.
   const [aux, setAux] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!userReducer) {
+      const findAndSetUserReducer = async () => {
+        await request<UserType>({
+          method: MethodEnum.Get,
+          url: URL_USER_INFO,
+          timeout: 1000,
+        })
+          .then(async (data) => {
+            setUserReducer(data);
+            setLoadingUser(false);
+          })
+          .catch((error: AxiosError) => {
+            const responseErrorMessage =
+              (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
+            setNotification({
+              message: responseErrorMessage,
+              type: NotificationEnum.Error,
+            });
+          });
+      };
+
+      findAndSetUserReducer();
+    } else {
+      setLoadingUser(false);
+    }
+
     setAux(true);
-    setLoadingUser(false);
   }, []);
 
   useEffect(() => {
@@ -304,15 +327,6 @@ export const useUpdateUser = () => {
         if (userReducer) {
           setUserReducer({
             ...userReducer,
-            name: user.name,
-            email: user.email,
-          });
-        } else {
-          const token = getAuthorizationToken();
-          const decodedToken = jwtDecode<TokenType>(token!);
-
-          setUserReducer({
-            id: decodedToken.id,
             name: user.name,
             email: user.email,
           });

@@ -18,6 +18,8 @@ import { setAuthorizationToken } from "../utils/functions/auth";
 import { AuthRedirectRoutesEnum } from "../routes/authRedirectRoutes";
 import { useTaskReducer } from "../store/reducers/taskReducer/useTaskReducer";
 import { useCategoryReducer } from "../store/reducers/categoryReducer/useCategoryReducer";
+import { jwtDecode } from "jwt-decode";
+import { TokenType } from "../types/TokenType";
 
 export const useSignUp = () => {
   const { setUser, setNotification } = useGlobalReducer();
@@ -242,8 +244,15 @@ export const useSignUp = () => {
           timeout: 0,
         })
           .then((data) => {
-            setUser(data.user);
             setAuthorizationToken(data.token);
+
+            const decodedToken = jwtDecode<TokenType>(data.token.split(" ")[1]);
+
+            setUser({
+              id: decodedToken.userId,
+              name: decodedToken.userName,
+              email: decodedToken.userEmail,
+            });
 
             setCategory(undefined);
             setCategories([]);

@@ -22,7 +22,11 @@ export const getAuthorizationToken = () => {
 
 export const isValidToken = (token: string): boolean => {
   try {
-    jwtDecode<TokenType>(token);
+    if (!token.startsWith("Bearer ")) {
+      return false;
+    }
+
+    jwtDecode<TokenType>(token.split(" ")[1]);
     return true;
   } catch {
     return false;
