@@ -1,9 +1,9 @@
-import { IsString, Length, Validate } from "class-validator";
+import { IsOptional, IsString, Length, Validate } from "class-validator";
 import { IsCustomEmail } from "../../validators/isCustomEmail";
 import { USER } from "../../config/constants";
 import { Expose } from "class-transformer";
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @Expose()
   @IsString()
   @Length(USER.NAME_LENGTH.MIN, USER.NAME_LENGTH.MAX)
@@ -17,11 +17,17 @@ export class CreateUserDto {
 
   @Expose()
   @IsString()
+  @IsOptional()
   @Length(USER.PASSWORD_LENGTH.MIN, USER.PASSWORD_LENGTH.MAX)
-  password!: string;
+  newPassword!: string;
 
   @Expose()
   @IsString()
+  @IsOptional()
   @Length(USER.CONFIRM_PASSWORD_LENGTH.MIN, USER.CONFIRM_PASSWORD_LENGTH.MAX)
-  confirmPassword!: string;
+  confirmNewPassword!: string;
+
+  @Expose()
+  @IsString()
+  password!: string;
 }

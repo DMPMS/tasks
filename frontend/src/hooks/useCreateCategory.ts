@@ -212,7 +212,7 @@ export const useCreateCategory = (categoryId?: string) => {
           await fetchTasks(0);
 
           setNotification({
-            message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_UPDATE_SUCCESSFULLY,
+            message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_UPDATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
 

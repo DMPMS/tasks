@@ -9,19 +9,24 @@ import { authRedirectRoutes } from "./routes/authRedirectRoutes";
 import { verifyLoggedIn } from "./utils/functions/auth";
 import { UserTypeEnum } from "./enums/UserTypeEnum";
 import { taskRoutes } from "./routes/taskRoutes";
-import { userRoutes } from "./routes/userRoutes";
+import { userRoutes, UserRoutesEnum } from "./routes/userRoutes";
 import Notification from "./components/notification/notification";
 import NotFoundScreen from "./screens/notFoundScreen";
 import { categoryRoutes } from "./routes/categoryRoutes";
 
 const routesNotLoggedIn: RouteObject[] = [...signInRoutes, ...signUpRoutes];
 
-const routesLoggedIn: RouteObject[] = [...authRedirectRoutes].map((route) => ({
+const routesLoggedIn: RouteObject[] = [
+  ...authRedirectRoutes,
+  ...userRoutes.filter((route) => route.path === UserRoutesEnum.UpdateUser),
+].map((route) => ({
   ...route,
   loader: verifyLoggedIn(),
 }));
 
-const routesAdminLoggedIn: RouteObject[] = [...userRoutes].map((route) => ({
+const routesAdminLoggedIn: RouteObject[] = [
+  ...userRoutes.filter((route) => route.path !== UserRoutesEnum.UpdateUser),
+].map((route) => ({
   ...route,
   loader: verifyLoggedIn(UserTypeEnum.Admin),
 }));

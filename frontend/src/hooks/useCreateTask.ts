@@ -253,7 +253,7 @@ export const useCreateTask = (taskId?: string) => {
           await fetchTasks(0);
 
           setNotification({
-            message: SUCCESS_MESSAGES.TASK.TASK_UPDATE_SUCCESSFULLY,
+            message: SUCCESS_MESSAGES.TASK.TASK_UPDATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
 

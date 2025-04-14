@@ -7,6 +7,7 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { validateDto } from "../utils/validation";
 import { UpdateCategoryDto } from "../dtos/updates/updateCategoryDto";
+import { plainToInstance } from "class-transformer";
 
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -100,14 +101,17 @@ export class CategoryController {
     res: Response
   ): Promise<void> {
     try {
-      const createCategoryDto = Object.assign(
-        new CreateCategoryDto(),
-        req.body
-      );
+      const createCategoryDto = plainToInstance(CreateCategoryDto, req.body, {
+        excludeExtraneousValues: true,
+      });
+
       const userId = req.userId;
 
       const isValid = await validateDto(createCategoryDto, res);
       if (!isValid) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
@@ -140,15 +144,18 @@ export class CategoryController {
     res: Response
   ): Promise<void> {
     try {
-      const updateCategoryDto = Object.assign(
-        new UpdateCategoryDto(),
-        req.body
-      );
+      const updateCategoryDto = plainToInstance(UpdateCategoryDto, req.body, {
+        excludeExtraneousValues: true,
+      });
+
       const userId = req.userId;
       const { categoryId } = req.params;
 
       const isValid = await validateDto(updateCategoryDto, res);
       if (!isValid) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 

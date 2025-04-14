@@ -10,10 +10,11 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { TokenType } from "../../types/TokenType";
 import { UserTypeEnum } from "../../enums/UserTypeEnum";
-import UserIcon from "../icon/svgs/userIcon";
+import UsersIcon from "../icon/svgs/usersIcon";
 import { UserRoutesEnum } from "../../routes/userRoutes";
 import Icon from "../icon/icon";
 import TaskIcon from "../icon/svgs/taskIcon";
+import EditUserIcon from "../icon/svgs/editUserIcon";
 
 const Navegation = () => {
   const { user } = useGlobalReducer();
@@ -40,6 +41,10 @@ const Navegation = () => {
 
   const handleOnUsers = () => {
     navigate(UserRoutesEnum.Users);
+  };
+
+  const handleOnUpdateUser = () => {
+    navigate(UserRoutesEnum.UpdateUser);
   };
 
   const handleOnLogout = () => {
@@ -78,9 +83,18 @@ const Navegation = () => {
           title="Usuários"
           onClick={handleOnUsers}
         >
-          <UserIcon />
+          <UsersIcon />
         </Icon>
       )}
+      <Icon
+        width={20}
+        backgroundColor="var(--color-blue-1)"
+        backgroundHoveredColor="var(--color-blue-2)"
+        title="Editar Usuário"
+        onClick={handleOnUpdateUser}
+      >
+        <EditUserIcon />
+      </Icon>
       <Icon
         width={20}
         backgroundColor="var(--color-red-1)"

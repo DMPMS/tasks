@@ -26,6 +26,10 @@ userRoutes.post(
   (req, res) => userController.createAdmin(req, res)
 );
 
+userRoutes.put("/user/update", authMiddleware, (req, res) =>
+  userController.updateUser(req, res)
+);
+
 userRoutes.delete(
   "/user/:userDeleteId",
   authMiddleware,

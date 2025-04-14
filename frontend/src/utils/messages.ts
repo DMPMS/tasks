@@ -6,15 +6,16 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   USER: {
     USER_DELETED_SUCCESSFULLY: "Usuário deletado.",
+    USER_UPDATED_SUCCESSFULLY: "Usuário editado.",
   },
   TASK: {
     TASK_CREATED_SUCCESSFULLY: "Tarefa criada.",
-    TASK_UPDATE_SUCCESSFULLY: "Tarefa editada.",
+    TASK_UPDATED_SUCCESSFULLY: "Tarefa editada.",
     TASK_DELETED_SUCCESSFULLY: "Tarefa deletada.",
   },
   CATEGORY: {
     CATEGORY_CREATED_SUCCESSFULLY: "Categoria criada.",
-    CATEGORY_UPDATE_SUCCESSFULLY: "Categoria editada.",
+    CATEGORY_UPDATED_SUCCESSFULLY: "Categoria editada.",
     CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",
   },
 };

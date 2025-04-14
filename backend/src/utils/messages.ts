@@ -2,14 +2,18 @@ export const ERROR_MESSAGES = {
   USER: {
     EMAIL_ALREADY_EXISTS: "E-mail já cadastrado.",
     CREATE_USER_ERROR: "Erro ao criar usuário.",
+    UPDATE_USER_ERROR: "Erro ao editar usuário.",
     SELECT_USER_ERROR: "Erro ao buscar usuários.",
     PASSWORDS_DO_NOT_MATCH: "As senhas não coincidem.",
     USER_ROOT_ID_NOT_FOUND: (userId: number) =>
       `O usuário root com id ${userId} não foi encontrado.`,
     USER_ID_NOT_FOUND: (userId: number) =>
       `O usuário com id ${userId} não foi encontrado.`,
+    USER_EMAIL_NOT_FOUND: (userEmail: string) =>
+      `O usuário com e-mail ${userEmail} não foi encontrado.`,
     DELETE_USER_ERROR: "Erro ao deletar usuário.",
     INVALID_USER_DELETE_ID: "userDeleteId inválido.",
+    INVALID_USER_PASSWORD: "Senha atual incorreta.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",
     USER_DELETE_ID_IS_REQUIRED: "O userDeleteId é obrigatório.",
     USER_TYPE_IS_REQUIRED: "O userType é obrigatório.",
@@ -53,6 +57,10 @@ export const ERROR_MESSAGES = {
       "FIRST_ADMIN_EMAIL ou FIRST_ADMIN_PASSWORD não definidos no arquivo .env.",
     MISSING_FIRST_ADMIN_EMAIL:
       "FIRST_ADMIN_EMAIL não definido no arquivo .env.",
+  },
+  DTO: {
+    INVALID_DATA:
+      "Os dados fornecidos são inválidos. Verifique e tente novamente.",
   },
 };
 
