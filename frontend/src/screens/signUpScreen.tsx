@@ -32,6 +32,7 @@ const SignUpScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("name") ? styles.warningField : ""
               } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -48,6 +49,7 @@ const SignUpScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("email") ? styles.warningField : ""
               } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -66,6 +68,7 @@ const SignUpScreen = () => {
               } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -88,6 +91,7 @@ const SignUpScreen = () => {
                   ? styles.invalidField
                   : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 

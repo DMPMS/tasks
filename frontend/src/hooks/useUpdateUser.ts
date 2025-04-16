@@ -9,7 +9,7 @@ import { USER } from "../config/constants";
 import { isValidEmail } from "../utils/functions/valitadion";
 import { UserType } from "../types/UserType";
 import { MethodEnum } from "../enums/MethodEnum";
-import { URL_USER_INFO, URL_USER_UPDATE } from "../config/urls";
+import { URL_USER, URL_USER_INFO, URL_USER_UPDATE } from "../config/urls";
 import {
   ERROR_MESSAGES,
   FIELD_VALIDATION_MESSAGES,
@@ -18,6 +18,7 @@ import {
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { UserRoutesEnum } from "../routes/userRoutes";
 import { AxiosError } from "axios";
+import { logout } from "../utils/functions/auth";
 
 export const useUpdateUser = () => {
   const {
@@ -33,10 +34,13 @@ export const useUpdateUser = () => {
   const [disabledButton, setDisabledButton] = useState<boolean>(true);
   const [user, setUser] = useState<UserDto>(DEFAULT_USER);
 
+  const [openModalDelete, setOpenModalDelete] = useState<boolean>(false);
+  const [deletePassword, setDeletePassword] = useState<string>("");
+
   const [invalidFields, setInvalidFields] = useState<string[]>([]);
   const [warningFields, setWarningFields] = useState<string[]>([]);
 
-  // Just to retrigger handleValidateOnEdit.
+  // Just to retrigger handleValidateOnEdit after the component has been mounted.
   const [aux, setAux] = useState<boolean>(false);
 
   useEffect(() => {
@@ -125,6 +129,17 @@ export const useUpdateUser = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (openModalDelete) {
+      setDeletePassword("");
+
+      handleValidateOnEdit({
+        id: "deletePassword",
+        value: "",
+      });
+    }
+  }, [openModalDelete]);
+
   const validateInputField = (
     name: string,
     value: string,
@@ -137,6 +152,7 @@ export const useUpdateUser = () => {
         "newPassword",
         "confirmNewPassword",
         "password",
+        "deletePassword",
       ].includes(name)
     ) {
       return;
@@ -297,11 +313,16 @@ export const useUpdateUser = () => {
     const input = e.target;
     const value = input.value;
 
-    setUser({
-      ...user,
-      [name]: name === "email" ? value.toLowerCase() : value,
-      ...(name === "newPassword" && value === "" && { confirmNewPassword: "" }),
-    });
+    if (name === "deletePassword") {
+      setDeletePassword(value);
+    } else {
+      setUser({
+        ...user,
+        [name]: name === "email" ? value.toLowerCase() : value,
+        ...(name === "newPassword" &&
+          value === "" && { confirmNewPassword: "" }),
+      });
+    }
 
     validateInputField(name, value, input);
   };
@@ -350,10 +371,45 @@ export const useUpdateUser = () => {
       });
   };
 
+  const handleOnDelete = async () => {
+    await request<void>({
+      method: MethodEnum.Delete,
+      url: URL_USER,
+      timeout: 1000,
+      body: {
+        password: deletePassword,
+      },
+    })
+      .then(async () => {
+        setNotification({
+          message: SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY,
+          type: NotificationEnum.Success,
+        });
+
+        logout(navigate);
+      })
+      .catch((error: AxiosError) => {
+        const responseErrorMessage =
+          (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+        setNotification({
+          message: responseErrorMessage,
+          type: NotificationEnum.Error,
+        });
+      });
+  };
+
   const handleOnReset = () => {
     setUser(DEFAULT_USER);
     setInvalidFields([]);
     setWarningFields([]);
+  };
+
+  const handleOnCloseModalDelete = () => {
+    setOpenModalDelete(false);
+  };
+
+  const handleOnOpenModalDelete = () => {
+    setOpenModalDelete(true);
   };
 
   return {
@@ -366,5 +422,9 @@ export const useUpdateUser = () => {
     handleOnChangeInput,
     handleOnUpdate,
     handleOnReset,
+    handleOnDelete,
+    openModalDelete,
+    handleOnOpenModalDelete,
+    handleOnCloseModalDelete,
   };
 };

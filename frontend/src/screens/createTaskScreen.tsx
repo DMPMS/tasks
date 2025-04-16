@@ -53,6 +53,7 @@ const CreateTaskScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("title") ? styles.warningField : ""
               } ${invalidFields.includes("title") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -68,6 +69,7 @@ const CreateTaskScreen = () => {
                 invalidFields.includes("description") ? styles.invalidField : ""
               }`}
               rows={5}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -85,6 +87,7 @@ const CreateTaskScreen = () => {
               } ${
                 invalidFields.includes("limitDate") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -99,7 +102,7 @@ const CreateTaskScreen = () => {
               } ${
                 invalidFields.includes("categoryId") ? styles.invalidField : ""
               } ${task.categoryId ? styles.fontNormal : styles.fontItalic}`}
-              disabled={categories.length === 0}
+              disabled={categories.length === 0 || loadingRequest}
             >
               <option value="" className={styles.fontItalic}>
                 Nenhuma
@@ -129,6 +132,7 @@ const CreateTaskScreen = () => {
               } ${
                 invalidFields.includes("priority") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest}
             >
               <option value={PriorityEnum.High}>Alta</option>
               <option value={PriorityEnum.Medium}>Média</option>

@@ -26,6 +26,7 @@ const SignInScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("email") ? styles.warningField : ""
               } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -40,6 +41,7 @@ const SignInScreen = () => {
               } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 

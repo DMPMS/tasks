@@ -35,10 +35,24 @@ userRoutes.put("/user/update", authMiddleware, (req, res) =>
 );
 
 userRoutes.delete(
+  "/user",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.User, UserTypeEnum.Admin]),
+  (req, res) => userController.deleteUserMy(req, res)
+);
+
+userRoutes.delete(
   "/user/:userDeleteId",
   authMiddleware,
   roleMiddleware([UserTypeEnum.Admin]),
   (req, res) => userController.deleteUser(req, res)
+);
+
+userRoutes.delete(
+  "/user/admin/:adminDeleteId",
+  authMiddleware,
+  roleMiddleware([UserTypeEnum.Root]),
+  (req, res) => userController.deleteAdmin(req, res)
 );
 
 export default userRoutes;

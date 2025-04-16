@@ -1,3 +1,4 @@
+import ModalDeleteUser from "../components/modalDeleteUser/modalDeleteUser";
 import Navegation from "../components/navegation/navegation";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import styles from "../styles/updateUserScreen.module.css";
@@ -13,6 +14,10 @@ const UpdateUserScreen = () => {
     handleOnChangeInput,
     handleOnUpdate,
     handleOnReset,
+    handleOnDelete,
+    openModalDelete,
+    handleOnOpenModalDelete,
+    handleOnCloseModalDelete,
   } = useUpdateUser();
 
   return loadingUser ? (
@@ -40,6 +45,7 @@ const UpdateUserScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("name") ? styles.warningField : ""
               } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
+              disabled={loadingRequest && !openModalDelete}
             />
           </div>
 
@@ -56,6 +62,7 @@ const UpdateUserScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("email") ? styles.warningField : ""
               } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
+              disabled={loadingRequest && !openModalDelete}
             />
           </div>
 
@@ -72,6 +79,7 @@ const UpdateUserScreen = () => {
               } ${
                 invalidFields.includes("newPassword") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest && !openModalDelete}
             />
           </div>
 
@@ -97,7 +105,9 @@ const UpdateUserScreen = () => {
                   ? styles.invalidField
                   : ""
               }`}
-              disabled={user.newPassword ? false : true}
+              disabled={
+                (!user.newPassword || loadingRequest) && !openModalDelete
+              }
             />
           </div>
 
@@ -116,6 +126,7 @@ const UpdateUserScreen = () => {
               } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest && !openModalDelete}
             />
           </div>
 
@@ -124,8 +135,8 @@ const UpdateUserScreen = () => {
               <button
                 type="button"
                 className={`${styles.button} ${styles.deleteButton}`}
-                disabled={loadingRequest}
-                // onClick={handleOnCancel}
+                disabled={loadingRequest && !openModalDelete}
+                onClick={handleOnOpenModalDelete}
               >
                 Deletar usuário
               </button>
@@ -133,7 +144,7 @@ const UpdateUserScreen = () => {
               <button
                 type="button"
                 className={`${styles.button} ${styles.resetButton}`}
-                disabled={loadingRequest}
+                disabled={loadingRequest && !openModalDelete}
                 onClick={handleOnReset}
               >
                 Resetar
@@ -143,16 +154,30 @@ const UpdateUserScreen = () => {
             <button
               type="submit"
               className={`${styles.button} ${styles.submitButton}`}
-              disabled={disabledButton || loadingRequest}
+              disabled={disabledButton || (loadingRequest && !openModalDelete)}
             >
               <span className={styles.buttonContent}>
                 <span>Salvar</span>
-                {loadingRequest && <span className={styles.spinner}></span>}
+                {loadingRequest && !openModalDelete && (
+                  <span className={styles.spinner}></span>
+                )}
               </span>
             </button>
           </div>
         </form>
       </div>
+
+      <ModalDeleteUser
+        title="Deseja realmente excluir seu usuário?"
+        description="Esta ação será irreversível. Insira sua senha atual para confirmar a exclusão."
+        isOpen={openModalDelete}
+        onConfirm={handleOnDelete}
+        onClose={handleOnCloseModalDelete}
+        onChangeInput={handleOnChangeInput}
+        warningFields={warningFields}
+        invalidFields={invalidFields}
+        loading={loadingRequest}
+      />
     </div>
   );
 };

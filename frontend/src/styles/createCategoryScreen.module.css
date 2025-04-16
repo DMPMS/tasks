@@ -47,6 +47,11 @@
   transition: border-color 0.3s;
 }
 
+.field:disabled {
+  background-color: var(--color-white-2);
+  cursor: not-allowed;
+}
+
 .field:focus {
   border-color: var(--color-blue-1);
   outline: none;
@@ -63,7 +68,7 @@
 }
 
 .actions {
-  margin: "10px 0px 0px 0px";
+  margin: 10px 0px 0px 0px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

@@ -7,6 +7,8 @@ export const SUCCESS_MESSAGES = {
   USER: {
     USER_DELETED_SUCCESSFULLY: "Usuário deletado.",
     USER_UPDATED_SUCCESSFULLY: "Usuário editado.",
+    USER_MY_DELETED_SUCCESSFULLY:
+      "Usuário deletado. Volte sempre que quiser 🥹.",
   },
   TASK: {
     TASK_CREATED_SUCCESSFULLY: "Tarefa criada.",

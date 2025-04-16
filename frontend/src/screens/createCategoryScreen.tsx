@@ -47,6 +47,7 @@ const CreateCategoryScreen = () => {
               className={`${styles.field} ${
                 warningFields.includes("name") ? styles.warningField : ""
               } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 

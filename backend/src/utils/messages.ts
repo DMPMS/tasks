@@ -13,10 +13,14 @@ export const ERROR_MESSAGES = {
     USER_EMAIL_NOT_FOUND: (userEmail: string) =>
       `O usuário com e-mail ${userEmail} não foi encontrado.`,
     DELETE_USER_ERROR: "Erro ao deletar usuário.",
+    DELETE_ADMIN_ERROR: "Erro ao deletar administrador.",
+    DELETE_USER_MY_ERROR: "Erro ao deletar seu usuário.",
     INVALID_USER_DELETE_ID: "userDeleteId inválido.",
+    INVALID_ADMIN_DELETE_ID: "adminDeleteId inválido.",
     INVALID_USER_PASSWORD: "Senha atual incorreta.",
     USER_ID_IS_REQUIRED: "O userId é obrigatório.",
     USER_DELETE_ID_IS_REQUIRED: "O userDeleteId é obrigatório.",
+    ADMIN_DELETE_ID_IS_REQUIRED: "O adminDeleteId é obrigatório.",
     USER_TYPE_IS_REQUIRED: "O userType é obrigatório.",
   },
   TASK: {
@@ -68,6 +72,9 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   USER: {
     USER_DELETED_SUCCESSFULLY: "Usuário deletado.",
+    ADMIN_DELETED_SUCCESSFULLY: "Administrador deletado.",
+    USER_MY_DELETED_SUCCESSFULLY:
+      "Usuário deletado. Volte sempre que quiser 🥹.",
   },
   CATEGORY: {
     CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",

@@ -10,6 +10,7 @@ import { UserTypeEnum } from "../enums/UserTypeEnum";
 import { PAGINATION } from "../config/constants";
 import { CategoryService } from "./categoryService";
 import { UpdateUserDto } from "../dtos/updates/updateUserDto";
+import { DeleteUserDto } from "../dtos/deletes/deleteUserDto";
 
 export class UserService {
   private categoryService!: CategoryService;
@@ -140,7 +141,9 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(user);
 
-    await this.getCategoryService().createDefaultCategories(savedUser.id);
+    if (!userId) {
+      await this.getCategoryService().createDefaultCategories(savedUser.id);
+    }
 
     return new ReturnUserDto(savedUser);
   }
@@ -197,9 +200,45 @@ export class UserService {
     return new ReturnUserDto(updatedUser);
   }
 
+  async deleteUserMy(
+    userId: number,
+    deleteUserDto: DeleteUserDto
+  ): Promise<DeleteResult> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+    }
+
+    const isMatch = await validatePassword(
+      deleteUserDto.password,
+      user.password
+    );
+
+    if (!isMatch) {
+      throw new Error(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
+    }
+
+    return this.userRepository.delete({ id: userId });
+  }
+
   async deleteUser(userDeleteId: number): Promise<DeleteResult> {
     await this.getUserById(userDeleteId);
 
     return this.userRepository.delete({ id: userDeleteId });
+  }
+
+  async deleteAdmin(adminDeleteId: number): Promise<DeleteResult> {
+    const user = await this.userRepository.findOne({
+      where: { id: adminDeleteId, userType: UserTypeEnum.Admin },
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(adminDeleteId));
+    }
+
+    return this.userRepository.delete({ id: adminDeleteId });
   }
 }
