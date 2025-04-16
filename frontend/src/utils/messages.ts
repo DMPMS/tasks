@@ -20,6 +20,10 @@ export const SUCCESS_MESSAGES = {
     CATEGORY_UPDATED_SUCCESSFULLY: "Categoria editada.",
     CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",
   },
+  WELCOME: {
+    SIGN_IN: (name: string) => `Bem-vindo(a) de volta, ${name} 😊!`,
+    SIGN_UP: (name: string) => `Bem-vindo(a), ${name} 😊!`,
+  },
 };
 
 export const FIELD_VALIDATION_MESSAGES = {

@@ -8,7 +8,11 @@ import { UserType } from "../types/UserType";
 import { MethodEnum } from "../enums/MethodEnum";
 import { URL_AUTH, URL_USER } from "../config/urls";
 import { AxiosError } from "axios";
-import { ERROR_MESSAGES, FIELD_VALIDATION_MESSAGES } from "../utils/messages";
+import {
+  ERROR_MESSAGES,
+  FIELD_VALIDATION_MESSAGES,
+  SUCCESS_MESSAGES,
+} from "../utils/messages";
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { SignInRoutesEnum } from "../routes/signInRoutes";
 import { useNavigate } from "react-router-dom";
@@ -258,6 +262,13 @@ export const useSignUp = () => {
             setCategories([]);
             setTask(undefined);
             setTasks([]);
+
+            setNotification({
+              message: SUCCESS_MESSAGES.WELCOME.SIGN_UP(
+                decodedToken.userName.split(" ")[0]
+              ),
+              type: NotificationEnum.Success,
+            });
 
             navigate(AuthRedirectRoutesEnum.AuthRedirect);
           })
