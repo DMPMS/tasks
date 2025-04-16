@@ -44,7 +44,7 @@ Um projeto simples de controle de tarefas pessoais.
    cd backend
 ```
 
-2. No arquivo **.env**, configurar:
+2. Criar o arquivo **.env** e configurar:
 - **Banco de dados**:
   - **DB_HOST**: endereço do servidor do banco de dados do PostgreSQL. Usar **localhost** caso estiver rodando localmente;
   - **DB_USER**: usuário do banco de dados do PostgreSQL. O padrão é **postgres**;
@@ -105,7 +105,7 @@ Um projeto simples de controle de tarefas pessoais.
    cd frontend
 ```
 
-2. No arquivo **.env**, configurar:
+2. Criar o arquivo **.env** e configurar:
 
 - **VITE_BACKEND_API_PORT**: porta onde o backend está rodando para que o frontend possa fazer requisições corretamente. É a mesma porta utilizada anteriormente no passo de configurações do backend em **API_PORT**.
 
@@ -132,4 +132,4 @@ Um projeto simples de controle de tarefas pessoais.
 ```
 
 ## 🏁 Tudo pronto!
-Agora, basta acessar a URL onde a aplicação está sendo executada em seu navegador. Quando a aplicação é executada pela primeira vez, um usuário root é criado, permitindo a criação de usuários do tipo admin, além da inserção de um usuário admin.
+Agora, basta acessar a URL onde a aplicação está sendo executada em seu navegador. Ao ser executada pela primeira vez, a aplicação cria automaticamente um usuário do tipo Root, responsável por cadastrar e excluir usuários do tipo Admin. Além disso, um usuário Admin também é inserido no sistema.
