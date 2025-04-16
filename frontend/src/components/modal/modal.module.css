@@ -16,6 +16,7 @@
   flex-direction: column;
   background-color: var(--color-white-1);
   padding: 16px;
+  margin: 16px;
   border-radius: 8px;
   width: 300px;
 }
@@ -26,11 +27,13 @@
 }
 
 .description {
-  margin: 0px 0px 20px 0px;
+  margin: 0px 0px 10px 0px;
 }
 
 .actions {
+  margin: 10px 0px 0px 0px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: right;
   gap: 5px;
 }

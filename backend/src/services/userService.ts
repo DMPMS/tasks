@@ -4,17 +4,29 @@ import { UserEntity } from "../entities/userEntity";
 import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 import { ERROR_MESSAGES } from "../utils/messages";
-import { createPasswordHashed } from "../utils/password";
+import { createPasswordHashed, validatePassword } from "../utils/password";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
 import { PAGINATION } from "../config/constants";
+import { CategoryService } from "./categoryService";
+import { UpdateUserDto } from "../dtos/updates/updateUserDto";
+import { DeleteUserDto } from "../dtos/deletes/deleteUserDto";
 
 export class UserService {
+  private categoryService!: CategoryService;
+
   constructor(
     private readonly userRepository: Repository<UserEntity> = AppDataSource.getRepository(
       UserEntity
     )
   ) {}
+
+  private getCategoryService(): CategoryService {
+    if (!this.categoryService) {
+      this.categoryService = new CategoryService();
+    }
+    return this.categoryService;
+  }
 
   async getUsers(
     page: number,
@@ -33,6 +45,22 @@ export class UserService {
     return users.map((user) => new ReturnUserDto(user));
   }
 
+  async getUserInfo(
+    userId: number,
+    relationsOptions?: RelationsOptionsType
+  ): Promise<ReturnUserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: relationsOptions,
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+    }
+
+    return new ReturnUserDto(user);
+  }
+
   async getUserById(
     userId: number,
     relationsOptions?: RelationsOptionsType
@@ -49,14 +77,32 @@ export class UserService {
     return new ReturnUserDto(user);
   }
 
+  async getUserByEmail(
+    email: string,
+    relationsOptions?: RelationsOptionsType
+  ): Promise<ReturnUserDto> {
+    const user = await this.userRepository.findOne({
+      where: { email: email.toLowerCase() },
+      relations: relationsOptions,
+    });
+
+    if (!user) {
+      throw new Error(
+        ERROR_MESSAGES.USER.USER_EMAIL_NOT_FOUND(email.toLowerCase())
+      );
+    }
+
+    return new ReturnUserDto(user);
+  }
+
   async createUser(
     createUserDto: CreateUserDto,
     userId?: number,
     userType?: UserTypeEnum
   ): Promise<ReturnUserDto> {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email.toLowerCase() },
-    });
+    const existingUser = await this.getUserByEmail(createUserDto.email).catch(
+      () => undefined
+    );
 
     if (existingUser) {
       throw new Error(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
@@ -95,12 +141,104 @@ export class UserService {
 
     const savedUser = await this.userRepository.save(user);
 
+    if (!userId) {
+      await this.getCategoryService().createDefaultCategories(savedUser.id);
+    }
+
     return new ReturnUserDto(savedUser);
+  }
+
+  async updateUser(
+    userId: number,
+    updateUserDto: UpdateUserDto
+  ): Promise<ReturnUserDto> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+    }
+
+    updateUserDto.email = updateUserDto.email.toLowerCase();
+
+    if (user.email !== updateUserDto.email) {
+      const existingUser = await this.getUserByEmail(updateUserDto.email).catch(
+        () => undefined
+      );
+
+      if (existingUser) {
+        throw new Error(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
+      }
+    }
+
+    if (updateUserDto.newPassword) {
+      if (updateUserDto.newPassword !== updateUserDto.confirmNewPassword) {
+        throw new Error(ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH);
+      }
+    }
+
+    const newPasswordHashed = updateUserDto.newPassword
+      ? await createPasswordHashed(updateUserDto.newPassword)
+      : undefined;
+
+    const isMatch = await validatePassword(
+      updateUserDto.password,
+      user.password
+    );
+
+    if (!isMatch) {
+      throw new Error(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
+    }
+
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      ...updateUserDto,
+      password: newPasswordHashed ? newPasswordHashed : user.password,
+    });
+
+    return new ReturnUserDto(updatedUser);
+  }
+
+  async deleteUserMy(
+    userId: number,
+    deleteUserDto: DeleteUserDto
+  ): Promise<DeleteResult> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+    }
+
+    const isMatch = await validatePassword(
+      deleteUserDto.password,
+      user.password
+    );
+
+    if (!isMatch) {
+      throw new Error(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
+    }
+
+    return this.userRepository.delete({ id: userId });
   }
 
   async deleteUser(userDeleteId: number): Promise<DeleteResult> {
     await this.getUserById(userDeleteId);
 
     return this.userRepository.delete({ id: userDeleteId });
+  }
+
+  async deleteAdmin(adminDeleteId: number): Promise<DeleteResult> {
+    const user = await this.userRepository.findOne({
+      where: { id: adminDeleteId, userType: UserTypeEnum.Admin },
+    });
+
+    if (!user) {
+      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(adminDeleteId));
+    }
+
+    return this.userRepository.delete({ id: adminDeleteId });
   }
 }

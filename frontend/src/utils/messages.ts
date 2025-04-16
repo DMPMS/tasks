@@ -6,16 +6,23 @@ export const ERROR_MESSAGES = {
 export const SUCCESS_MESSAGES = {
   USER: {
     USER_DELETED_SUCCESSFULLY: "Usuário deletado.",
+    USER_UPDATED_SUCCESSFULLY: "Usuário editado.",
+    USER_MY_DELETED_SUCCESSFULLY:
+      "Usuário deletado. Volte sempre que quiser 🥹.",
   },
   TASK: {
     TASK_CREATED_SUCCESSFULLY: "Tarefa criada.",
-    TASK_UPDATE_SUCCESSFULLY: "Tarefa editada.",
+    TASK_UPDATED_SUCCESSFULLY: "Tarefa editada.",
     TASK_DELETED_SUCCESSFULLY: "Tarefa deletada.",
   },
   CATEGORY: {
     CATEGORY_CREATED_SUCCESSFULLY: "Categoria criada.",
-    CATEGORY_UPDATE_SUCCESSFULLY: "Categoria editada.",
+    CATEGORY_UPDATED_SUCCESSFULLY: "Categoria editada.",
     CATEGORY_DELETED_SUCCESSFULLY: "Categoria deletada.",
+  },
+  WELCOME: {
+    SIGN_IN: (name: string) => `Bem-vindo(a) de volta, ${name} 😊!`,
+    SIGN_UP: (name: string) => `Bem-vindo(a), ${name} 😊!`,
   },
 };
 

@@ -1,0 +1,137 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.containerModal {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white-1);
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.h3 {
+  margin: 0px 0px 20px 0px;
+  text-align: center;
+}
+
+.description {
+  margin: 0px 0px 10px 0px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  margin: 0px 0px 10px 0px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--color-white-3);
+  transition: border-color 0.3s;
+}
+
+.field:disabled {
+  background-color: var(--color-white-2);
+  cursor: not-allowed;
+}
+
+.field:focus {
+  border-color: var(--color-blue-1);
+  outline: none;
+}
+
+.invalidField,
+.invalidField:focus {
+  border-color: var(--color-red-1);
+}
+
+.warningField,
+.warningField:focus {
+  border-color: var(--color-yellow-1);
+}
+
+.actions {
+  margin: 10px 0px 0px 0px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  gap: 5px;
+}
+
+.button {
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--color-white-1);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.confirmButton {
+  width: 130px;
+  background-color: var(--color-red-1);
+}
+
+.confirmButton:hover {
+  background-color: var(--color-red-2);
+}
+
+.confirmButton:disabled {
+  background-color: var(--color-red-3);
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background-color: var(--color-gray-1);
+}
+
+.cancelButton:hover {
+  background-color: var(--color-gray-2);
+}
+
+.cancelButton:disabled {
+  background-color: var(--color-gray-3);
+  cursor: not-allowed;
+}
+
+.buttonContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  border: 2px solid var(--color-white-1);
+  border-top: 2px solid var(--color-blue-1);
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  position: absolute;
+  right: 0px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

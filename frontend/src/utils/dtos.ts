@@ -23,3 +23,11 @@ export const DEFAULT_TASK = {
 export const DEFAULT_CATEGORY = {
   name: "",
 };
+
+export const DEFAULT_USER = {
+  name: "",
+  email: "",
+  newPassword: "",
+  confirmNewPassword: "",
+  password: "",
+};

@@ -12,6 +12,7 @@ const CreateCategoryScreen = () => {
     loadingRequest,
     disabledButton,
     isEdit,
+    warningFields,
     invalidFields,
     handleOnChangeInput,
     handleOnCreate,
@@ -44,8 +45,9 @@ const CreateCategoryScreen = () => {
               value={category.name}
               onChange={(e) => handleOnChangeInput(e, "name")}
               className={`${styles.field} ${
-                invalidFields.includes("name") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("name") ? styles.warningField : ""
+              } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 

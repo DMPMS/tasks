@@ -9,6 +9,7 @@ import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
 import { RelationsOptionsType } from "../types/RelationsOptions.type";
 import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
 import { UpdateTaskCompletedDateDto } from "../dtos/updates/updateTaskCompletedDateDto";
+import { plainToInstance } from "class-transformer";
 
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
@@ -107,11 +108,17 @@ export class TaskController {
 
   async createTask(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const createTaskDto = Object.assign(new CreateTaskDto(), req.body);
+      const createTaskDto = plainToInstance(CreateTaskDto, req.body, {
+        excludeExtraneousValues: true,
+      });
+
       const userId = req.userId;
 
       const isValid = await validateDto(createTaskDto, res);
       if (!isValid) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
@@ -141,12 +148,18 @@ export class TaskController {
 
   async updateTask(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const updateTaskDto = Object.assign(new UpdateTaskDto(), req.body);
+      const updateTaskDto = plainToInstance(UpdateTaskDto, req.body, {
+        excludeExtraneousValues: true,
+      });
+
       const userId = req.userId;
       const { taskId } = req.params;
 
       const isValid = await validateDto(updateTaskDto, res);
       if (!isValid) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
@@ -196,15 +209,22 @@ export class TaskController {
     res: Response
   ): Promise<void> {
     try {
-      const updateTaskCompletedDateDto = Object.assign(
-        new UpdateTaskCompletedDateDto(),
-        req.body
+      const updateTaskCompletedDateDto = plainToInstance(
+        UpdateTaskCompletedDateDto,
+        req.body,
+        {
+          excludeExtraneousValues: true,
+        }
       );
+
       const userId = req.userId;
       const { taskId } = req.params;
 
       const isValid = await validateDto(updateTaskCompletedDateDto, res);
       if (!isValid) {
+        res
+          .status(HttpStatusCodeEnum.BadRequest)
+          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 

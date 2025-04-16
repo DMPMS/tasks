@@ -16,10 +16,16 @@ export class UserEntity {
   @PrimaryGeneratedColumn("rowid")
   id!: number;
 
-  @Column({ name: "name", length: USER.NAME_LENGTH.MAX, nullable: false })
+  @Column({
+    type: "varchar",
+    name: "name",
+    length: USER.NAME_LENGTH.MAX,
+    nullable: false,
+  })
   name!: string;
 
   @Column({
+    type: "varchar",
     name: "email",
     length: USER.EMAIL_LENGTH.MAX,
     nullable: false,
@@ -28,6 +34,7 @@ export class UserEntity {
   email!: string;
 
   @Column({
+    type: "varchar",
     name: "password",
     length: USER.PASSWORD_LENGTH.MAX,
     nullable: false,
@@ -35,9 +42,8 @@ export class UserEntity {
   password!: string;
 
   @Column({
+    type: "integer",
     name: "user_type",
-    type: "enum",
-    enum: UserTypeEnum,
     nullable: false,
   })
   userType!: UserTypeEnum;

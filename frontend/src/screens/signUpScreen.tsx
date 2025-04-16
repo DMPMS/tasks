@@ -6,6 +6,7 @@ const SignUpScreen = () => {
     signUp,
     loadingRequest,
     disabledButton,
+    warningFields,
     invalidFields,
     handleOnChangeInput,
     handleOnSignUp,
@@ -29,8 +30,9 @@ const SignUpScreen = () => {
               value={signUp.name}
               onChange={(e) => handleOnChangeInput(e, "name")}
               className={`${styles.field} ${
-                invalidFields.includes("name") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("name") ? styles.warningField : ""
+              } ${invalidFields.includes("name") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -45,8 +47,9 @@ const SignUpScreen = () => {
               value={signUp.email}
               onChange={(e) => handleOnChangeInput(e, "email")}
               className={`${styles.field} ${
-                invalidFields.includes("email") ? styles.invalidField : ""
-              }`}
+                warningFields.includes("email") ? styles.warningField : ""
+              } ${invalidFields.includes("email") ? styles.invalidField : ""}`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -61,8 +64,11 @@ const SignUpScreen = () => {
               value={signUp.password}
               onChange={(e) => handleOnChangeInput(e, "password")}
               className={`${styles.field} ${
+                warningFields.includes("password") ? styles.warningField : ""
+              } ${
                 invalidFields.includes("password") ? styles.invalidField : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 
@@ -77,10 +83,15 @@ const SignUpScreen = () => {
               value={signUp.confirmPassword}
               onChange={(e) => handleOnChangeInput(e, "confirmPassword")}
               className={`${styles.field} ${
+                warningFields.includes("confirmPassword")
+                  ? styles.warningField
+                  : ""
+              } ${
                 invalidFields.includes("confirmPassword")
                   ? styles.invalidField
                   : ""
               }`}
+              disabled={loadingRequest}
             />
           </div>
 
