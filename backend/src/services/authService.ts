@@ -38,7 +38,12 @@ export class AuthService {
     }
 
     const jwtSecret = process.env.JWT_SECRET;
-    const expiresIn = process.env.JWT_EXPIRES_IN as StringValue;
+
+    if (!process.env.JWT_EXPIRES_IN) {
+      throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_EXPIRES_IN);
+    }
+
+    const jwtExpiresIn = process.env.JWT_EXPIRES_IN as StringValue;
 
     const token = jwt.sign(
       {
@@ -49,7 +54,7 @@ export class AuthService {
       },
       jwtSecret,
       {
-        expiresIn: expiresIn,
+        expiresIn: jwtExpiresIn,
       }
     );
 

@@ -63,6 +63,8 @@ export const useUpdateUser = () => {
               message: responseErrorMessage,
               type: NotificationEnum.Error,
             });
+
+            logout(navigate);
           });
       };
 
@@ -391,6 +393,7 @@ export const useUpdateUser = () => {
       .catch((error: AxiosError) => {
         const responseErrorMessage =
           (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
         setNotification({
           message: responseErrorMessage,
           type: NotificationEnum.Error,

@@ -13,6 +13,7 @@ import { useGlobalReducer } from "../store/reducers/globalReducer/useGlobalReduc
 import { TaskStatusEnum } from "../enums/TaskStatusEnum";
 import { format } from "date-fns";
 import { DATETIME_FORMAT } from "../config/constants";
+import { logout } from "../utils/functions/auth";
 
 export const useTask = () => {
   const { setNotification } = useGlobalReducer();
@@ -49,6 +50,8 @@ export const useTask = () => {
           message: responseErrorMessage,
           type: NotificationEnum.Error,
         });
+
+        logout(navigate);
       });
   };
 

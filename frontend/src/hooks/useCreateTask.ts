@@ -61,6 +61,8 @@ export const useCreateTask = (taskId?: string) => {
               message: responseErrorMessage,
               type: NotificationEnum.Error,
             });
+
+            navigate(TaskRoutesEnum.Tasks);
           });
       };
 
@@ -256,8 +258,6 @@ export const useCreateTask = (taskId?: string) => {
             message: SUCCESS_MESSAGES.TASK.TASK_UPDATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(TaskRoutesEnum.Tasks);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -282,8 +282,6 @@ export const useCreateTask = (taskId?: string) => {
             message: SUCCESS_MESSAGES.TASK.TASK_CREATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(TaskRoutesEnum.Tasks);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -295,6 +293,8 @@ export const useCreateTask = (taskId?: string) => {
           });
         });
     }
+
+    navigate(TaskRoutesEnum.Tasks);
   };
 
   const handleOnReset = () => {

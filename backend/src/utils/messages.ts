@@ -54,7 +54,14 @@ export const ERROR_MESSAGES = {
     ACCESS_DENIED: "Acesso negado.",
   },
   ENV: {
-    MISSING_JWT_SECRET: "O JWT secret está ausente ou vazio.",
+    MISSING_DB_HOST: "DB_HOST não definido no arquivo .env.",
+    MISSING_DB_USER: "DB_USER não definido no arquivo .env.",
+    MISSING_DB_PORT: "DB_PORT não definido no arquivo .env.",
+    MISSING_DB_PASSWORD: "DB_PASSWORD não definido no arquivo .env.",
+    MISSING_DB_DATABASE: "DB_DATABASE não definido no arquivo .env.",
+    MISSING_API_PORT: "API_PORT não definido no arquivo .env.",
+    MISSING_JWT_SECRET: "JWT_SECRET não definido no arquivo .env.",
+    MISSING_JWT_EXPIRES_IN: "JWT_EXPIRES_IN não definido no arquivo .env.",
     MISSING_ROOT_EMAIL_OR_PASSWORD:
       "ROOT_EMAIL ou ROOT_PASSWORD não definidos no arquivo .env.",
     MISSING_ROOT_EMAIL: "ROOT_EMAIL não definido no arquivo .env.",

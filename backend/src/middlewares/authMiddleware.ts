@@ -23,10 +23,12 @@ export const authMiddleware = (
     throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
   }
 
+  const jwtSecret = process.env.JWT_SECRET;
+
   const token = authorizationHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+    const decoded = jwt.verify(token, jwtSecret) as {
       userId: number;
       userName: string;
       userEmail: string;

@@ -1,7 +1,3 @@
-export const SERVER = {
-  DEFAULT_API_PORT: 3000,
-};
-
 export const PAGINATION = {
   INITIAL_PAGE: 1,
   DEFAULT_PAGE: 1,

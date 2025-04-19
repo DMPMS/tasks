@@ -113,7 +113,7 @@ const UpdateUserScreen = () => {
 
           <div className={styles.formGroup}>
             <label className={styles.label}>
-              Senha atual<span className={styles.asterisk}>*</span>
+              Senha atual <span className={styles.asterisk}>*</span>
             </label>
             <input
               id="password"

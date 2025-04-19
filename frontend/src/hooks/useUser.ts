@@ -8,12 +8,15 @@ import { URL_USER, URL_USER_ID } from "../config/urls";
 import { AxiosError } from "axios";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { NotificationEnum } from "../enums/NotificationEnum";
+import { logout } from "../utils/functions/auth";
+import { useNavigate } from "react-router-dom";
 
 export const useUser = () => {
   const { setNotification } = useGlobalReducer();
   const { users, setUsers } = useUserReducer();
 
   const { request, loadingRequest } = useRequest();
+  const navigate = useNavigate();
 
   const [loadingUsers, setLoadingUsers] = useState<boolean>(true);
   const [userIdDelete, setUserIdDelete] = useState<number | undefined>(
@@ -43,6 +46,8 @@ export const useUser = () => {
           message: responseErrorMessage,
           type: NotificationEnum.Error,
         });
+
+        logout(navigate);
       });
   };
 
