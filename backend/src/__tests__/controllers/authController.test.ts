@@ -7,6 +7,7 @@ import { validateDto } from "../../utils/validation";
 import { CreateAuthDto } from "../../dtos/creates/createAuthDto";
 import { plainToInstance } from "class-transformer";
 import { MOCK_CREATES, MOCK_ERROR_MESSAGES, MOCK_RETURNS } from "../mocks";
+import { validate } from "class-validator";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -31,6 +32,22 @@ describe("AuthController", () => {
       json: jest.fn(),
       send: jest.fn(),
     };
+
+    (validateDto as jest.Mock).mockImplementation(async (dto) => {
+      const errors = await validate(dto);
+
+      if (errors.length > 0) {
+        const formattedErrors = errors.map((error) => ({
+          property: error.property,
+          constraints: error.constraints,
+        }));
+
+        console.log("Validation errors:", formattedErrors);
+
+        return false;
+      }
+      return true;
+    });
   });
 
   it("login - Should return ReturnAuthDto on success (201)", async () => {
@@ -39,10 +56,9 @@ describe("AuthController", () => {
       body: MOCK_CREATES.AUTH,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new CreateAuthDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    const createAuthDto = Object.assign(new CreateAuthDto(), req.body);
+
+    (plainToInstance as jest.Mock).mockReturnValue(createAuthDto);
     authServiceMock.login.mockResolvedValue(MOCK_RETURNS.AUTH);
 
     await authController.login(req as Request, res as Response);
@@ -50,7 +66,7 @@ describe("AuthController", () => {
     expect(plainToInstance).toHaveBeenCalledWith(CreateAuthDto, req.body, {
       excludeExtraneousValues: true,
     });
-    expect(validateDto).toHaveBeenCalledWith(expect.any(CreateAuthDto), res);
+    expect(validateDto).toHaveBeenCalledWith(createAuthDto);
     expect(authServiceMock.login).toHaveBeenCalledWith(
       expect.any(CreateAuthDto)
     );

@@ -17,6 +17,7 @@ import {
 } from "../mocks";
 import { ReturnCategoryDto } from "../../dtos/returns/returnCategoryDto";
 import { PAGINATION } from "../../config/constants";
+import { validate } from "class-validator";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -48,6 +49,22 @@ describe("CategoryController", () => {
       json: jest.fn(),
       send: jest.fn(),
     };
+
+    (validateDto as jest.Mock).mockImplementation(async (dto) => {
+      const errors = await validate(dto);
+
+      if (errors.length > 0) {
+        const formattedErrors = errors.map((error) => ({
+          property: error.property,
+          constraints: error.constraints,
+        }));
+
+        console.log("Validation errors:", formattedErrors);
+
+        return false;
+      }
+      return true;
+    });
   });
 
   it("getUserCategories - Should return ReturnCategoryDto[] on success (200)", async () => {
@@ -289,6 +306,8 @@ describe("CategoryController", () => {
       body: MOCK_CREATES.CATEGORY,
     };
 
+    const createCategoryDto = Object.assign(new CreateCategoryDto(), req.body);
+
     const userId = req.userId;
 
     const mockedCategory: ReturnCategoryDto = {
@@ -296,10 +315,7 @@ describe("CategoryController", () => {
       id: 1,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new CreateCategoryDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    (plainToInstance as jest.Mock).mockReturnValue(createCategoryDto);
     categoryServiceMock.createCategory.mockResolvedValue(mockedCategory);
 
     await categoryController.createCategory(
@@ -310,10 +326,7 @@ describe("CategoryController", () => {
     expect(plainToInstance).toHaveBeenCalledWith(CreateCategoryDto, req.body, {
       excludeExtraneousValues: true,
     });
-    expect(validateDto).toHaveBeenCalledWith(
-      expect.any(CreateCategoryDto),
-      res
-    );
+    expect(validateDto).toHaveBeenCalledWith(createCategoryDto);
     expect(categoryServiceMock.createCategory).toHaveBeenCalledWith(
       userId,
       expect.any(CreateCategoryDto)
@@ -400,6 +413,8 @@ describe("CategoryController", () => {
       params: { categoryId: "1" },
     };
 
+    const updateCategoryDto = Object.assign(new UpdateCategoryDto(), req.body);
+
     const userId = req.userId;
     const categoryIdNumber = Number(req.params?.categoryId);
 
@@ -408,10 +423,7 @@ describe("CategoryController", () => {
       id: categoryIdNumber,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new UpdateCategoryDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    (plainToInstance as jest.Mock).mockReturnValue(updateCategoryDto);
     categoryServiceMock.updateCategory.mockResolvedValue(mockedCategory);
 
     await categoryController.updateCategory(
@@ -422,10 +434,7 @@ describe("CategoryController", () => {
     expect(plainToInstance).toHaveBeenCalledWith(UpdateCategoryDto, req.body, {
       excludeExtraneousValues: true,
     });
-    expect(validateDto).toHaveBeenCalledWith(
-      expect.any(UpdateCategoryDto),
-      res
-    );
+    expect(validateDto).toHaveBeenCalledWith(updateCategoryDto);
     expect(categoryServiceMock.updateCategory).toHaveBeenCalledWith(
       userId,
       categoryIdNumber,

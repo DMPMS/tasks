@@ -6,5 +6,5 @@ export class UpdateTaskCompletedDateDto {
   @Expose()
   @Validate(IsCustomTimestamp)
   @IsOptional()
-  completedDate!: Date | null;
+  completedDate!: string | null;
 }

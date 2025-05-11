@@ -68,7 +68,7 @@ export class UserController {
         excludeExtraneousValues: true,
       });
 
-      const isValid = await validateDto(createUserDto, res);
+      const isValid = await validateDto(createUserDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -99,7 +99,7 @@ export class UserController {
       const userId = req.userId;
       const userType = req.userType;
 
-      const isValid = await validateDto(createUserDto, res);
+      const isValid = await validateDto(createUserDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -147,7 +147,7 @@ export class UserController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(updateUserDto, res);
+      const isValid = await validateDto(updateUserDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -187,7 +187,7 @@ export class UserController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(deleteUserDto, res);
+      const isValid = await validateDto(deleteUserDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)

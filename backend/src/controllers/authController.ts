@@ -15,7 +15,7 @@ export class AuthController {
         excludeExtraneousValues: true,
       });
 
-      const isValid = await validateDto(createAuthDto, res);
+      const isValid = await validateDto(createAuthDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)

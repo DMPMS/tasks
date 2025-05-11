@@ -88,7 +88,7 @@ export const MOCK_CREATES: {
     title: "Task name",
     description: "Task description",
     priority: PriorityEnum.Low,
-    limitDate: new Date("2025-05-10 18:00"),
+    limitDate: "2025-05-10 18:00",
   },
 };
 
@@ -105,9 +105,9 @@ export const MOCK_UPDATES: {
     title: "Task name",
     description: "Task description",
     priority: PriorityEnum.Low,
-    limitDate: new Date("2025-05-10 18:00"),
+    limitDate: "2025-05-10 18:00",
   },
   TASK_COMPLETED_DATE: {
-    completedDate: null,
+    completedDate: "2025-05-12 12:00",
   },
 };

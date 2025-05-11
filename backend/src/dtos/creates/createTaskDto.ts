@@ -33,5 +33,5 @@ export class CreateTaskDto {
 
   @Expose()
   @Validate(IsCustomTimestamp)
-  limitDate!: Date;
+  limitDate!: string;
 }

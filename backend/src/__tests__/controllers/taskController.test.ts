@@ -19,6 +19,7 @@ import { UpdateTaskDto } from "../../dtos/updates/updateTaskDto";
 import { UpdateTaskCompletedDateDto } from "../../dtos/updates/updateTaskCompletedDateDto";
 import { RelationsOptionsType } from "../../types/RelationsOptions.type";
 import { PAGINATION } from "../../config/constants";
+import { validate } from "class-validator";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -51,6 +52,22 @@ describe("TaskController", () => {
       json: jest.fn(),
       send: jest.fn(),
     };
+
+    (validateDto as jest.Mock).mockImplementation(async (dto) => {
+      const errors = await validate(dto);
+
+      if (errors.length > 0) {
+        const formattedErrors = errors.map((error) => ({
+          property: error.property,
+          constraints: error.constraints,
+        }));
+
+        console.log("Validation errors:", formattedErrors);
+
+        return false;
+      }
+      return true;
+    });
   });
 
   it("getUserTasks - Should return ReturnTaskDto[] on success (200)", async () => {
@@ -298,6 +315,8 @@ describe("TaskController", () => {
       body: MOCK_CREATES.TASK,
     };
 
+    const createTaskDto = Object.assign(new CreateTaskDto(), req.body);
+
     const userId = req.userId;
 
     const mockedTask: ReturnTaskDto = {
@@ -306,12 +325,10 @@ describe("TaskController", () => {
       description: MOCK_CREATES.TASK.description
         ? MOCK_CREATES.TASK.description
         : "",
+      limitDate: new Date(MOCK_CREATES.TASK.limitDate),
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new CreateTaskDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    (plainToInstance as jest.Mock).mockReturnValue(createTaskDto);
     taskServiceMock.createTask.mockResolvedValue(mockedTask);
 
     await taskController.createTask(
@@ -322,7 +339,7 @@ describe("TaskController", () => {
     expect(plainToInstance).toHaveBeenCalledWith(CreateTaskDto, req.body, {
       excludeExtraneousValues: true,
     });
-    expect(validateDto).toHaveBeenCalledWith(expect.any(CreateTaskDto), res);
+    expect(validateDto).toHaveBeenCalledWith(createTaskDto);
     expect(taskServiceMock.createTask).toHaveBeenCalledWith(
       userId,
       expect.any(CreateTaskDto)
@@ -409,6 +426,8 @@ describe("TaskController", () => {
       params: { taskId: "1" },
     };
 
+    const updateTaskDto = Object.assign(new UpdateTaskDto(), req.body);
+
     const userId = req.userId;
     const taskIdNumber = Number(req.params?.taskId);
 
@@ -418,12 +437,10 @@ describe("TaskController", () => {
       description: MOCK_UPDATES.TASK.description
         ? MOCK_UPDATES.TASK.description
         : "",
+      limitDate: new Date(MOCK_UPDATES.TASK.limitDate),
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new UpdateTaskDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    (plainToInstance as jest.Mock).mockReturnValue(updateTaskDto);
     taskServiceMock.updateTask.mockResolvedValue(mockedTask);
 
     await taskController.updateTask(
@@ -434,7 +451,7 @@ describe("TaskController", () => {
     expect(plainToInstance).toHaveBeenCalledWith(UpdateTaskDto, req.body, {
       excludeExtraneousValues: true,
     });
-    expect(validateDto).toHaveBeenCalledWith(expect.any(UpdateTaskDto), res);
+    expect(validateDto).toHaveBeenCalledWith(updateTaskDto);
     expect(taskServiceMock.updateTask).toHaveBeenCalledWith(
       userId,
       taskIdNumber,
@@ -561,6 +578,11 @@ describe("TaskController", () => {
       params: { taskId: "1" },
     };
 
+    const updateTaskCompletedDateDto = Object.assign(
+      new UpdateTaskCompletedDateDto(),
+      req.body
+    );
+
     const userId = req.userId;
     const taskIdNumber = Number(req.params?.taskId);
 
@@ -571,15 +593,13 @@ describe("TaskController", () => {
       description: MOCK_UPDATES.TASK.description
         ? MOCK_UPDATES.TASK.description
         : "",
+      limitDate: new Date(MOCK_UPDATES.TASK.limitDate),
       completedDate: MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate
-        ? MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate
+        ? new Date(MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate)
         : undefined,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(
-      Object.assign(new UpdateTaskCompletedDateDto(), req.body)
-    );
-    (validateDto as jest.Mock).mockResolvedValue(true);
+    (plainToInstance as jest.Mock).mockReturnValue(updateTaskCompletedDateDto);
     taskServiceMock.updateTaskCompletedDate.mockResolvedValue(mockedTask);
 
     await taskController.updateTaskCompletedDate(
@@ -594,10 +614,7 @@ describe("TaskController", () => {
         excludeExtraneousValues: true,
       }
     );
-    expect(validateDto).toHaveBeenCalledWith(
-      expect.any(UpdateTaskCompletedDateDto),
-      res
-    );
+    expect(validateDto).toHaveBeenCalledWith(updateTaskCompletedDateDto);
     expect(taskServiceMock.updateTaskCompletedDate).toHaveBeenCalledWith(
       userId,
       taskIdNumber,

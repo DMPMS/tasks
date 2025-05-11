@@ -107,7 +107,7 @@ export class CategoryController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(createCategoryDto, res);
+      const isValid = await validateDto(createCategoryDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -151,7 +151,7 @@ export class CategoryController {
       const userId = req.userId;
       const { categoryId } = req.params;
 
-      const isValid = await validateDto(updateCategoryDto, res);
+      const isValid = await validateDto(updateCategoryDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)

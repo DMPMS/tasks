@@ -114,7 +114,7 @@ export class TaskController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(createTaskDto, res);
+      const isValid = await validateDto(createTaskDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -155,7 +155,7 @@ export class TaskController {
       const userId = req.userId;
       const { taskId } = req.params;
 
-      const isValid = await validateDto(updateTaskDto, res);
+      const isValid = await validateDto(updateTaskDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
@@ -220,7 +220,7 @@ export class TaskController {
       const userId = req.userId;
       const { taskId } = req.params;
 
-      const isValid = await validateDto(updateTaskCompletedDateDto, res);
+      const isValid = await validateDto(updateTaskCompletedDateDto);
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
