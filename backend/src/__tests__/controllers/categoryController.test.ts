@@ -10,7 +10,6 @@ import { AuthenticatedRequest } from "../../types/AuthenticatedRequestType";
 import { UpdateCategoryDto } from "../../dtos/updates/updateCategoryDto";
 import {
   MOCK_CREATES,
-  MOCK_DELETE,
   MOCK_ERROR_MESSAGES,
   MOCK_INVALIDS,
   MOCK_RETURNS,
@@ -51,6 +50,35 @@ describe("CategoryController", () => {
     };
   });
 
+  it("getUserCategories - Should return ReturnCategoryDto[] on success (200)", async () => {
+    req = {
+      ...req,
+      userId: 1,
+      query: { page: "1", limit: "5" },
+    };
+
+    const { page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT } =
+      req.query || {};
+    const userId = req.userId;
+
+    categoryServiceMock.getUserCategories.mockResolvedValue(
+      MOCK_RETURNS.CATEGORIES
+    );
+
+    await categoryController.getUserCategories(
+      req as AuthenticatedRequest,
+      res as Response
+    );
+
+    expect(categoryServiceMock.getUserCategories).toHaveBeenCalledWith(
+      Number(page),
+      Number(limit),
+      userId
+    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.CATEGORIES);
+  });
+
   it("getUserCategories - Should use default pagination values if not defined", async () => {
     req = {
       ...req,
@@ -71,34 +99,6 @@ describe("CategoryController", () => {
       Number(limit),
       userId
     );
-  });
-
-  it("getUserCategories - Should return ReturnCategoryDto[] on success (201)", async () => {
-    req = {
-      ...req,
-      userId: 1,
-      query: { page: "1", limit: "5" },
-    };
-
-    const { page, limit } = req.query || {};
-    const userId = req.userId;
-
-    categoryServiceMock.getUserCategories.mockResolvedValue(
-      MOCK_RETURNS.CATEGORIES
-    );
-
-    await categoryController.getUserCategories(
-      req as AuthenticatedRequest,
-      res as Response
-    );
-
-    expect(categoryServiceMock.getUserCategories).toHaveBeenCalledWith(
-      Number(page),
-      Number(limit),
-      userId
-    );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.CATEGORIES);
   });
 
   it("getUserCategories - Should return an error if userId is missing (400)", async () => {
@@ -162,7 +162,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategoryById - Should return ReturnCategoryDto on success (201)", async () => {
+  it("getUserCategoryById - Should return ReturnCategoryDto on success (200)", async () => {
     req = {
       ...req,
       userId: 1,
@@ -170,10 +170,10 @@ describe("CategoryController", () => {
     };
 
     const userId = req.userId;
-    const categoryId = req.params?.categoryId;
+    const categoryIdNumber = Number(req.params?.categoryId);
 
     categoryServiceMock.getUserCategoryById.mockResolvedValue(
-      MOCK_RETURNS.CATEGORY(Number(categoryId))
+      MOCK_RETURNS.CATEGORY(categoryIdNumber)
     );
 
     await categoryController.getUserCategoryById(
@@ -183,11 +183,11 @@ describe("CategoryController", () => {
 
     expect(categoryServiceMock.getUserCategoryById).toHaveBeenCalledWith(
       userId,
-      Number(categoryId)
+      categoryIdNumber
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
-      MOCK_RETURNS.CATEGORY(Number(categoryId))
+      MOCK_RETURNS.CATEGORY(categoryIdNumber)
     );
   });
 
@@ -296,7 +296,9 @@ describe("CategoryController", () => {
       id: 1,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(new CreateCategoryDto());
+    (plainToInstance as jest.Mock).mockReturnValue(
+      Object.assign(new CreateCategoryDto(), req.body)
+    );
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.createCategory.mockResolvedValue(mockedCategory);
 
@@ -406,7 +408,9 @@ describe("CategoryController", () => {
       id: categoryIdNumber,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(new UpdateCategoryDto());
+    (plainToInstance as jest.Mock).mockReturnValue(
+      Object.assign(new UpdateCategoryDto(), req.body)
+    );
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.updateCategory.mockResolvedValue(mockedCategory);
 
@@ -551,8 +555,6 @@ describe("CategoryController", () => {
 
     const userId = req.userId;
     const categoryIdNumber = Number(req.params?.categoryId);
-
-    categoryServiceMock.deleteCategory.mockResolvedValue(MOCK_DELETE);
 
     await categoryController.deleteCategory(
       req as AuthenticatedRequest,

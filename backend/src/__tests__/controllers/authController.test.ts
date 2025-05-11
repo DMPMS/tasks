@@ -39,7 +39,9 @@ describe("AuthController", () => {
       body: MOCK_CREATES.AUTH,
     };
 
-    (plainToInstance as jest.Mock).mockReturnValue(new CreateAuthDto());
+    (plainToInstance as jest.Mock).mockReturnValue(
+      Object.assign(new CreateAuthDto(), req.body)
+    );
     (validateDto as jest.Mock).mockResolvedValue(true);
     authServiceMock.login.mockResolvedValue(MOCK_RETURNS.AUTH);
 
