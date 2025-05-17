@@ -4,6 +4,7 @@ import { TaskService } from "../../services/taskService";
 import { AuthenticatedRequest } from "../../types/AuthenticatedRequestType";
 import {
   MOCK_CREATES,
+  MOCK_DEFAULTS,
   MOCK_ERROR_MESSAGES,
   MOCK_INVALIDS,
   MOCK_RETURNS,
@@ -73,8 +74,11 @@ describe("TaskController", () => {
   it("getUserTasks - Should return ReturnTaskDto[] on success (200)", async () => {
     req = {
       ...req,
-      userId: 1,
-      query: { page: "1", limit: "5" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      query: {
+        page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
+        limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
+      },
     };
 
     const { page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT } =
@@ -104,7 +108,7 @@ describe("TaskController", () => {
   it("getUserTasks - Should use default pagination values if not defined", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     const { page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT } =
@@ -130,7 +134,10 @@ describe("TaskController", () => {
   it("getUserTasks - Should return an error if userId is missing (400)", async () => {
     req = {
       ...req,
-      query: { page: "1", limit: "5" },
+      query: {
+        page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
+        limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
+      },
     };
 
     await taskController.getUserTasks(
@@ -147,8 +154,11 @@ describe("TaskController", () => {
   it("getUserTasks - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      query: { page: "1", limit: "5" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      query: {
+        page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
+        limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
+      },
     };
 
     taskServiceMock.getUserTasks.mockRejectedValue(
@@ -167,8 +177,11 @@ describe("TaskController", () => {
   it("getUserTasks - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
-      query: { page: "1", limit: "5" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      query: {
+        page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
+        limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
+      },
     };
 
     taskServiceMock.getUserTasks.mockRejectedValue(
@@ -191,8 +204,8 @@ describe("TaskController", () => {
   it("getUserTaskById - Should return ReturnTaskDto on success (200)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     const relationsOptions: RelationsOptionsType = {
@@ -234,7 +247,7 @@ describe("TaskController", () => {
   it("getUserTaskById - Should return an error if taskId is missing (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     await taskController.getUserTaskById(
@@ -251,7 +264,7 @@ describe("TaskController", () => {
   it("getUserTaskById - Should return an error if taskId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
       params: { taskId: MOCK_INVALIDS.TASK_ID },
     };
 
@@ -267,8 +280,8 @@ describe("TaskController", () => {
   it("getUserTaskById - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     taskServiceMock.getUserTaskById.mockRejectedValue(
@@ -287,8 +300,8 @@ describe("TaskController", () => {
   it("getUserTaskById - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     taskServiceMock.getUserTaskById.mockRejectedValue(
@@ -311,7 +324,7 @@ describe("TaskController", () => {
   it("createTask - Should return ReturnTaskDto on success (201)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
       body: MOCK_CREATES.TASK,
     };
 
@@ -320,7 +333,7 @@ describe("TaskController", () => {
     const userId = req.userId;
 
     const mockedTask: ReturnTaskDto = {
-      ...MOCK_CREATES.TASK,
+      ...req.body,
       id: 1,
       description: MOCK_CREATES.TASK.description
         ? MOCK_CREATES.TASK.description
@@ -377,7 +390,7 @@ describe("TaskController", () => {
   it("createTask - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -397,7 +410,7 @@ describe("TaskController", () => {
   it("createTask - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -421,9 +434,9 @@ describe("TaskController", () => {
   it("updateTask - Should return ReturnTaskDto on success (200)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
       body: MOCK_UPDATES.TASK,
-      params: { taskId: "1" },
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     const updateTaskDto = Object.assign(new UpdateTaskDto(), req.body);
@@ -432,7 +445,7 @@ describe("TaskController", () => {
     const taskIdNumber = Number(req.params?.taskId);
 
     const mockedTask: ReturnTaskDto = {
-      ...MOCK_UPDATES.TASK,
+      ...req.body,
       id: taskIdNumber,
       description: MOCK_UPDATES.TASK.description
         ? MOCK_UPDATES.TASK.description
@@ -490,7 +503,7 @@ describe("TaskController", () => {
   it("updateTask - Should return an error if taskId is missing (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -509,8 +522,8 @@ describe("TaskController", () => {
   it("updateTask - Should return an error if taskId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: `${MOCK_INVALIDS.TASK_ID}` },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_INVALIDS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -527,8 +540,8 @@ describe("TaskController", () => {
   it("updateTask - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -548,8 +561,8 @@ describe("TaskController", () => {
   it("updateTask - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -573,9 +586,9 @@ describe("TaskController", () => {
   it("updateTaskCompletedDate - Should return ReturnTaskDto on success (200)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
       body: MOCK_UPDATES.TASK_COMPLETED_DATE,
-      params: { taskId: "1" },
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     const updateTaskCompletedDateDto = Object.assign(
@@ -587,7 +600,7 @@ describe("TaskController", () => {
     const taskIdNumber = Number(req.params?.taskId);
 
     const mockedTask: ReturnTaskDto = {
-      ...MOCK_UPDATES.TASK_COMPLETED_DATE,
+      ...req.body,
       ...MOCK_UPDATES.TASK,
       id: taskIdNumber,
       description: MOCK_UPDATES.TASK.description
@@ -653,7 +666,7 @@ describe("TaskController", () => {
   it("updateTaskCompletedDate - Should return an error if taskId is missing (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -672,8 +685,8 @@ describe("TaskController", () => {
   it("updateTaskCompletedDate - Should return an error if taskId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: `${MOCK_INVALIDS.TASK_ID}` },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_INVALIDS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -690,8 +703,8 @@ describe("TaskController", () => {
   it("updateTaskCompletedDate - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -711,8 +724,8 @@ describe("TaskController", () => {
   it("updateTaskCompletedDate - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -736,8 +749,8 @@ describe("TaskController", () => {
   it("deleteTask - Should delete the task successfully (200)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     const userId = req.userId;
@@ -773,7 +786,7 @@ describe("TaskController", () => {
   it("deleteTask - Should return an error if taskId is missing (400)", async () => {
     req = {
       ...req,
-      userId: 1,
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
     };
 
     await taskController.deleteTask(
@@ -790,8 +803,8 @@ describe("TaskController", () => {
   it("deleteTask - Should return an error if taskId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: `${MOCK_INVALIDS.TASK_ID}` },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_INVALIDS.TASK_ID },
     };
 
     await taskController.deleteTask(
@@ -806,8 +819,8 @@ describe("TaskController", () => {
   it("deleteTask - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     taskServiceMock.deleteTask.mockRejectedValue(
@@ -826,8 +839,8 @@ describe("TaskController", () => {
   it("deleteTask - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: 1,
-      params: { taskId: "1" },
+      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      params: { taskId: MOCK_DEFAULTS.REQ.PARAMS.TASK_ID },
     };
 
     taskServiceMock.deleteTask.mockRejectedValue(
