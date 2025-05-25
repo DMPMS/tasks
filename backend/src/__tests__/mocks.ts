@@ -1,4 +1,3 @@
-import { DeleteResult } from "typeorm";
 import { CreateAuthDto } from "../dtos/creates/createAuthDto";
 import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { ReturnAuthDto } from "../dtos/returns/returnAuthDto";
@@ -13,6 +12,12 @@ import { ReturnUserDto } from "../dtos/returns/returnUserDto";
 import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { UpdateUserDto } from "../dtos/updates/updateUserDto";
 import { DeleteUserDto } from "../dtos/deletes/deleteUserDto";
+import { UserEntity } from "../entities/userEntity";
+import { UserTypeEnum } from "../enums/UserTypeEnum";
+import { CategoryEntity } from "../entities/categoryEntity";
+import { DeleteResult } from "typeorm";
+
+const defaultDateString = "2025-05-10 18:00";
 
 export const MOCK_ERROR_MESSAGES = {
   ERROR_TYPE_ERROR: "Error of type Error",
@@ -28,7 +33,6 @@ export const MOCK_INVALIDS = {
 
 export const MOCK_DEFAULTS = {
   REQ: {
-    USER_ID: 1,
     PARAMS: {
       TASK_ID: "1",
       CATEGORY_ID: "1",
@@ -40,10 +44,71 @@ export const MOCK_DEFAULTS = {
       LIMIT: "5",
     },
   },
+  PAGE: 1,
+  LIMIT: 5,
+  TOKEN: "mockToken",
+  DATE: new Date(defaultDateString),
+  USER_ID: 1,
+  CATEGORY_ID: 1,
+};
+
+export const MOCK_DATABASE_RETURNS: {
+  USER: (id: number) => UserEntity;
+  CATEGORY: (id: number, userId: number) => CategoryEntity;
+  CATEGORIES: (userId: number) => CategoryEntity[];
+} = {
+  USER: (id) => ({
+    id: id,
+    name: "User name",
+    email: "user@email.com",
+    password: "hashedPassword",
+    userType: UserTypeEnum.User,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  CATEGORY: (id, userId) => ({
+    id: id,
+    name: "Category name",
+    userId: userId,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  CATEGORIES: (userId) => [
+    {
+      id: 1,
+      name: "Category 1",
+      userId: userId,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+    {
+      id: 2,
+      name: "Category 2",
+      userId: userId,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+  ],
+};
+
+export const MOCK_DATABASE_CREATES: {
+  CATEGORY: (
+    createCategoryDto: CreateCategoryDto,
+    id: number,
+    userId: number
+  ) => CategoryEntity;
+} = {
+  CATEGORY: (createCategoryDto, id, userId) => ({
+    ...createCategoryDto,
+    id: id,
+    userId: userId,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
 };
 
 export const MOCK_RETURNS: {
-  AUTH: ReturnAuthDto;
+  AUTH: (token: string) => ReturnAuthDto;
   CATEGORY: (id: number) => ReturnCategoryDto;
   CATEGORIES: ReturnCategoryDto[];
   TASK: (id: number) => ReturnTaskDto;
@@ -51,9 +116,9 @@ export const MOCK_RETURNS: {
   USER: (id: number) => ReturnUserDto;
   USERS: ReturnUserDto[];
 } = {
-  AUTH: {
-    token: "Bearer testToken",
-  },
+  AUTH: (token) => ({
+    token: `Bearer ${token}`,
+  }),
   CATEGORY: (id) => ({
     id: id,
     name: "Category name",
@@ -67,7 +132,7 @@ export const MOCK_RETURNS: {
     title: "Task 2",
     description: "",
     priority: PriorityEnum.High,
-    limitDate: new Date("2025-05-10 18:00"),
+    limitDate: MOCK_DEFAULTS.DATE,
     category: {
       id: 1,
       name: "Category name",
@@ -79,14 +144,14 @@ export const MOCK_RETURNS: {
       title: "Task 1",
       description: "Task 1 description",
       priority: PriorityEnum.Low,
-      limitDate: new Date("2025-05-10 18:00"),
+      limitDate: MOCK_DEFAULTS.DATE,
     },
     {
       id: 2,
       title: "Task 2",
       description: "",
       priority: PriorityEnum.High,
-      limitDate: new Date("2025-05-10 18:00"),
+      limitDate: MOCK_DEFAULTS.DATE,
       category: {
         id: 1,
         name: "Category name",
@@ -143,7 +208,7 @@ export const MOCK_CREATES: {
     title: "Task name",
     description: "Task description",
     priority: PriorityEnum.Low,
-    limitDate: "2025-05-10 18:00",
+    limitDate: defaultDateString,
   },
 };
 
@@ -168,10 +233,10 @@ export const MOCK_UPDATES: {
     title: "Task name",
     description: "Task description",
     priority: PriorityEnum.Low,
-    limitDate: "2025-05-10 18:00",
+    limitDate: defaultDateString,
   },
   TASK_COMPLETED_DATE: {
-    completedDate: "2025-05-12 12:00",
+    completedDate: defaultDateString,
   },
 };
 
@@ -181,4 +246,9 @@ export const MOCK_DELETES: {
   USER: {
     password: "userPassword",
   },
+};
+
+export const MOCK_DELETE_RESULT: DeleteResult = {
+  raw: {},
+  affected: 1,
 };

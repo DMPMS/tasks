@@ -76,12 +76,10 @@ export class CategoryService {
       throw new Error(ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS);
     }
 
-    const category = this.categoryRepository.create({
+    const savedCategory = await this.categoryRepository.save({
       ...createCategoryDto,
       userId: userId,
     });
-
-    const savedCategory = await this.categoryRepository.save(category);
 
     return new ReturnCategoryDto(savedCategory);
   }
@@ -94,9 +92,7 @@ export class CategoryService {
       userId: userId,
     }));
 
-    const categories = this.categoryRepository.create(defaultCategories);
-
-    await this.categoryRepository.save(categories);
+    await this.categoryRepository.save(defaultCategories);
   }
 
   async updateCategory(

@@ -19,11 +19,11 @@ export const authMiddleware = (
     return;
   }
 
-  if (!process.env.JWT_SECRET) {
+  const jwtSecret = process.env.JWT_SECRET;
+
+  if (!jwtSecret) {
     throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
   }
-
-  const jwtSecret = process.env.JWT_SECRET;
 
   const token = authorizationHeader.split(" ")[1];
 

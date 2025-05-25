@@ -33,17 +33,17 @@ export class AuthService {
       throw new Error(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
     }
 
-    if (!process.env.JWT_SECRET) {
+    const jwtSecret = process.env.JWT_SECRET;
+
+    if (!jwtSecret) {
       throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
     }
 
-    const jwtSecret = process.env.JWT_SECRET;
+    const jwtExpiresIn = process.env.JWT_EXPIRES_IN as StringValue;
 
-    if (!process.env.JWT_EXPIRES_IN) {
+    if (!jwtExpiresIn) {
       throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_EXPIRES_IN);
     }
-
-    const jwtExpiresIn = process.env.JWT_EXPIRES_IN as StringValue;
 
     const token = jwt.sign(
       {

@@ -155,13 +155,13 @@ describe("UserController", () => {
   it("getUserInfo - Should return ReturnUserDto on success (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     const userId = req.userId;
 
     userServiceMock.getUserInfo.mockResolvedValue(
-      MOCK_RETURNS.USER(userId || MOCK_DEFAULTS.REQ.USER_ID)
+      MOCK_RETURNS.USER(userId || MOCK_DEFAULTS.USER_ID)
     );
 
     await userController.getUserInfo(
@@ -172,11 +172,11 @@ describe("UserController", () => {
     expect(userServiceMock.getUserInfo).toHaveBeenCalledWith(userId);
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
-      MOCK_RETURNS.USER(userId || MOCK_DEFAULTS.REQ.USER_ID)
+      MOCK_RETURNS.USER(userId || MOCK_DEFAULTS.USER_ID)
     );
   });
 
-  it("getUserInfo - Should return an error if userId is missing (400)", async () => {
+  it("getUserInfo - Should return an error if the userId is missing (400)", async () => {
     await userController.getUserInfo(
       req as AuthenticatedRequest,
       res as Response
@@ -191,7 +191,7 @@ describe("UserController", () => {
   it("getUserInfo - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     userServiceMock.getUserInfo.mockRejectedValue(
@@ -210,7 +210,7 @@ describe("UserController", () => {
   it("getUserInfo - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     userServiceMock.getUserInfo.mockRejectedValue(
@@ -299,7 +299,7 @@ describe("UserController", () => {
   it("createAdmin - Should return ReturnUserDto on success (201)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       userType: UserTypeEnum.Root,
       body: MOCK_CREATES.ADMIN,
     };
@@ -347,7 +347,7 @@ describe("UserController", () => {
     expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
-  it("createAdmin - Should return an error if userId is missing (400)", async () => {
+  it("createAdmin - Should return an error if the userId is missing (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
 
     await userController.createAdmin(
@@ -361,10 +361,10 @@ describe("UserController", () => {
     );
   });
 
-  it("createAdmin - Should return an error if userType is missing (400)", async () => {
+  it("createAdmin - Should return an error if the userType is missing (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -383,7 +383,7 @@ describe("UserController", () => {
   it("createAdmin - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       userType: UserTypeEnum.Root,
     };
 
@@ -404,7 +404,7 @@ describe("UserController", () => {
   it("createAdmin - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       userType: UserTypeEnum.Root,
     };
 
@@ -429,7 +429,7 @@ describe("UserController", () => {
   it("updateUser - Should return ReturnUserDto on success (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       body: MOCK_UPDATES.USER,
     };
 
@@ -474,7 +474,7 @@ describe("UserController", () => {
     expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
-  it("updateUser - Should return an error if userId is missing (400)", async () => {
+  it("updateUser - Should return an error if the userId is missing (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
 
     await userController.updateUser(
@@ -491,7 +491,7 @@ describe("UserController", () => {
   it("updateUser - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -511,7 +511,7 @@ describe("UserController", () => {
   it("updateUser - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -535,7 +535,7 @@ describe("UserController", () => {
   it("deleteUserMy - Should delete the my user successfully (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       body: MOCK_DELETES.USER,
     };
 
@@ -576,7 +576,7 @@ describe("UserController", () => {
     expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
-  it("deleteUserMy - Should return an error if userId is missing (400)", async () => {
+  it("deleteUserMy - Should return an error if the userId is missing (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
 
     await userController.deleteUserMy(
@@ -593,7 +593,7 @@ describe("UserController", () => {
   it("deleteUserMy - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -613,7 +613,7 @@ describe("UserController", () => {
   it("deleteUserMy - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -654,7 +654,7 @@ describe("UserController", () => {
     );
   });
 
-  it("deleteUser - Should return an error if userDeleteId is missing (400)", async () => {
+  it("deleteUser - Should return an error if the userDeleteId is missing (400)", async () => {
     await userController.deleteUser(
       req as AuthenticatedRequest,
       res as Response
@@ -666,7 +666,7 @@ describe("UserController", () => {
     );
   });
 
-  it("deleteUser - Should return an error if userDeleteId is invalid (400)", async () => {
+  it("deleteUser - Should return an error if the userDeleteId is invalid (400)", async () => {
     req = {
       ...req,
       params: { userDeleteId: MOCK_INVALIDS.USER_DELETE_ID },
@@ -747,7 +747,7 @@ describe("UserController", () => {
     );
   });
 
-  it("deleteAdmin - Should return an error if adminDeleteId is missing (400)", async () => {
+  it("deleteAdmin - Should return an error if the adminDeleteId is missing (400)", async () => {
     await userController.deleteAdmin(
       req as AuthenticatedRequest,
       res as Response
@@ -759,7 +759,7 @@ describe("UserController", () => {
     );
   });
 
-  it("deleteAdmin - Should return an error if adminDeleteId is invalid (400)", async () => {
+  it("deleteAdmin - Should return an error if the adminDeleteId is invalid (400)", async () => {
     req = {
       ...req,
       params: { adminDeleteId: MOCK_INVALIDS.ADMIN_DELETE_ID },

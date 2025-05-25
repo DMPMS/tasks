@@ -6,7 +6,12 @@ import { ERROR_MESSAGES } from "../../utils/messages";
 import { validateDto } from "../../utils/validation";
 import { CreateAuthDto } from "../../dtos/creates/createAuthDto";
 import { plainToInstance } from "class-transformer";
-import { MOCK_CREATES, MOCK_ERROR_MESSAGES, MOCK_RETURNS } from "../mocks";
+import {
+  MOCK_CREATES,
+  MOCK_DEFAULTS,
+  MOCK_ERROR_MESSAGES,
+  MOCK_RETURNS,
+} from "../mocks";
 import { validate } from "class-validator";
 
 jest.mock("../../utils/validation");
@@ -59,7 +64,9 @@ describe("AuthController", () => {
     const createAuthDto = Object.assign(new CreateAuthDto(), req.body);
 
     (plainToInstance as jest.Mock).mockReturnValue(createAuthDto);
-    authServiceMock.login.mockResolvedValue(MOCK_RETURNS.AUTH);
+    authServiceMock.login.mockResolvedValue(
+      MOCK_RETURNS.AUTH(MOCK_DEFAULTS.TOKEN)
+    );
 
     await authController.login(req as Request, res as Response);
 
@@ -71,7 +78,9 @@ describe("AuthController", () => {
       expect.any(CreateAuthDto)
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
-    expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.AUTH);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_RETURNS.AUTH(MOCK_DEFAULTS.TOKEN)
+    );
   });
 
   it("login - Should return an error if the data is invalid (400)", async () => {

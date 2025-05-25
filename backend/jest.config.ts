@@ -5,7 +5,10 @@ export const config: Config = {
   testEnvironment: "node",
   moduleFileExtensions: ["ts", "js"],
   testMatch: ["**/__tests__/**/*.test.ts"],
-  collectCoverageFrom: ["src/controllers/**/*.{ts,js}"],
+  collectCoverageFrom: [
+    "src/controllers/**/*.{ts,js}",
+    "src/services/**/*.{ts,js}",
+  ],
   resetMocks: true,
 };
 

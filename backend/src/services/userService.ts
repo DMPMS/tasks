@@ -115,7 +115,7 @@ export class UserService {
     const passwordHashed = await createPasswordHashed(createUserDto.password);
     createUserDto.email = createUserDto.email.toLowerCase();
 
-    let user;
+    let savedUser: UserEntity;
 
     if (userId && userType === UserTypeEnum.Root) {
       const userRoot = await this.userRepository.findOne({
@@ -125,21 +125,19 @@ export class UserService {
       if (!userRoot) {
         throw new Error(ERROR_MESSAGES.USER.USER_ROOT_ID_NOT_FOUND(userId));
       } else {
-        user = this.userRepository.create({
+        savedUser = await this.userRepository.save({
           ...createUserDto,
           userType: UserTypeEnum.Admin,
           password: passwordHashed,
         });
       }
     } else {
-      user = this.userRepository.create({
+      savedUser = await this.userRepository.save({
         ...createUserDto,
         userType: UserTypeEnum.User,
         password: passwordHashed,
       });
     }
-
-    const savedUser = await this.userRepository.save(user);
 
     if (!userId) {
       await this.getCategoryService().createDefaultCategories(savedUser.id);

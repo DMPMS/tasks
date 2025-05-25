@@ -77,15 +77,13 @@ export class TaskService {
       );
     }
 
-    const task = this.taskRepository.create({
+    const savedTask = await this.taskRepository.save({
       ...createTaskDto,
       userId: userId,
       categoryId: createTaskDto.categoryId ? createTaskDto.categoryId : null,
       description: createTaskDto.description ? createTaskDto.description : null,
       completedDate: null,
     });
-
-    const savedTask = await this.taskRepository.save(task);
 
     return new ReturnTaskDto(savedTask);
   }

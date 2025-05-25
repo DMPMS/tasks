@@ -71,7 +71,7 @@ describe("CategoryController", () => {
   it("getUserCategories - Should return ReturnCategoryDto[] on success (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       query: {
         page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
         limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
@@ -103,7 +103,7 @@ describe("CategoryController", () => {
   it("getUserCategories - Should use default pagination values if not defined", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     const { page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT } =
@@ -122,7 +122,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategories - Should return an error if userId is missing (400)", async () => {
+  it("getUserCategories - Should return an error if the userId is missing (400)", async () => {
     req = {
       ...req,
       query: {
@@ -145,7 +145,7 @@ describe("CategoryController", () => {
   it("getUserCategories - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       query: {
         page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
         limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
@@ -168,7 +168,7 @@ describe("CategoryController", () => {
   it("getUserCategories - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       query: {
         page: MOCK_DEFAULTS.REQ.QUERY.PAGE,
         limit: MOCK_DEFAULTS.REQ.QUERY.LIMIT,
@@ -195,7 +195,7 @@ describe("CategoryController", () => {
   it("getUserCategoryById - Should return ReturnCategoryDto on success (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -221,7 +221,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategoryById - Should return an error if userId is missing (400)", async () => {
+  it("getUserCategoryById - Should return an error if the userId is missing (400)", async () => {
     await categoryController.getUserCategoryById(
       req as AuthenticatedRequest,
       res as Response
@@ -233,10 +233,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategoryById - Should return an error if categoryId is missing (400)", async () => {
+  it("getUserCategoryById - Should return an error if the categoryId is missing (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     await categoryController.getUserCategoryById(
@@ -250,10 +250,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategoryById - Should return an error if categoryId is invalid (400)", async () => {
+  it("getUserCategoryById - Should return an error if the categoryId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_INVALIDS.CATEGORY_ID },
     };
 
@@ -271,7 +271,7 @@ describe("CategoryController", () => {
   it("getUserCategoryById - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -291,7 +291,7 @@ describe("CategoryController", () => {
   it("getUserCategoryById - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -315,7 +315,7 @@ describe("CategoryController", () => {
   it("createCategory - Should return ReturnCategoryDto on success (201)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       body: MOCK_CREATES.CATEGORY,
     };
 
@@ -360,7 +360,7 @@ describe("CategoryController", () => {
     expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
-  it("createCategory - Should return an error if userId is missing (400)", async () => {
+  it("createCategory - Should return an error if the userId is missing (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
 
     await categoryController.createCategory(
@@ -377,7 +377,7 @@ describe("CategoryController", () => {
   it("createCategory - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -397,7 +397,7 @@ describe("CategoryController", () => {
   it("createCategory - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -421,7 +421,7 @@ describe("CategoryController", () => {
   it("updateCategory - Should return ReturnCategoryDto on success (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       body: MOCK_UPDATES.CATEGORY,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
@@ -469,7 +469,7 @@ describe("CategoryController", () => {
     expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
-  it("updateCategory - Should return an error if userId is missing (400)", async () => {
+  it("updateCategory - Should return an error if the userId is missing (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
 
     await categoryController.updateCategory(
@@ -483,10 +483,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("updateCategory - Should return an error if categoryId is missing (400)", async () => {
+  it("updateCategory - Should return an error if the categoryId is missing (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     (validateDto as jest.Mock).mockResolvedValue(true);
@@ -502,10 +502,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("updateCategory - Should return an error if categoryId is invalid (400)", async () => {
+  it("updateCategory - Should return an error if the categoryId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_INVALIDS.CATEGORY_ID },
     };
 
@@ -525,7 +525,7 @@ describe("CategoryController", () => {
   it("updateCategory - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -546,7 +546,7 @@ describe("CategoryController", () => {
   it("updateCategory - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -571,7 +571,7 @@ describe("CategoryController", () => {
   it("deleteCategory - Should delete the category successfully (200)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -593,7 +593,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("deleteCategory - Should return an error if userId is missing (400)", async () => {
+  it("deleteCategory - Should return an error if the userId is missing (400)", async () => {
     await categoryController.deleteCategory(
       req as AuthenticatedRequest,
       res as Response
@@ -605,10 +605,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("deleteCategory - Should return an error if categoryId is missing (400)", async () => {
+  it("deleteCategory - Should return an error if the categoryId is missing (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
     };
 
     await categoryController.deleteCategory(
@@ -622,10 +622,10 @@ describe("CategoryController", () => {
     );
   });
 
-  it("deleteCategory - Should return an error if categoryId is invalid (400)", async () => {
+  it("deleteCategory - Should return an error if the categoryId is invalid (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_INVALIDS.CATEGORY_ID },
     };
 
@@ -643,7 +643,7 @@ describe("CategoryController", () => {
   it("deleteCategory - Should return an error if an error of type Error occurs (400)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
@@ -663,7 +663,7 @@ describe("CategoryController", () => {
   it("deleteCategory - Should return an error if an unexpected error occurs (500)", async () => {
     req = {
       ...req,
-      userId: MOCK_DEFAULTS.REQ.USER_ID,
+      userId: MOCK_DEFAULTS.USER_ID,
       params: { categoryId: MOCK_DEFAULTS.REQ.PARAMS.CATEGORY_ID },
     };
 
