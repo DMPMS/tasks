@@ -8,7 +8,7 @@ export class ReturnTaskDto {
   title: string;
   description: string;
   priority: PriorityEnum;
-  completedDate?: Date;
+  completedDate: Date | null;
   limitDate: Date;
 
   user?: ReturnUserDto;
@@ -21,7 +21,7 @@ export class ReturnTaskDto {
     this.priority = taskEntity.priority;
     this.completedDate = taskEntity.completedDate
       ? taskEntity.completedDate
-      : undefined;
+      : null;
     this.limitDate = taskEntity.limitDate;
 
     this.user = taskEntity.user

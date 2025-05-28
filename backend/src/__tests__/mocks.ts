@@ -16,6 +16,7 @@ import { UserEntity } from "../entities/userEntity";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
 import { CategoryEntity } from "../entities/categoryEntity";
 import { DeleteResult } from "typeorm";
+import { TaskEntity } from "../entities/taskEntity";
 
 const defaultDateString = "2025-05-10 18:00";
 
@@ -50,12 +51,15 @@ export const MOCK_DEFAULTS = {
   DATE: new Date(defaultDateString),
   USER_ID: 1,
   CATEGORY_ID: 1,
+  TASK_ID: 1,
 };
 
 export const MOCK_DATABASE_RETURNS: {
   USER: (id: number) => UserEntity;
   CATEGORY: (id: number, userId: number) => CategoryEntity;
   CATEGORIES: (userId: number) => CategoryEntity[];
+  TASK: (id: number, userId: number) => TaskEntity;
+  TASKS: (userId: number) => TaskEntity[];
 } = {
   USER: (id) => ({
     id: id,
@@ -89,6 +93,44 @@ export const MOCK_DATABASE_RETURNS: {
       updatedAt: MOCK_DEFAULTS.DATE,
     },
   ],
+  TASK: (id, userId) => ({
+    id: id,
+    categoryId: 1,
+    userId: userId,
+    title: "Task name",
+    description: "Task description",
+    priority: PriorityEnum.Low,
+    limitDate: MOCK_DEFAULTS.DATE,
+    completedDate: null,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  TASKS: (userId) => [
+    {
+      id: 1,
+      categoryId: 1,
+      userId: userId,
+      title: "Task 1",
+      description: "Task 1 description",
+      priority: PriorityEnum.Low,
+      limitDate: MOCK_DEFAULTS.DATE,
+      completedDate: null,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+    {
+      id: 2,
+      categoryId: null,
+      userId: userId,
+      title: "Task 2",
+      description: "Task 2 description",
+      priority: PriorityEnum.High,
+      limitDate: MOCK_DEFAULTS.DATE,
+      completedDate: MOCK_DEFAULTS.DATE,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+  ],
 };
 
 export const MOCK_DATABASE_CREATES: {
@@ -97,10 +139,26 @@ export const MOCK_DATABASE_CREATES: {
     id: number,
     userId: number
   ) => CategoryEntity;
+  TASK: (
+    createTaskDto: CreateTaskDto,
+    id: number,
+    userId: number
+  ) => TaskEntity;
 } = {
   CATEGORY: (createCategoryDto, id, userId) => ({
     ...createCategoryDto,
     id: id,
+    userId: userId,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  TASK: (createTaskDto, id, userId) => ({
+    ...createTaskDto,
+    id: id,
+    categoryId: createTaskDto.categoryId ? createTaskDto.categoryId : null,
+    description: createTaskDto.description ? createTaskDto.description : null,
+    limitDate: new Date(createTaskDto.limitDate),
+    completedDate: null,
     userId: userId,
     createdAt: MOCK_DEFAULTS.DATE,
     updatedAt: MOCK_DEFAULTS.DATE,
@@ -129,10 +187,11 @@ export const MOCK_RETURNS: {
   ],
   TASK: (id) => ({
     id: id,
-    title: "Task 2",
+    title: "Task name",
     description: "",
     priority: PriorityEnum.High,
     limitDate: MOCK_DEFAULTS.DATE,
+    completedDate: null,
     category: {
       id: 1,
       name: "Category name",
@@ -145,6 +204,7 @@ export const MOCK_RETURNS: {
       description: "Task 1 description",
       priority: PriorityEnum.Low,
       limitDate: MOCK_DEFAULTS.DATE,
+      completedDate: null,
     },
     {
       id: 2,
@@ -152,6 +212,7 @@ export const MOCK_RETURNS: {
       description: "",
       priority: PriorityEnum.High,
       limitDate: MOCK_DEFAULTS.DATE,
+      completedDate: MOCK_DEFAULTS.DATE,
       category: {
         id: 1,
         name: "Category name",

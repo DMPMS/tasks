@@ -7,7 +7,7 @@ export interface TaskType {
   title: string;
   description: string;
   priority: PriorityEnum;
-  completedDate?: Date;
+  completedDate: Date | null;
   limitDate: Date;
 
   user?: UserType;
