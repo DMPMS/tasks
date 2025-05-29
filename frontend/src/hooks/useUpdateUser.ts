@@ -334,10 +334,10 @@ export const useUpdateUser = () => {
 
     const updatedUser = {
       ...user,
-      newPassword: user.newPassword ? user.newPassword : null,
+      newPassword: user.newPassword ? user.newPassword : undefined,
       confirmNewPassword: user.confirmNewPassword
         ? user.confirmNewPassword
-        : null,
+        : undefined,
     };
 
     await request<UserType>({

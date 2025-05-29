@@ -198,7 +198,9 @@ describe("TaskService", () => {
       categoryId: updateTaskDto.categoryId ? updateTaskDto.categoryId : null,
       description: updateTaskDto.description ? updateTaskDto.description : "",
       limitDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).limitDate,
-      completedDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate,
+      completedDate:
+        MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate ||
+        MOCK_DEFAULTS.DATE,
       createdAt: MOCK_DEFAULTS.DATE,
       updatedAt: MOCK_DEFAULTS.DATE,
       user: undefined,
@@ -250,7 +252,9 @@ describe("TaskService", () => {
       categoryId: updateTaskDto.categoryId ? updateTaskDto.categoryId : null,
       description: updateTaskDto.description ? updateTaskDto.description : "",
       limitDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).limitDate,
-      completedDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate,
+      completedDate:
+        MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate ||
+        MOCK_DEFAULTS.DATE,
       createdAt: MOCK_DEFAULTS.DATE,
       updatedAt: MOCK_DEFAULTS.DATE,
       user: undefined,
@@ -283,7 +287,10 @@ describe("TaskService", () => {
       ...updateTaskCompletedDateDto,
       userId: userId,
       categoryId: task.category?.id ? task.category?.id : null,
-      completedDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate,
+      description: task.description ? task.description : "",
+      completedDate:
+        MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate ||
+        MOCK_DEFAULTS.DATE,
       createdAt: MOCK_DEFAULTS.DATE,
       updatedAt: MOCK_DEFAULTS.DATE,
       user: undefined,
@@ -319,7 +326,7 @@ describe("TaskService", () => {
 
     const updateTaskCompletedDateDto = {
       ...MOCK_UPDATES.TASK_COMPLETED_DATE,
-      completedDate: null,
+      completedDate: undefined,
     };
 
     const task = MOCK_RETURNS.TASK(taskId);
@@ -329,7 +336,10 @@ describe("TaskService", () => {
       ...updateTaskCompletedDateDto,
       userId: userId,
       categoryId: task.category?.id ? task.category?.id : null,
-      completedDate: MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate,
+      description: task.description ? task.description : "",
+      completedDate:
+        MOCK_DATABASE_RETURNS.TASK(taskId, userId).completedDate ||
+        MOCK_DEFAULTS.DATE,
       createdAt: MOCK_DEFAULTS.DATE,
       updatedAt: MOCK_DEFAULTS.DATE,
       user: undefined,

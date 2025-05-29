@@ -108,7 +108,7 @@ export const useTask = () => {
   ) => {
     const completedDate =
       status === TaskStatusEnum.Completed
-        ? { completedDate: null }
+        ? { completedDate: undefined }
         : { completedDate: format(new Date(), DATETIME_FORMAT.REQUEST) };
 
     await request<TaskType>({

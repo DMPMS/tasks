@@ -6,9 +6,9 @@ import { ReturnCategoryDto } from "./returnCategoryDto";
 export class ReturnTaskDto {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   priority: PriorityEnum;
-  completedDate: Date | null;
+  completedDate?: Date;
   limitDate: Date;
 
   user?: ReturnUserDto;
@@ -17,11 +17,13 @@ export class ReturnTaskDto {
   constructor(taskEntity: TaskEntity) {
     this.id = taskEntity.id;
     this.title = taskEntity.title;
-    this.description = taskEntity.description ? taskEntity.description : "";
+    this.description = taskEntity.description
+      ? taskEntity.description
+      : undefined;
     this.priority = taskEntity.priority;
     this.completedDate = taskEntity.completedDate
       ? taskEntity.completedDate
-      : null;
+      : undefined;
     this.limitDate = taskEntity.limitDate;
 
     this.user = taskEntity.user

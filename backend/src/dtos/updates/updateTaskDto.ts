@@ -15,7 +15,7 @@ export class UpdateTaskDto {
   @Expose()
   @IsInt()
   @IsOptional()
-  categoryId?: number | null;
+  categoryId?: number;
 
   @Expose()
   @IsString()
@@ -25,7 +25,7 @@ export class UpdateTaskDto {
   @Expose()
   @IsString()
   @IsOptional()
-  description?: string | null;
+  description?: string;
 
   @Expose()
   @IsEnum(PriorityEnum)

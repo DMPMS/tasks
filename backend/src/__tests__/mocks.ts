@@ -191,7 +191,7 @@ export const MOCK_RETURNS: {
     description: "",
     priority: PriorityEnum.High,
     limitDate: MOCK_DEFAULTS.DATE,
-    completedDate: null,
+    completedDate: undefined,
     category: {
       id: 1,
       name: "Category name",
@@ -204,7 +204,7 @@ export const MOCK_RETURNS: {
       description: "Task 1 description",
       priority: PriorityEnum.Low,
       limitDate: MOCK_DEFAULTS.DATE,
-      completedDate: null,
+      completedDate: undefined,
     },
     {
       id: 2,

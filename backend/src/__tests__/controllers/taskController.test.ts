@@ -607,9 +607,7 @@ describe("TaskController", () => {
         ? MOCK_UPDATES.TASK.description
         : "",
       limitDate: new Date(MOCK_UPDATES.TASK.limitDate),
-      completedDate: MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate
-        ? new Date(MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate)
-        : null,
+      completedDate: MOCK_UPDATES.TASK_COMPLETED_DATE.completedDate,
     };
 
     (plainToInstance as jest.Mock).mockReturnValue(updateTaskCompletedDateDto);

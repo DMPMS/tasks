@@ -5,9 +5,9 @@ import { UserType } from "./UserType";
 export interface TaskType {
   id: number;
   title: string;
-  description: string;
+  description?: string;
   priority: PriorityEnum;
-  completedDate: Date | null;
+  completedDate?: Date;
   limitDate: Date;
 
   user?: UserType;

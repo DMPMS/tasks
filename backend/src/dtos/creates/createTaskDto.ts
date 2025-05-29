@@ -25,7 +25,7 @@ export class CreateTaskDto {
   @Expose()
   @IsString()
   @IsOptional()
-  description?: string | null;
+  description?: string;
 
   @Expose()
   @IsEnum(PriorityEnum)
