@@ -52,7 +52,7 @@ describe("TaskService", () => {
     expect(service).toBeInstanceOf(TaskService);
   });
 
-  it("getUserTasks - Should return ReturnTaskDto[] on success", async () => {
+  it("getUserTasks - Should return ReturnTaskDto[] on get user tasks successfully", async () => {
     const page = MOCK_DEFAULTS.PAGE;
     const limit = MOCK_DEFAULTS.LIMIT;
     const userId = MOCK_DEFAULTS.USER_ID;
@@ -84,7 +84,7 @@ describe("TaskService", () => {
     expect(result).toEqual(tasks.map((task) => new ReturnTaskDto(task)));
   });
 
-  it("getUserTaskById - Should return ReturnTaskDto on success", async () => {
+  it("getUserTaskById - Should return ReturnTaskDto on get user task by id successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
     const relationsOptions = {};
@@ -122,7 +122,7 @@ describe("TaskService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.TASK.TASK_ID_NOT_FOUND(taskId, userId));
   });
 
-  it("createTask - Should return ReturnTaskDto on success", async () => {
+  it("createTask - Should return ReturnTaskDto on create task successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const createTaskDto = MOCK_CREATES.TASK;
 
@@ -184,7 +184,7 @@ describe("TaskService", () => {
     });
   });
 
-  it("updateTask - Should return ReturnTaskDto on success", async () => {
+  it("updateTask - Should return ReturnTaskDto on update task successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
     const updateTaskDto = MOCK_UPDATES.TASK;
@@ -275,7 +275,7 @@ describe("TaskService", () => {
     });
   });
 
-  it("updateTaskCompletedDate - Should return ReturnTaskDto on success", async () => {
+  it("updateTaskCompletedDate - Should return ReturnTaskDto on complete/incomplete task successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
     const updateTaskCompletedDateDto = MOCK_UPDATES.TASK_COMPLETED_DATE;
@@ -320,7 +320,7 @@ describe("TaskService", () => {
     expect(result).toEqual(new ReturnTaskDto(updatedTask));
   });
 
-  it("updateTaskCompletedDate - With null value to completedDate", async () => {
+  it("updateTaskCompletedDate - With undefined value to completedDate", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
 
@@ -364,7 +364,7 @@ describe("TaskService", () => {
     });
   });
 
-  it("deleteTask - Should return DeleteResult on success", async () => {
+  it("deleteTask - Should return DeleteResult on delete task successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
 

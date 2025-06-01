@@ -57,7 +57,7 @@ describe("UserService", () => {
     expect(categoryService.constructor.name).toBe("CategoryService");
   });
 
-  it("getUsers - Should return ReturnUserDto[] on success", async () => {
+  it("getUsers - Should return ReturnUserDto[] on get users successfully", async () => {
     const page = MOCK_DEFAULTS.PAGE;
     const limit = MOCK_DEFAULTS.LIMIT;
     const relationsOptions = {};
@@ -81,7 +81,7 @@ describe("UserService", () => {
     expect(result).toEqual(users.map((user) => new ReturnUserDto(user)));
   });
 
-  it("getUserInfo - Should return ReturnUserDto on success", async () => {
+  it("getUserInfo - Should return ReturnUserDto on get user info successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const relationsOptions = {};
 
@@ -112,7 +112,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
   });
 
-  it("getUserById - Should return ReturnUserDto on success", async () => {
+  it("getUserById - Should return ReturnUserDto on get user by id successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const relationsOptions = {};
 
@@ -143,7 +143,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
   });
 
-  it("getUserByEmail - Should return ReturnUserDto on success", async () => {
+  it("getUserByEmail - Should return ReturnUserDto on get user by email successfully", async () => {
     const email = MOCK_DATABASE_RETURNS.USER(MOCK_DEFAULTS.USER_ID).email;
     const relationsOptions = {};
 
@@ -176,7 +176,7 @@ describe("UserService", () => {
     );
   });
 
-  it("createUser - Should return ReturnUserDto on successfully to create an user", async () => {
+  it("createUser - Should return ReturnUserDto on create user successfully", async () => {
     const createUserDto = MOCK_CREATES.USER;
     const userId = undefined;
     const userType = undefined;
@@ -226,7 +226,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(savedUser));
   });
 
-  it("createUser - Should return ReturnUserDto on successfully to create an admin", async () => {
+  it("createUser - Should return ReturnUserDto on create admin successfully", async () => {
     const createUserDto = MOCK_CREATES.USER;
     const userId = MOCK_DEFAULTS.USER_ID;
     const userType = UserTypeEnum.Root;
@@ -333,7 +333,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.USER_ROOT_ID_NOT_FOUND(userId));
   });
 
-  it("updateUser - Should return ReturnUserDto on successfully to update user", async () => {
+  it("updateUser - Should return ReturnUserDto on update user successfully", async () => {
     const updateUserDto = MOCK_UPDATES.USER;
     const userId = MOCK_DEFAULTS.USER_ID;
 
@@ -377,7 +377,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(updatedUser));
   });
 
-  it("updateUser - Should return ReturnUserDto on successfully to update user (new email)", async () => {
+  it("updateUser - Should return ReturnUserDto on update user successfully (new email)", async () => {
     const updateUserDto = { ...MOCK_UPDATES.USER, email: "new@email.com" };
     const userId = MOCK_DEFAULTS.USER_ID;
 
@@ -433,7 +433,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(updatedUser));
   });
 
-  it("updateUser - Should return ReturnUserDto on successfully to update user (password not changed)", async () => {
+  it("updateUser - Should return ReturnUserDto on update user successfully (password not changed)", async () => {
     const updateUserDto = {
       ...MOCK_UPDATES.USER,
       newPassword: undefined,
@@ -541,7 +541,7 @@ describe("UserService", () => {
     );
   });
 
-  it("deleteUserMy - Should return DeleteResult on success", async () => {
+  it("deleteUserMy - Should return DeleteResult on delete my user successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const deleteUserDto = MOCK_DELETES.USER;
 
@@ -593,7 +593,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
   });
 
-  it("deleteUser - Should return DeleteResult on success", async () => {
+  it("deleteUser - Should return DeleteResult on delete user successfully", async () => {
     const userDeleteId = MOCK_DEFAULTS.USER_DELETE_ID;
 
     userService.getUserById = jest
@@ -610,7 +610,7 @@ describe("UserService", () => {
     expect(result).toEqual(MOCK_DELETE_RESULT);
   });
 
-  it("deleteAdmin - Should return DeleteResult on success", async () => {
+  it("deleteAdmin - Should return DeleteResult on delete admin successfully", async () => {
     const adminDeleteId = MOCK_DEFAULTS.ADMIN_DELETE_ID;
 
     const user = MOCK_DATABASE_RETURNS.ADMIN(adminDeleteId);

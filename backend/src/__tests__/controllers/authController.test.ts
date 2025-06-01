@@ -55,7 +55,7 @@ describe("AuthController", () => {
     });
   });
 
-  it("login - Should return ReturnAuthDto on success (201)", async () => {
+  it("login - Should return ReturnAuthDto on login successfully (201)", async () => {
     req = {
       ...req,
       body: MOCK_CREATES.AUTH,

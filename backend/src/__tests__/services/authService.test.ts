@@ -31,7 +31,7 @@ describe("AuthService", () => {
     expect(service).toBeInstanceOf(AuthService);
   });
 
-  it("login - Should return ReturnAuthDto on success", async () => {
+  it("login - Should return ReturnAuthDto on login successfully", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     const user = MOCK_DATABASE_RETURNS.USER(MOCK_DEFAULTS.USER_ID);

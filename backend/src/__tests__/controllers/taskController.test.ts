@@ -71,7 +71,7 @@ describe("TaskController", () => {
     });
   });
 
-  it("getUserTasks - Should return ReturnTaskDto[] on success (200)", async () => {
+  it("getUserTasks - Should return ReturnTaskDto[] on get user tasks successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -201,7 +201,7 @@ describe("TaskController", () => {
     );
   });
 
-  it("getUserTaskById - Should return ReturnTaskDto on success (200)", async () => {
+  it("getUserTaskById - Should return ReturnTaskDto on get user task by id successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -321,7 +321,7 @@ describe("TaskController", () => {
     );
   });
 
-  it("createTask - Should return ReturnTaskDto on success (201)", async () => {
+  it("createTask - Should return ReturnTaskDto on create task successfully (201)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -431,7 +431,7 @@ describe("TaskController", () => {
     );
   });
 
-  it("updateTask - Should return ReturnTaskDto on success (200)", async () => {
+  it("updateTask - Should return ReturnTaskDto on update task successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -583,7 +583,7 @@ describe("TaskController", () => {
     );
   });
 
-  it("updateTaskCompletedDate - Should return ReturnTaskDto on success (200)", async () => {
+  it("updateTaskCompletedDate - Should return ReturnTaskDto on complete/incomplete task successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,

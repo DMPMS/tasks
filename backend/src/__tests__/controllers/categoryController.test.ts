@@ -68,7 +68,7 @@ describe("CategoryController", () => {
     });
   });
 
-  it("getUserCategories - Should return ReturnCategoryDto[] on success (200)", async () => {
+  it("getUserCategories - Should return ReturnCategoryDto[] on get user categories successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -192,7 +192,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("getUserCategoryById - Should return ReturnCategoryDto on success (200)", async () => {
+  it("getUserCategoryById - Should return ReturnCategoryDto on get user category by id successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -312,7 +312,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("createCategory - Should return ReturnCategoryDto on success (201)", async () => {
+  it("createCategory - Should return ReturnCategoryDto on create category successfully (201)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -418,7 +418,7 @@ describe("CategoryController", () => {
     );
   });
 
-  it("updateCategory - Should return ReturnCategoryDto on success (200)", async () => {
+  it("updateCategory - Should return ReturnCategoryDto on update category successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,

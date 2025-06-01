@@ -74,7 +74,7 @@ describe("UserController", () => {
     });
   });
 
-  it("getUsers - Should return ReturnUserDto[] on success (200)", async () => {
+  it("getUsers - Should return ReturnUserDto[] on get users successfully (200)", async () => {
     req = {
       ...req,
       query: {
@@ -152,7 +152,7 @@ describe("UserController", () => {
     );
   });
 
-  it("getUserInfo - Should return ReturnUserDto on success (200)", async () => {
+  it("getUserInfo - Should return ReturnUserDto on get user info successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -230,7 +230,7 @@ describe("UserController", () => {
     );
   });
 
-  it("createUser - Should return ReturnUserDto on success (201)", async () => {
+  it("createUser - Should return ReturnUserDto on create user successfully (201)", async () => {
     req = {
       ...req,
       body: MOCK_CREATES.USER,
@@ -296,7 +296,7 @@ describe("UserController", () => {
     );
   });
 
-  it("createAdmin - Should return ReturnUserDto on success (201)", async () => {
+  it("createAdmin - Should return ReturnUserDto on create admin successfully (201)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -426,7 +426,7 @@ describe("UserController", () => {
     );
   });
 
-  it("updateUser - Should return ReturnUserDto on success (200)", async () => {
+  it("updateUser - Should return ReturnUserDto on update user successfully (200)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -725,7 +725,7 @@ describe("UserController", () => {
     );
   });
 
-  it("deleteAdmin - Should delete the admin user successfully (200)", async () => {
+  it("deleteAdmin - Should delete the admin successfully (200)", async () => {
     req = {
       ...req,
       params: { adminDeleteId: MOCK_DEFAULTS.REQ.PARAMS.ADMIN_DELETE_ID },

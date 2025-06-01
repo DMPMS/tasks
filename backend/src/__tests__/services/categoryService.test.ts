@@ -43,7 +43,7 @@ describe("CategoryService", () => {
     expect(service).toBeInstanceOf(CategoryService);
   });
 
-  it("getUserCategories - Should return ReturnCategoryDto[] on success", async () => {
+  it("getUserCategories - Should return ReturnCategoryDto[] on get user categories successfully", async () => {
     const page = MOCK_DEFAULTS.PAGE;
     const limit = MOCK_DEFAULTS.LIMIT;
     const userId = MOCK_DEFAULTS.USER_ID;
@@ -77,7 +77,7 @@ describe("CategoryService", () => {
     );
   });
 
-  it("getUserCategoryById - Should return ReturnCategoryDto on success", async () => {
+  it("getUserCategoryById - Should return ReturnCategoryDto on get user category by id successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const categoryId = MOCK_DEFAULTS.CATEGORY_ID;
     const relationsOptions = {};
@@ -117,7 +117,7 @@ describe("CategoryService", () => {
     );
   });
 
-  it("createCategory - Should return ReturnCategoryDto on success", async () => {
+  it("createCategory - Should return ReturnCategoryDto on create category successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const createCategoryDto = MOCK_CREATES.CATEGORY;
 
@@ -165,7 +165,7 @@ describe("CategoryService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS);
   });
 
-  it("updateCategory - Should return ReturnCategoryDto on success", async () => {
+  it("updateCategory - Should return ReturnCategoryDto on update category successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const categoryId = MOCK_DEFAULTS.CATEGORY_ID;
     const updateCategoryDto = MOCK_UPDATES.CATEGORY;
@@ -249,7 +249,7 @@ describe("CategoryService", () => {
     expect(categoryRepositoryMock.save).toHaveBeenCalledWith(defaultCategories);
   });
 
-  it("deleteCategory - Should return DeleteResult on success", async () => {
+  it("deleteCategory - Should return DeleteResult on delete category successfully", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const categoryId = MOCK_DEFAULTS.CATEGORY_ID;
 
