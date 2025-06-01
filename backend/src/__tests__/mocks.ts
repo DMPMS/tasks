@@ -50,12 +50,17 @@ export const MOCK_DEFAULTS = {
   TOKEN: "mockToken",
   DATE: new Date(defaultDateString),
   USER_ID: 1,
+  USER_DELETE_ID: 1,
+  ADMIN_DELETE_ID: 1,
   CATEGORY_ID: 1,
   TASK_ID: 1,
 };
 
 export const MOCK_DATABASE_RETURNS: {
   USER: (id: number) => UserEntity;
+  ADMIN: (id: number) => UserEntity;
+  ROOT: (id: number) => UserEntity;
+  USERS: UserEntity[];
   CATEGORY: (id: number, userId: number) => CategoryEntity;
   CATEGORIES: (userId: number) => CategoryEntity[];
   TASK: (id: number, userId: number) => TaskEntity;
@@ -70,6 +75,44 @@ export const MOCK_DATABASE_RETURNS: {
     createdAt: MOCK_DEFAULTS.DATE,
     updatedAt: MOCK_DEFAULTS.DATE,
   }),
+  ADMIN: (id) => ({
+    id: id,
+    name: "Admin name",
+    email: "admin@email.com",
+    password: "hashedPassword",
+    userType: UserTypeEnum.Admin,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  ROOT: (id) => ({
+    id: id,
+    name: "Root name",
+    email: "root@email.com",
+    password: "hashedPassword",
+    userType: UserTypeEnum.Root,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  USERS: [
+    {
+      id: 1,
+      name: "User 1",
+      email: "user1@email.com",
+      password: "hashedPassword",
+      userType: UserTypeEnum.User,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+    {
+      id: 2,
+      name: "User 2",
+      email: "user2@email.com",
+      password: "hashedPassword",
+      userType: UserTypeEnum.User,
+      createdAt: MOCK_DEFAULTS.DATE,
+      updatedAt: MOCK_DEFAULTS.DATE,
+    },
+  ],
   CATEGORY: (id, userId) => ({
     id: id,
     name: "Category name",
@@ -144,6 +187,12 @@ export const MOCK_DATABASE_CREATES: {
     id: number,
     userId: number
   ) => TaskEntity;
+  USER: (
+    createUserDto: CreateUserDto,
+    id: number,
+    userType: UserTypeEnum,
+    password: string
+  ) => UserEntity;
 } = {
   CATEGORY: (createCategoryDto, id, userId) => ({
     ...createCategoryDto,
@@ -160,6 +209,14 @@ export const MOCK_DATABASE_CREATES: {
     limitDate: new Date(createTaskDto.limitDate),
     completedDate: null,
     userId: userId,
+    createdAt: MOCK_DEFAULTS.DATE,
+    updatedAt: MOCK_DEFAULTS.DATE,
+  }),
+  USER: (createUserDto, id, userType, password) => ({
+    ...createUserDto,
+    id: id,
+    userType: userType,
+    password: password,
     createdAt: MOCK_DEFAULTS.DATE,
     updatedAt: MOCK_DEFAULTS.DATE,
   }),

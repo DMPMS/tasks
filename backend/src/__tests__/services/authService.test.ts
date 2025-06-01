@@ -77,7 +77,7 @@ describe("AuthService", () => {
     );
   });
 
-  it("login - Should return an error if the passwords dont match", async () => {
+  it("login - Should return an error if the password is invalid", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     const user = MOCK_DATABASE_RETURNS.USER(MOCK_DEFAULTS.USER_ID);

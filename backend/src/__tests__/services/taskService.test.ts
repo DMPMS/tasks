@@ -156,7 +156,7 @@ describe("TaskService", () => {
     expect(result).toEqual(new ReturnTaskDto(savedTask));
   });
 
-  it("createTask - With null values to categoryId and description", async () => {
+  it("createTask - With undefined values to categoryId and description", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
 
     const createTaskDto = {
@@ -233,7 +233,7 @@ describe("TaskService", () => {
     expect(result).toEqual(new ReturnTaskDto(updatedTask));
   });
 
-  it("updateTask - With null values to categoryId and description", async () => {
+  it("updateTask - With undefined values to categoryId and description", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
 
@@ -370,7 +370,7 @@ describe("TaskService", () => {
 
     taskService.getUserTaskById = jest
       .fn()
-      .mockResolvedValue(MOCK_DATABASE_RETURNS.TASK(taskId, userId));
+      .mockResolvedValue(MOCK_RETURNS.TASK(taskId));
     taskRepositoryMock.delete.mockResolvedValue(MOCK_DELETE_RESULT);
 
     const result = await taskService.deleteTask(userId, taskId);
