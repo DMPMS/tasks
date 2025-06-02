@@ -34,6 +34,9 @@ export const MOCK_INVALIDS = {
 
 export const MOCK_DEFAULTS = {
   REQ: {
+    HEADERS: {
+      AUTHORIZATION: `Bearer mockToken`,
+    },
     PARAMS: {
       TASK_ID: "1",
       CATEGORY_ID: "1",
@@ -44,6 +47,12 @@ export const MOCK_DEFAULTS = {
       PAGE: "1",
       LIMIT: "5",
     },
+  },
+  DECODED_TOKEN: {
+    USER_ID: 1,
+    USER_NAME: "User name",
+    USER_EMAIL: "user@email.com",
+    USER_TYPE: UserTypeEnum.User,
   },
   PAGE: 1,
   LIMIT: 5,

@@ -8,6 +8,7 @@ export const config: Config = {
   collectCoverageFrom: [
     "src/controllers/**/*.{ts,js}",
     "src/services/**/*.{ts,js}",
+    "src/middlewares/**/*.{ts,js}",
   ],
   resetMocks: true,
 };
