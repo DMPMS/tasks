@@ -67,7 +67,7 @@ describe("AuthService", () => {
     expect(result).toEqual({ token: `Bearer ${MOCK_DEFAULTS.TOKEN}` });
   });
 
-  it("login - Should return an error if the user is not found", async () => {
+  it("login - Should throw an error if the user is not found", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     userRepositoryMock.findOne.mockResolvedValue(null);
@@ -77,7 +77,7 @@ describe("AuthService", () => {
     );
   });
 
-  it("login - Should return an error if the password is invalid", async () => {
+  it("login - Should throw an error if the password is invalid", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     const user = MOCK_DATABASE_RETURNS.USER(MOCK_DEFAULTS.USER_ID);
@@ -90,7 +90,7 @@ describe("AuthService", () => {
     );
   });
 
-  it("login - Should return an error if the JWT_SECRET is missing", async () => {
+  it("login - Should throw an error if the JWT_SECRET is missing", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     delete process.env.JWT_SECRET;
@@ -105,7 +105,7 @@ describe("AuthService", () => {
     );
   });
 
-  it("login - Should return an error if the JWT_EXPIRES_IN is missing", async () => {
+  it("login - Should throw an error if the JWT_EXPIRES_IN is missing", async () => {
     const createAuthDto = MOCK_CREATES.AUTH;
 
     delete process.env.JWT_EXPIRES_IN;

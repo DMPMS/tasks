@@ -28,11 +28,11 @@ export class UserController {
       res.status(HttpStatusCodeEnum.Ok).json(users);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
+          .json(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
       }
     }
   }
@@ -44,7 +44,7 @@ export class UserController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -53,11 +53,11 @@ export class UserController {
       res.status(HttpStatusCodeEnum.Ok).json(user);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR);
+          .json(ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR);
       }
     }
   }
@@ -72,7 +72,7 @@ export class UserController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
@@ -81,11 +81,11 @@ export class UserController {
       res.status(HttpStatusCodeEnum.Created).json(savedUser);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
+          .json(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
   }
@@ -103,21 +103,21 @@ export class UserController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!userType) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED);
         return;
       }
 
@@ -130,11 +130,11 @@ export class UserController {
       res.status(HttpStatusCodeEnum.Created).json(savedUser);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
+          .json(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
   }
@@ -151,14 +151,14 @@ export class UserController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -170,11 +170,11 @@ export class UserController {
       res.status(HttpStatusCodeEnum.Ok).json(updatedUser);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.UPDATE_USER_ERROR);
+          .json(ERROR_MESSAGES.USER.UPDATE_USER_ERROR);
       }
     }
   }
@@ -191,14 +191,14 @@ export class UserController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -206,14 +206,14 @@ export class UserController {
 
       res
         .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY);
+        .json(SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR);
+          .json(ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR);
       }
     }
   }
@@ -225,7 +225,7 @@ export class UserController {
       if (!userDeleteId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED);
         return;
       }
 
@@ -234,7 +234,7 @@ export class UserController {
       if (isNaN(userDeleteIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID);
+          .json(ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID);
         return;
       }
 
@@ -242,14 +242,14 @@ export class UserController {
 
       res
         .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY);
+        .json(SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_USER_ERROR);
+          .json(ERROR_MESSAGES.USER.DELETE_USER_ERROR);
       }
     }
   }
@@ -261,7 +261,7 @@ export class UserController {
       if (!adminDeleteId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED);
         return;
       }
 
@@ -270,7 +270,7 @@ export class UserController {
       if (isNaN(adminDeleteIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID);
+          .json(ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID);
         return;
       }
 
@@ -278,14 +278,14 @@ export class UserController {
 
       res
         .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY);
+        .json(SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR);
+          .json(ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR);
       }
     }
   }

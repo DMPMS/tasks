@@ -15,7 +15,6 @@ import { PAGINATION } from "../../config/constants";
 import { ReturnTaskDto } from "../../dtos/returns/returnTaskDto";
 import { ERROR_MESSAGES } from "../../utils/messages";
 import { CategoryService } from "../../services/categoryService";
-import { UpdateTaskCompletedDateDto } from "../../dtos/updates/updateTaskCompletedDateDto";
 
 describe("TaskService", () => {
   let taskService: TaskService;
@@ -108,7 +107,7 @@ describe("TaskService", () => {
     expect(result).toEqual(new ReturnTaskDto(task));
   });
 
-  it("getUserTaskById - Should return an error if the task is not found", async () => {
+  it("getUserTaskById - Should throw an error if the task is not found", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const taskId = MOCK_DEFAULTS.TASK_ID;
     const relationsOptions = {};

@@ -99,7 +99,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(user));
   });
 
-  it("getUserInfo - Should return an error if the user is not found", async () => {
+  it("getUserInfo - Should throw an error if the user is not found", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const relationsOptions = {};
 
@@ -130,7 +130,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(user));
   });
 
-  it("getUserById - Should return an error if the user is not found", async () => {
+  it("getUserById - Should throw an error if the user is not found", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const relationsOptions = {};
 
@@ -161,7 +161,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(user));
   });
 
-  it("getUserByEmail - Should return an error if the user is not found", async () => {
+  it("getUserByEmail - Should throw an error if the user is not found", async () => {
     const email = MOCK_DATABASE_RETURNS.USER(MOCK_DEFAULTS.USER_ID).email;
     const relationsOptions = {};
 
@@ -282,7 +282,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(savedUser));
   });
 
-  it("createUser - Should return an error if the email already exists", async () => {
+  it("createUser - Should throw an error if the email already exists", async () => {
     const createUserDto = MOCK_CREATES.USER;
     const userId = undefined;
     const userType = undefined;
@@ -296,7 +296,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
   });
 
-  it("createUser - Should return an error if the passwords dont match", async () => {
+  it("createUser - Should throw an error if the passwords dont match", async () => {
     const createUserDto = {
       ...MOCK_CREATES.USER,
       confirmPassword: "differentPassword",
@@ -313,7 +313,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH);
   });
 
-  it("createUser - Should return an error if the root not found", async () => {
+  it("createUser - Should throw an error if the root not found", async () => {
     const createUserDto = MOCK_CREATES.USER;
     const userId = MOCK_DEFAULTS.USER_ID;
     const userType = UserTypeEnum.Root;
@@ -479,7 +479,7 @@ describe("UserService", () => {
     expect(result).toEqual(new ReturnUserDto(updatedUser));
   });
 
-  it("updateUser - Should return an error if the user not found", async () => {
+  it("updateUser - Should throw an error if the user not found", async () => {
     const updateUserDto = MOCK_UPDATES.USER;
     const userId = MOCK_DEFAULTS.USER_ID;
 
@@ -492,7 +492,7 @@ describe("UserService", () => {
     );
   });
 
-  it("updateUser - Should return an error if the email already exists", async () => {
+  it("updateUser - Should throw an error if the email already exists", async () => {
     const updateUserDto = {
       ...MOCK_UPDATES.USER,
       email: "existing@email.com",
@@ -511,7 +511,7 @@ describe("UserService", () => {
     );
   });
 
-  it("updateUser - Should return an error if the passwords dont match", async () => {
+  it("updateUser - Should throw an error if the passwords dont match", async () => {
     const updateUserDto = {
       ...MOCK_UPDATES.USER,
       confirmNewPassword: "differentPassword",
@@ -527,7 +527,7 @@ describe("UserService", () => {
     );
   });
 
-  it("updateUser - Should return an error if the password is invalid", async () => {
+  it("updateUser - Should throw an error if the password is invalid", async () => {
     const updateUserDto = MOCK_UPDATES.USER;
     const userId = MOCK_DEFAULTS.USER_ID;
 
@@ -566,7 +566,7 @@ describe("UserService", () => {
     expect(result).toEqual(MOCK_DELETE_RESULT);
   });
 
-  it("deleteUserMy - Should return an error if the user is not found", async () => {
+  it("deleteUserMy - Should throw an error if the user is not found", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const deleteUserDto = MOCK_DELETES.USER;
 
@@ -579,7 +579,7 @@ describe("UserService", () => {
     ).rejects.toThrow(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
   });
 
-  it("deleteUserMy - Should return an error if the password is invalid", async () => {
+  it("deleteUserMy - Should throw an error if the password is invalid", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const deleteUserDto = MOCK_DELETES.USER;
 
@@ -629,7 +629,7 @@ describe("UserService", () => {
     expect(result).toEqual(MOCK_DELETE_RESULT);
   });
 
-  it("deleteAdmin - Should return an error if the user is not found", async () => {
+  it("deleteAdmin - Should throw an error if the user is not found", async () => {
     const adminDeleteId = MOCK_DEFAULTS.ADMIN_DELETE_ID;
 
     const user = null;

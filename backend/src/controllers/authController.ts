@@ -19,7 +19,7 @@ export class AuthController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
@@ -28,11 +28,11 @@ export class AuthController {
       res.status(HttpStatusCodeEnum.Created).json(returnAuthDto);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
+          .json(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
       }
     }
   }

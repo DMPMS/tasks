@@ -1,4 +1,4 @@
-import { DeleteResult, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import {
   MOCK_CREATES,
   MOCK_DATABASE_CREATES,
@@ -101,7 +101,7 @@ describe("CategoryService", () => {
     expect(result).toEqual(new ReturnCategoryDto(category));
   });
 
-  it("getUserCategoryById - Should return an error if the category is not found", async () => {
+  it("getUserCategoryById - Should throw an error if the category is not found", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const categoryId = MOCK_DEFAULTS.CATEGORY_ID;
     const relationsOptions = {};
@@ -149,7 +149,7 @@ describe("CategoryService", () => {
     expect(result).toEqual(new ReturnCategoryDto(savedCategory));
   });
 
-  it("createCategory - Should return an error if existing category", async () => {
+  it("createCategory - Should throw an error if existing category", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const createCategoryDto = MOCK_CREATES.CATEGORY;
 
@@ -211,7 +211,7 @@ describe("CategoryService", () => {
     expect(result).toEqual(new ReturnCategoryDto(updatedCategory));
   });
 
-  it("updateCategory - Should return an error if existing category", async () => {
+  it("updateCategory - Should throw an error if existing category", async () => {
     const userId = MOCK_DEFAULTS.USER_ID;
     const categoryId = MOCK_DEFAULTS.CATEGORY_ID;
     const updateCategoryDto = MOCK_UPDATES.CATEGORY; // "Category name"

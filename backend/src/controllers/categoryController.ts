@@ -26,7 +26,7 @@ export class CategoryController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -39,11 +39,11 @@ export class CategoryController {
       res.status(HttpStatusCodeEnum.Ok).json(categories);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_ERROR);
+          .json(ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_ERROR);
       }
     }
   }
@@ -59,14 +59,14 @@ export class CategoryController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!categoryId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
         return;
       }
 
@@ -75,7 +75,7 @@ export class CategoryController {
       if (isNaN(categoryIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
+          .json(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
         return;
       }
 
@@ -87,11 +87,11 @@ export class CategoryController {
       res.status(HttpStatusCodeEnum.Ok).json(category);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_BY_ID_ERROR);
+          .json(ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_BY_ID_ERROR);
       }
     }
   }
@@ -111,14 +111,14 @@ export class CategoryController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -130,11 +130,11 @@ export class CategoryController {
       res.status(HttpStatusCodeEnum.Created).json(savedCategory);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.CATEGORY.CREATE_CATEGORY_ERROR);
+          .json(ERROR_MESSAGES.CATEGORY.CREATE_CATEGORY_ERROR);
       }
     }
   }
@@ -155,21 +155,21 @@ export class CategoryController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!categoryId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
         return;
       }
 
@@ -178,7 +178,7 @@ export class CategoryController {
       if (isNaN(categoryIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
+          .json(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
         return;
       }
 
@@ -191,11 +191,11 @@ export class CategoryController {
       res.status(HttpStatusCodeEnum.Ok).json(updatedCategory);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.CATEGORY.UPDATE_CATEGORY_ERROR);
+          .json(ERROR_MESSAGES.CATEGORY.UPDATE_CATEGORY_ERROR);
       }
     }
   }
@@ -211,14 +211,14 @@ export class CategoryController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!categoryId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED);
         return;
       }
 
@@ -227,7 +227,7 @@ export class CategoryController {
       if (isNaN(categoryIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
+          .json(ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID);
         return;
       }
 
@@ -235,14 +235,14 @@ export class CategoryController {
 
       res
         .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.CATEGORY.CATEGORY_DELETED_SUCCESSFULLY);
+        .json(SUCCESS_MESSAGES.CATEGORY.CATEGORY_DELETED_SUCCESSFULLY);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.CATEGORY.DELETE_CATEGORY_ERROR);
+          .json(ERROR_MESSAGES.CATEGORY.DELETE_CATEGORY_ERROR);
       }
     }
   }

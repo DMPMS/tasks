@@ -89,7 +89,7 @@ describe("AuthController", () => {
     await authController.login(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("login - Should return an error if an error of type Error occurs (400)", async () => {
@@ -101,7 +101,7 @@ describe("AuthController", () => {
     await authController.login(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("login - Should return an error if an unexpected error occurs (500)", async () => {
@@ -115,7 +115,7 @@ describe("AuthController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS
     );
   });

@@ -15,7 +15,7 @@ export const authMiddleware = (
   if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
     res
       .status(HttpStatusCodeEnum.Unauthorized)
-      .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+      .json(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
     return;
   }
 
@@ -44,6 +44,6 @@ export const authMiddleware = (
   } catch (error) {
     res
       .status(HttpStatusCodeEnum.Unauthorized)
-      .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+      .json(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   }
 };

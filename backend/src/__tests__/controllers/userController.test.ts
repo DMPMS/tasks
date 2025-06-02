@@ -126,7 +126,7 @@ describe("UserController", () => {
     await userController.getUsers(req as AuthenticatedRequest, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUsers - Should return an error if an unexpected error occurs (500)", async () => {
@@ -147,7 +147,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.SELECT_USER_ERROR
     );
   });
@@ -183,7 +183,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
   });
@@ -204,7 +204,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUserInfo - Should return an error if an unexpected error occurs (500)", async () => {
@@ -225,7 +225,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR
     );
   });
@@ -265,7 +265,7 @@ describe("UserController", () => {
     await userController.createUser(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("createUser - Should return an error if an error of type Error occurs (400)", async () => {
@@ -277,7 +277,7 @@ describe("UserController", () => {
     await userController.createUser(req as Request, res as Response);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("createUser - Should return an error if an unexpected error occurs (500)", async () => {
@@ -291,7 +291,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.CREATE_USER_ERROR
     );
   });
@@ -344,7 +344,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("createAdmin - Should return an error if the userId is missing (400)", async () => {
@@ -356,7 +356,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
   });
@@ -375,7 +375,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED
     );
   });
@@ -398,7 +398,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("createAdmin - Should return an error if an unexpected error occurs (500)", async () => {
@@ -421,7 +421,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.CREATE_USER_ERROR
     );
   });
@@ -471,7 +471,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("updateUser - Should return an error if the userId is missing (400)", async () => {
@@ -483,7 +483,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
   });
@@ -505,7 +505,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("updateUser - Should return an error if an unexpected error occurs (500)", async () => {
@@ -527,7 +527,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.UPDATE_USER_ERROR
     );
   });
@@ -559,7 +559,7 @@ describe("UserController", () => {
       deleteUserDto
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY
     );
   });
@@ -573,7 +573,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("deleteUserMy - Should return an error if the userId is missing (400)", async () => {
@@ -585,7 +585,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
   });
@@ -607,7 +607,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("deleteUserMy - Should return an error if an unexpected error occurs (500)", async () => {
@@ -629,7 +629,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR
     );
   });
@@ -649,7 +649,7 @@ describe("UserController", () => {
 
     expect(userServiceMock.deleteUser).toHaveBeenCalledWith(userDeleteIdNumber);
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY
     );
   });
@@ -661,7 +661,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED
     );
   });
@@ -678,7 +678,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID
     );
   });
@@ -699,7 +699,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("deleteUser - Should return an error if an unexpected error occurs (500)", async () => {
@@ -720,7 +720,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_USER_ERROR
     );
   });
@@ -742,7 +742,7 @@ describe("UserController", () => {
       adminDeleteIdNumber
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY
     );
   });
@@ -754,7 +754,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED
     );
   });
@@ -771,7 +771,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID
     );
   });
@@ -792,7 +792,7 @@ describe("UserController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("deleteAdmin - Should return an error if an unexpected error occurs (500)", async () => {
@@ -813,7 +813,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR
     );
   });

@@ -1,6 +1,5 @@
-import { IsString, Length, Validate } from "class-validator";
+import { IsString, Validate } from "class-validator";
 import { IsCustomEmail } from "../../validators/isCustomEmail";
-import { USER } from "../../config/constants";
 import { Expose } from "class-transformer";
 
 export class CreateAuthDto {

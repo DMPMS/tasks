@@ -61,7 +61,7 @@ describe("authMiddleware", () => {
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
   it("Should return an error if authorization header does not start with Bearer (401)", () => {
@@ -70,7 +70,7 @@ describe("authMiddleware", () => {
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
   it("Should throw an error if JWT_SECRET is missing", () => {
@@ -99,6 +99,6 @@ describe("authMiddleware", () => {
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 });

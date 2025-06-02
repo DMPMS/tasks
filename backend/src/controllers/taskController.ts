@@ -30,7 +30,7 @@ export class TaskController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -44,11 +44,11 @@ export class TaskController {
       res.status(HttpStatusCodeEnum.Ok).json(tasks);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.SELECT_TASK_ERROR);
+          .json(ERROR_MESSAGES.TASK.SELECT_TASK_ERROR);
       }
     }
   }
@@ -68,14 +68,14 @@ export class TaskController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!taskId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
         return;
       }
 
@@ -84,7 +84,7 @@ export class TaskController {
       if (isNaN(taskIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+          .json(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
         return;
       }
 
@@ -97,11 +97,11 @@ export class TaskController {
       res.status(HttpStatusCodeEnum.Ok).json(task);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.SELECT_TASK_BY_ID_ERROR);
+          .json(ERROR_MESSAGES.TASK.SELECT_TASK_BY_ID_ERROR);
       }
     }
   }
@@ -118,14 +118,14 @@ export class TaskController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -137,11 +137,11 @@ export class TaskController {
       res.status(HttpStatusCodeEnum.Created).json(savedTask);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.CREATE_TASK_ERROR);
+          .json(ERROR_MESSAGES.TASK.CREATE_TASK_ERROR);
       }
     }
   }
@@ -159,21 +159,21 @@ export class TaskController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!taskId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
         return;
       }
 
@@ -182,7 +182,7 @@ export class TaskController {
       if (isNaN(taskIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+          .json(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
         return;
       }
 
@@ -195,11 +195,11 @@ export class TaskController {
       res.status(HttpStatusCodeEnum.Ok).json(updatedTask);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.UPDATE_TASK_ERROR);
+          .json(ERROR_MESSAGES.TASK.UPDATE_TASK_ERROR);
       }
     }
   }
@@ -224,21 +224,21 @@ export class TaskController {
       if (!isValid) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!taskId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
         return;
       }
 
@@ -247,7 +247,7 @@ export class TaskController {
       if (isNaN(taskIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+          .json(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
         return;
       }
 
@@ -260,11 +260,11 @@ export class TaskController {
       res.status(HttpStatusCodeEnum.Ok).json(updatedTask);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.UPDATE_TASK_COMPLETED_DATE_ERROR);
+          .json(ERROR_MESSAGES.TASK.UPDATE_TASK_COMPLETED_DATE_ERROR);
       }
     }
   }
@@ -277,14 +277,14 @@ export class TaskController {
       if (!userId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!taskId) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
+          .json(ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED);
         return;
       }
 
@@ -293,7 +293,7 @@ export class TaskController {
       if (isNaN(taskIdNumber)) {
         res
           .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+          .json(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
         return;
       }
 
@@ -301,14 +301,14 @@ export class TaskController {
 
       res
         .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY);
+        .json(SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY);
     } catch (error) {
       if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+        res.status(HttpStatusCodeEnum.BadRequest).json(error.message);
       } else {
         res
           .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.TASK.DELETE_TASK_ERROR);
+          .json(ERROR_MESSAGES.TASK.DELETE_TASK_ERROR);
       }
     }
   }

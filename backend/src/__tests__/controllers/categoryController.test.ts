@@ -137,7 +137,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
   });
@@ -162,7 +162,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUserCategories - Should return an error if an unexpected error occurs (500)", async () => {
@@ -187,7 +187,7 @@ describe("CategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_ERROR
     );
   });
@@ -228,7 +228,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
   });
@@ -245,7 +245,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
   });
@@ -263,7 +263,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
   });
@@ -285,7 +285,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUserCategoryById - Should return an error if an unexpected error occurs (500)", async () => {
@@ -307,7 +307,7 @@ describe("CategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_BY_ID_ERROR
     );
   });
@@ -357,7 +357,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("createCategory - Should return an error if the userId is missing (400)", async () => {
@@ -369,7 +369,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
   });
@@ -391,7 +391,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("createCategory - Should return an error if an unexpected error occurs (500)", async () => {
@@ -413,7 +413,7 @@ describe("CategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CREATE_CATEGORY_ERROR
     );
   });
@@ -466,7 +466,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("updateCategory - Should return an error if the userId is missing (400)", async () => {
@@ -478,7 +478,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
   });
@@ -497,7 +497,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
   });
@@ -517,7 +517,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
   });
@@ -540,7 +540,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("updateCategory - Should return an error if an unexpected error occurs (500)", async () => {
@@ -563,7 +563,7 @@ describe("CategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.UPDATE_CATEGORY_ERROR
     );
   });
@@ -588,7 +588,7 @@ describe("CategoryController", () => {
       categoryIdNumber
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.CATEGORY.CATEGORY_DELETED_SUCCESSFULLY
     );
   });
@@ -600,7 +600,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
   });
@@ -617,7 +617,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
   });
@@ -635,7 +635,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
   });
@@ -657,7 +657,7 @@ describe("CategoryController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("deleteCategory - Should return an error if an unexpected error occurs (500)", async () => {
@@ -679,7 +679,7 @@ describe("CategoryController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.DELETE_CATEGORY_ERROR
     );
   });

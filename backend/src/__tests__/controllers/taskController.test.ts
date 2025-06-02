@@ -146,7 +146,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -171,7 +171,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUserTasks - Should return an error if an unexpected error occurs (500)", async () => {
@@ -196,7 +196,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.SELECT_TASK_ERROR
     );
   });
@@ -239,7 +239,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -256,7 +256,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
   });
@@ -274,7 +274,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
   it("getUserTaskById - Should return an error if an error of type Error occurs (400)", async () => {
@@ -294,7 +294,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("getUserTaskById - Should return an error if an unexpected error occurs (500)", async () => {
@@ -316,7 +316,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.SELECT_TASK_BY_ID_ERROR
     );
   });
@@ -370,7 +370,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("createTask - Should return an error if the userId is missing (400)", async () => {
@@ -382,7 +382,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -404,7 +404,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("createTask - Should return an error if an unexpected error occurs (500)", async () => {
@@ -426,7 +426,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.CREATE_TASK_ERROR
     );
   });
@@ -483,7 +483,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("updateTask - Should return an error if the userId is missing (400)", async () => {
@@ -495,7 +495,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -514,7 +514,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
   });
@@ -534,7 +534,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
   it("updateTask - Should return an error if an error of type Error occurs (400)", async () => {
@@ -555,7 +555,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("updateTask - Should return an error if an unexpected error occurs (500)", async () => {
@@ -578,7 +578,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.UPDATE_TASK_ERROR
     );
   });
@@ -644,7 +644,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("updateTaskCompletedDate - Should return an error if the userId is missing (400)", async () => {
@@ -656,7 +656,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -675,7 +675,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
   });
@@ -695,7 +695,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
   it("updateTaskCompletedDate - Should return an error if an error of type Error occurs (400)", async () => {
@@ -716,7 +716,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("updateTaskCompletedDate - Should return an error if an unexpected error occurs (500)", async () => {
@@ -739,7 +739,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.UPDATE_TASK_COMPLETED_DATE_ERROR
     );
   });
@@ -764,7 +764,7 @@ describe("TaskController", () => {
       taskIdNumber
     );
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY
     );
   });
@@ -776,7 +776,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
   });
@@ -793,7 +793,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
   });
@@ -811,7 +811,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
+    expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
   it("deleteTask - Should return an error if an error of type Error occurs (400)", async () => {
@@ -831,7 +831,7 @@ describe("TaskController", () => {
     );
 
     expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.send).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
   });
 
   it("deleteTask - Should return an error if an unexpected error occurs (500)", async () => {
@@ -853,7 +853,7 @@ describe("TaskController", () => {
     expect(res.status).toHaveBeenCalledWith(
       HttpStatusCodeEnum.InternalServerError
     );
-    expect(res.send).toHaveBeenCalledWith(
+    expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.DELETE_TASK_ERROR
     );
   });

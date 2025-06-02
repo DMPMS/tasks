@@ -11,15 +11,15 @@ export const USER = {
   },
   EMAIL_LENGTH: {
     MIN: 8,
-    MAX: 255,
+    MAX: 100,
   },
   PASSWORD_LENGTH: {
     MIN: 8,
-    MAX: 255,
+    MAX: 100,
   },
   CONFIRM_PASSWORD_LENGTH: {
     MIN: 1,
-    MAX: 255,
+    MAX: 100,
   },
 };
 
