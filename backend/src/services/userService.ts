@@ -11,6 +11,8 @@ import { PAGINATION } from "../config/constants";
 import { CategoryService } from "./categoryService";
 import { UpdateUserDto } from "../dtos/updates/updateUserDto";
 import { DeleteUserDto } from "../dtos/deletes/deleteUserDto";
+import { HttpError } from "../utils/httpError";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 
 export class UserService {
   private categoryService!: CategoryService;
@@ -55,7 +57,10 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId)
+      );
     }
 
     return new ReturnUserDto(user);
@@ -71,7 +76,10 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId)
+      );
     }
 
     return new ReturnUserDto(user);
@@ -87,7 +95,8 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
         ERROR_MESSAGES.USER.USER_EMAIL_NOT_FOUND(email.toLowerCase())
       );
     }
@@ -105,11 +114,17 @@ export class UserService {
     );
 
     if (existingUser) {
-      throw new Error(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
+      throw new HttpError(
+        HttpStatusEnum.Conflict,
+        ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS
+      );
     }
 
     if (createUserDto.password !== createUserDto.confirmPassword) {
-      throw new Error(ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH);
+      throw new HttpError(
+        HttpStatusEnum.BadRequest,
+        ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH
+      );
     }
 
     const passwordHashed = await createPasswordHashed(createUserDto.password);
@@ -123,7 +138,10 @@ export class UserService {
       });
 
       if (!userRoot) {
-        throw new Error(ERROR_MESSAGES.USER.USER_ROOT_ID_NOT_FOUND(userId));
+        throw new HttpError(
+          HttpStatusEnum.NotFound,
+          ERROR_MESSAGES.USER.USER_ROOT_ID_NOT_FOUND(userId)
+        );
       } else {
         savedUser = await this.userRepository.save({
           ...createUserDto,
@@ -155,7 +173,10 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId)
+      );
     }
 
     updateUserDto.email = updateUserDto.email.toLowerCase();
@@ -166,13 +187,19 @@ export class UserService {
       );
 
       if (existingUser) {
-        throw new Error(ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS);
+        throw new HttpError(
+          HttpStatusEnum.Conflict,
+          ERROR_MESSAGES.USER.EMAIL_ALREADY_EXISTS
+        );
       }
     }
 
     if (updateUserDto.newPassword) {
       if (updateUserDto.newPassword !== updateUserDto.confirmNewPassword) {
-        throw new Error(ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH);
+        throw new HttpError(
+          HttpStatusEnum.BadRequest,
+          ERROR_MESSAGES.USER.PASSWORDS_DO_NOT_MATCH
+        );
       }
     }
 
@@ -186,7 +213,10 @@ export class UserService {
     );
 
     if (!isMatch) {
-      throw new Error(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
+      throw new HttpError(
+        HttpStatusEnum.BadRequest,
+        ERROR_MESSAGES.USER.INVALID_USER_PASSWORD
+      );
     }
 
     const updatedUser = await this.userRepository.save({
@@ -207,7 +237,10 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(userId)
+      );
     }
 
     const isMatch = await validatePassword(
@@ -216,7 +249,10 @@ export class UserService {
     );
 
     if (!isMatch) {
-      throw new Error(ERROR_MESSAGES.USER.INVALID_USER_PASSWORD);
+      throw new HttpError(
+        HttpStatusEnum.BadRequest,
+        ERROR_MESSAGES.USER.INVALID_USER_PASSWORD
+      );
     }
 
     return this.userRepository.delete({ id: userId });
@@ -234,7 +270,10 @@ export class UserService {
     });
 
     if (!user) {
-      throw new Error(ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(adminDeleteId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.USER.USER_ID_NOT_FOUND(adminDeleteId)
+      );
     }
 
     return this.userRepository.delete({ id: adminDeleteId });

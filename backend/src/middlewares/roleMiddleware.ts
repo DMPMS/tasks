@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
-import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
 import { ERROR_MESSAGES } from "../utils/messages";
 
@@ -12,7 +12,7 @@ export const roleMiddleware = (allowedRoles: UserTypeEnum[]) => {
   ): void => {
     if (!req.userId || !req.userType || !allowedRoles.includes(req.userType)) {
       res
-        .status(HttpStatusCodeEnum.Unauthorized)
+        .status(HttpStatusEnum.Unauthorized)
         .json(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
       return;
     }

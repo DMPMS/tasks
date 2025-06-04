@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from "../../types/AuthenticatedRequestType";
 import { MOCK_DEFAULTS } from "../mocks";
 import { roleMiddleware } from "../../middlewares/roleMiddleware";
 import { UserTypeEnum } from "../../enums/UserTypeEnum";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import { ERROR_MESSAGES } from "../../utils/messages";
 
 describe("roleMiddleware", () => {
@@ -16,7 +16,7 @@ describe("roleMiddleware", () => {
 
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      json: jest.fn(),
     };
 
     next = jest.fn();
@@ -44,7 +44,7 @@ describe("roleMiddleware", () => {
     const middleware = roleMiddleware([UserTypeEnum.User]);
     middleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
@@ -57,7 +57,7 @@ describe("roleMiddleware", () => {
     const middleware = roleMiddleware([UserTypeEnum.User]);
     middleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
@@ -71,7 +71,7 @@ describe("roleMiddleware", () => {
     const middleware = roleMiddleware([UserTypeEnum.Admin]);
     middleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 });

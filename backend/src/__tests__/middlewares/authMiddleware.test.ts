@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "../../types/AuthenticatedRequestType";
 import { MOCK_DEFAULTS } from "../mocks";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import jwt from "jsonwebtoken";
 import { ERROR_MESSAGES } from "../../utils/messages";
 import { authMiddleware } from "../../middlewares/authMiddleware";
@@ -20,7 +20,7 @@ describe("authMiddleware", () => {
 
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn(),
+      json: jest.fn(),
     };
 
     process.env.JWT_SECRET = "mockJwtSecret";
@@ -60,7 +60,7 @@ describe("authMiddleware", () => {
   it("Should return an error if user is not authenticated (401)", () => {
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
@@ -69,7 +69,7 @@ describe("authMiddleware", () => {
 
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 
@@ -98,7 +98,7 @@ describe("authMiddleware", () => {
 
     authMiddleware(req as AuthenticatedRequest, res as Response, next);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Unauthorized);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Unauthorized);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   });
 });

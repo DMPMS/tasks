@@ -10,6 +10,8 @@ import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateTaskDto } from "../dtos/updates/updateTaskDto";
 import { UpdateTaskCompletedDateDto } from "../dtos/updates/updateTaskCompletedDateDto";
 import { PAGINATION } from "../config/constants";
+import { HttpError } from "../utils/httpError";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 
 export class TaskService {
   private readonly userService: UserService;
@@ -58,7 +60,10 @@ export class TaskService {
     });
 
     if (!task) {
-      throw new Error(ERROR_MESSAGES.TASK.TASK_ID_NOT_FOUND(taskId, userId));
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
+        ERROR_MESSAGES.TASK.TASK_ID_NOT_FOUND(taskId, userId)
+      );
     }
 
     return new ReturnTaskDto(task);

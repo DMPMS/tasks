@@ -14,13 +14,14 @@ import { ReturnTaskDto } from "../../dtos/returns/returnTaskDto";
 import { CreateTaskDto } from "../../dtos/creates/createTaskDto";
 import { plainToInstance } from "class-transformer";
 import { validateDto } from "../../utils/validation";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../../utils/messages";
 import { UpdateTaskDto } from "../../dtos/updates/updateTaskDto";
 import { UpdateTaskCompletedDateDto } from "../../dtos/updates/updateTaskCompletedDateDto";
 import { RelationsOptionsType } from "../../types/RelationsOptions.type";
 import { PAGINATION } from "../../config/constants";
 import { validate } from "class-validator";
+import { HttpError } from "../../utils/httpError";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -51,7 +52,6 @@ describe("TaskController", () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-      send: jest.fn(),
     };
 
     (validateDto as jest.Mock).mockImplementation(async (dto) => {
@@ -101,7 +101,7 @@ describe("TaskController", () => {
       userId,
       relationsOptions
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.TASKS);
   });
 
@@ -145,7 +145,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -162,7 +162,10 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.getUserTasks.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.getUserTasks(
@@ -170,11 +173,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUserTasks - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUserTasks - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -185,7 +190,7 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.getUserTasks.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.getUserTasks(
@@ -193,9 +198,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.SELECT_TASK_ERROR
     );
@@ -228,7 +231,7 @@ describe("TaskController", () => {
       taskIdNumber,
       relationsOptions
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.TASK(taskIdNumber));
   });
 
@@ -238,7 +241,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -255,7 +258,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
@@ -273,7 +276,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
@@ -285,7 +288,10 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.getUserTaskById.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.getUserTaskById(
@@ -293,11 +299,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUserTaskById - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUserTaskById - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -305,7 +313,7 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.getUserTaskById.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.getUserTaskById(
@@ -313,9 +321,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.SELECT_TASK_BY_ID_ERROR
     );
@@ -357,7 +363,7 @@ describe("TaskController", () => {
       userId,
       expect.any(CreateTaskDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Created);
     expect(res.json).toHaveBeenCalledWith(mockedTask);
   });
 
@@ -369,7 +375,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -381,7 +387,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -395,7 +401,10 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.createTask.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.createTask(
@@ -403,11 +412,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("createTask - Should return an error if an unexpected error occurs (500)", async () => {
+  it("createTask - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -415,7 +426,7 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.createTask.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.createTask(
@@ -423,9 +434,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.CREATE_TASK_ERROR
     );
@@ -470,7 +479,7 @@ describe("TaskController", () => {
       taskIdNumber,
       expect.any(UpdateTaskDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(mockedTask);
   });
 
@@ -482,7 +491,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -494,7 +503,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -513,7 +522,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
@@ -533,7 +542,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
@@ -546,7 +555,10 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.updateTask.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.updateTask(
@@ -554,11 +566,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("updateTask - Should return an error if an unexpected error occurs (500)", async () => {
+  it("updateTask - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -567,7 +581,7 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.updateTask.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.updateTask(
@@ -575,9 +589,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.UPDATE_TASK_ERROR
     );
@@ -631,7 +643,7 @@ describe("TaskController", () => {
       taskIdNumber,
       expect.any(UpdateTaskCompletedDateDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(mockedTask);
   });
 
@@ -643,7 +655,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -655,7 +667,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -674,7 +686,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
@@ -694,7 +706,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
@@ -707,7 +719,10 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.updateTaskCompletedDate.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.updateTaskCompletedDate(
@@ -715,11 +730,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("updateTaskCompletedDate - Should return an error if an unexpected error occurs (500)", async () => {
+  it("updateTaskCompletedDate - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -728,7 +745,7 @@ describe("TaskController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     taskServiceMock.updateTaskCompletedDate.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.updateTaskCompletedDate(
@@ -736,9 +753,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.UPDATE_TASK_COMPLETED_DATE_ERROR
     );
@@ -763,7 +778,7 @@ describe("TaskController", () => {
       userId,
       taskIdNumber
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.TASK.TASK_DELETED_SUCCESSFULLY
     );
@@ -775,7 +790,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.USER_ID_IS_REQUIRED
     );
@@ -792,7 +807,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.TASK_ID_IS_REQUIRED
     );
@@ -810,7 +825,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.TASK.INVALID_TASK_ID);
   });
 
@@ -822,7 +837,10 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.deleteTask.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await taskController.deleteTask(
@@ -830,11 +848,13 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("deleteTask - Should return an error if an unexpected error occurs (500)", async () => {
+  it("deleteTask - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -842,7 +862,7 @@ describe("TaskController", () => {
     };
 
     taskServiceMock.deleteTask.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await taskController.deleteTask(
@@ -850,9 +870,7 @@ describe("TaskController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.TASK.DELETE_TASK_ERROR
     );

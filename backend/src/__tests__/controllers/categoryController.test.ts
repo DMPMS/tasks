@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../../utils/messages";
 import { validateDto } from "../../utils/validation";
 import { plainToInstance } from "class-transformer";
@@ -19,6 +19,7 @@ import {
 import { ReturnCategoryDto } from "../../dtos/returns/returnCategoryDto";
 import { PAGINATION } from "../../config/constants";
 import { validate } from "class-validator";
+import { HttpError } from "../../utils/httpError";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -48,7 +49,6 @@ describe("CategoryController", () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-      send: jest.fn(),
     };
 
     (validateDto as jest.Mock).mockImplementation(async (dto) => {
@@ -96,7 +96,7 @@ describe("CategoryController", () => {
       Number(limit),
       userId
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.CATEGORIES);
   });
 
@@ -136,7 +136,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
@@ -153,7 +153,10 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.getUserCategories.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await categoryController.getUserCategories(
@@ -161,11 +164,13 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUserCategories - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUserCategories - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -176,7 +181,7 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.getUserCategories.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await categoryController.getUserCategories(
@@ -184,9 +189,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_ERROR
     );
@@ -215,7 +218,7 @@ describe("CategoryController", () => {
       userId,
       categoryIdNumber
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       MOCK_RETURNS.CATEGORY(categoryIdNumber)
     );
@@ -227,7 +230,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
@@ -244,7 +247,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
@@ -262,7 +265,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
@@ -276,7 +279,10 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.getUserCategoryById.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await categoryController.getUserCategoryById(
@@ -284,11 +290,13 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUserCategoryById - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUserCategoryById - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -296,7 +304,7 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.getUserCategoryById.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await categoryController.getUserCategoryById(
@@ -304,9 +312,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.SELECT_CATEGORY_BY_ID_ERROR
     );
@@ -344,7 +350,7 @@ describe("CategoryController", () => {
       userId,
       expect.any(CreateCategoryDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Created);
     expect(res.json).toHaveBeenCalledWith(mockedCategory);
   });
 
@@ -356,7 +362,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -368,7 +374,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
@@ -382,7 +388,10 @@ describe("CategoryController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.createCategory.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await categoryController.createCategory(
@@ -390,11 +399,13 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("createCategory - Should return an error if an unexpected error occurs (500)", async () => {
+  it("createCategory - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -402,7 +413,7 @@ describe("CategoryController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.createCategory.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await categoryController.createCategory(
@@ -410,9 +421,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CREATE_CATEGORY_ERROR
     );
@@ -453,7 +462,7 @@ describe("CategoryController", () => {
       categoryIdNumber,
       expect.any(UpdateCategoryDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(mockedCategory);
   });
 
@@ -465,7 +474,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -477,7 +486,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
@@ -496,7 +505,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
@@ -516,7 +525,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
@@ -531,7 +540,10 @@ describe("CategoryController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.updateCategory.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await categoryController.updateCategory(
@@ -539,11 +551,13 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("updateCategory - Should return an error if an unexpected error occurs (500)", async () => {
+  it("updateCategory - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -552,7 +566,7 @@ describe("CategoryController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     categoryServiceMock.updateCategory.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await categoryController.updateCategory(
@@ -560,9 +574,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.UPDATE_CATEGORY_ERROR
     );
@@ -587,7 +599,7 @@ describe("CategoryController", () => {
       userId,
       categoryIdNumber
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.CATEGORY.CATEGORY_DELETED_SUCCESSFULLY
     );
@@ -599,7 +611,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.USER_ID_IS_REQUIRED
     );
@@ -616,7 +628,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.CATEGORY_ID_IS_REQUIRED
     );
@@ -634,7 +646,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.INVALID_CATEGORY_ID
     );
@@ -648,7 +660,10 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.deleteCategory.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await categoryController.deleteCategory(
@@ -656,11 +671,13 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("deleteCategory - Should return an error if an unexpected error occurs (500)", async () => {
+  it("deleteCategory - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -668,7 +685,7 @@ describe("CategoryController", () => {
     };
 
     categoryServiceMock.deleteCategory.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await categoryController.deleteCategory(
@@ -676,9 +693,7 @@ describe("CategoryController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.CATEGORY.DELETE_CATEGORY_ERROR
     );

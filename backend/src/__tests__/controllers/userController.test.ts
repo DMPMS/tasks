@@ -11,7 +11,7 @@ import {
 } from "../mocks";
 import { plainToInstance } from "class-transformer";
 import { validateDto } from "../../utils/validation";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../../utils/messages";
 import { PAGINATION, USER } from "../../config/constants";
 import { validate } from "class-validator";
@@ -22,6 +22,7 @@ import { ReturnUserDto } from "../../dtos/returns/returnUserDto";
 import { UserTypeEnum } from "../../enums/UserTypeEnum";
 import { UpdateUserDto } from "../../dtos/updates/updateUserDto";
 import { DeleteUserDto } from "../../dtos/deletes/deleteUserDto";
+import { HttpError } from "../../utils/httpError";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -54,7 +55,6 @@ describe("UserController", () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-      send: jest.fn(),
     };
 
     (validateDto as jest.Mock).mockImplementation(async (dto) => {
@@ -94,7 +94,7 @@ describe("UserController", () => {
       Number(page),
       Number(limit)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(MOCK_RETURNS.USERS);
   });
 
@@ -120,16 +120,21 @@ describe("UserController", () => {
     };
 
     userServiceMock.getUsers.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.getUsers(req as AuthenticatedRequest, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUsers - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUsers - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       query: {
@@ -139,14 +144,12 @@ describe("UserController", () => {
     };
 
     userServiceMock.getUsers.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.getUsers(req as AuthenticatedRequest, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.SELECT_USER_ERROR
     );
@@ -170,7 +173,7 @@ describe("UserController", () => {
     );
 
     expect(userServiceMock.getUserInfo).toHaveBeenCalledWith(userId);
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       MOCK_RETURNS.USER(userId || MOCK_DEFAULTS.USER_ID)
     );
@@ -182,7 +185,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
@@ -195,7 +198,10 @@ describe("UserController", () => {
     };
 
     userServiceMock.getUserInfo.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.getUserInfo(
@@ -203,18 +209,20 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("getUserInfo - Should return an error if an unexpected error occurs (500)", async () => {
+  it("getUserInfo - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
     };
 
     userServiceMock.getUserInfo.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.getUserInfo(
@@ -222,9 +230,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR
     );
@@ -255,7 +261,7 @@ describe("UserController", () => {
     expect(userServiceMock.createUser).toHaveBeenCalledWith(
       expect.any(CreateUserDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Created);
     expect(res.json).toHaveBeenCalledWith(mockedUser);
   });
 
@@ -264,33 +270,36 @@ describe("UserController", () => {
 
     await userController.createUser(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("createUser - Should return an error if an error of type Error occurs (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.createUser.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.createUser(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("createUser - Should return an error if an unexpected error occurs (500)", async () => {
+  it("createUser - Should return an error if an internal server error occurs (500)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.createUser.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.createUser(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.CREATE_USER_ERROR
     );
@@ -331,7 +340,7 @@ describe("UserController", () => {
       userId,
       userType
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Created);
     expect(res.json).toHaveBeenCalledWith(mockedUser);
   });
 
@@ -343,7 +352,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -355,7 +364,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
@@ -374,7 +383,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED
     );
@@ -389,7 +398,10 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.createUser.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.createAdmin(
@@ -397,11 +409,13 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("createAdmin - Should return an error if an unexpected error occurs (500)", async () => {
+  it("createAdmin - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -410,7 +424,7 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.createUser.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.createAdmin(
@@ -418,9 +432,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.CREATE_USER_ERROR
     );
@@ -458,7 +470,7 @@ describe("UserController", () => {
       userId,
       expect.any(UpdateUserDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(mockedUser);
   });
 
@@ -470,7 +482,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -482,7 +494,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
@@ -496,7 +508,10 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.updateUser.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.updateUser(
@@ -504,11 +519,13 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("updateUser - Should return an error if an unexpected error occurs (500)", async () => {
+  it("updateUser - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -516,7 +533,7 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.updateUser.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.updateUser(
@@ -524,9 +541,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.UPDATE_USER_ERROR
     );
@@ -558,7 +573,7 @@ describe("UserController", () => {
       userId,
       deleteUserDto
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY
     );
@@ -572,7 +587,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
@@ -584,7 +599,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED
     );
@@ -598,7 +613,10 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.deleteUserMy.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.deleteUserMy(
@@ -606,11 +624,13 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("deleteUserMy - Should return an error if an unexpected error occurs (500)", async () => {
+  it("deleteUserMy - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       userId: MOCK_DEFAULTS.USER_ID,
@@ -618,7 +638,7 @@ describe("UserController", () => {
 
     (validateDto as jest.Mock).mockResolvedValue(true);
     userServiceMock.deleteUserMy.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.deleteUserMy(
@@ -626,9 +646,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR
     );
@@ -648,7 +666,7 @@ describe("UserController", () => {
     );
 
     expect(userServiceMock.deleteUser).toHaveBeenCalledWith(userDeleteIdNumber);
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY
     );
@@ -660,7 +678,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED
     );
@@ -677,7 +695,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID
     );
@@ -690,7 +708,10 @@ describe("UserController", () => {
     };
 
     userServiceMock.deleteUser.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.deleteUser(
@@ -698,18 +719,20 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("deleteUser - Should return an error if an unexpected error occurs (500)", async () => {
+  it("deleteUser - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       params: { userDeleteId: MOCK_DEFAULTS.REQ.PARAMS.USER_DELETE_ID },
     };
 
     userServiceMock.deleteUser.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.deleteUser(
@@ -717,9 +740,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_USER_ERROR
     );
@@ -741,7 +762,7 @@ describe("UserController", () => {
     expect(userServiceMock.deleteAdmin).toHaveBeenCalledWith(
       adminDeleteIdNumber
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Ok);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY
     );
@@ -753,7 +774,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED
     );
@@ -770,7 +791,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID
     );
@@ -783,7 +804,10 @@ describe("UserController", () => {
     };
 
     userServiceMock.deleteAdmin.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await userController.deleteAdmin(
@@ -791,18 +815,20 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("deleteAdmin - Should return an error if an unexpected error occurs (500)", async () => {
+  it("deleteAdmin - Should return an error if an internal server error occurs (500)", async () => {
     req = {
       ...req,
       params: { adminDeleteId: MOCK_DEFAULTS.REQ.PARAMS.ADMIN_DELETE_ID },
     };
 
     userServiceMock.deleteAdmin.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await userController.deleteAdmin(
@@ -810,9 +836,7 @@ describe("UserController", () => {
       res as Response
     );
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR
     );

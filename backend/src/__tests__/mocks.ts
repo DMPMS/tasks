@@ -21,8 +21,8 @@ import { TaskEntity } from "../entities/taskEntity";
 const defaultDateString = "2025-05-10 18:00";
 
 export const MOCK_ERROR_MESSAGES = {
-  ERROR_TYPE_ERROR: "Error of type Error",
-  UNEXPECTED_ERROR: "Unexpected Error",
+  ERROR_INSTANCE_OF_HTTP_ERROR: "Error instance of HttpError",
+  INTERNAL_SERVER_ERROR: "Internal Server Error",
 };
 
 export const MOCK_INVALIDS = {

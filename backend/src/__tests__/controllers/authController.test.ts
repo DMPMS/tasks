@@ -1,7 +1,7 @@
 import { AuthController } from "../../controllers/authController";
 import { AuthService } from "../../services/authService";
 import { Request, Response } from "express";
-import { HttpStatusCodeEnum } from "../../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../../enums/HttpStatusEnum";
 import { ERROR_MESSAGES } from "../../utils/messages";
 import { validateDto } from "../../utils/validation";
 import { CreateAuthDto } from "../../dtos/creates/createAuthDto";
@@ -13,6 +13,7 @@ import {
   MOCK_RETURNS,
 } from "../mocks";
 import { validate } from "class-validator";
+import { HttpError } from "../../utils/httpError";
 
 jest.mock("../../utils/validation");
 jest.mock("class-transformer");
@@ -35,7 +36,6 @@ describe("AuthController", () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-      send: jest.fn(),
     };
 
     (validateDto as jest.Mock).mockImplementation(async (dto) => {
@@ -77,7 +77,7 @@ describe("AuthController", () => {
     expect(authServiceMock.login).toHaveBeenCalledWith(
       expect.any(CreateAuthDto)
     );
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.Created);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.Ok);
     expect(res.json).toHaveBeenCalledWith(
       MOCK_RETURNS.AUTH(MOCK_DEFAULTS.TOKEN)
     );
@@ -88,33 +88,36 @@ describe("AuthController", () => {
 
     await authController.login(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
     expect(res.json).toHaveBeenCalledWith(ERROR_MESSAGES.DTO.INVALID_DATA);
   });
 
   it("login - Should return an error if an error of type Error occurs (400)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
     authServiceMock.login.mockRejectedValue(
-      new Error(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR)
+      new HttpError(
+        HttpStatusEnum.BadRequest,
+        MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+      )
     );
 
     await authController.login(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(HttpStatusCodeEnum.BadRequest);
-    expect(res.json).toHaveBeenCalledWith(MOCK_ERROR_MESSAGES.ERROR_TYPE_ERROR);
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.BadRequest);
+    expect(res.json).toHaveBeenCalledWith(
+      MOCK_ERROR_MESSAGES.ERROR_INSTANCE_OF_HTTP_ERROR
+    );
   });
 
-  it("login - Should return an error if an unexpected error occurs (500)", async () => {
+  it("login - Should return an error if an internal server error occurs (500)", async () => {
     (validateDto as jest.Mock).mockResolvedValue(true);
     authServiceMock.login.mockRejectedValue(
-      MOCK_ERROR_MESSAGES.UNEXPECTED_ERROR
+      MOCK_ERROR_MESSAGES.INTERNAL_SERVER_ERROR
     );
 
     await authController.login(req as Request, res as Response);
 
-    expect(res.status).toHaveBeenCalledWith(
-      HttpStatusCodeEnum.InternalServerError
-    );
+    expect(res.status).toHaveBeenCalledWith(HttpStatusEnum.InternalServerError);
     expect(res.json).toHaveBeenCalledWith(
       ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS
     );
