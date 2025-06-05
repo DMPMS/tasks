@@ -1,6 +1,6 @@
 # 📋 Minhas Tarefas
 
-Um projeto simples de controle de tarefas pessoais.
+Um projeto simples de gerenciamento de tarefas pessoais, no qual cada usuário pode criar e categorizar suas próprias tarefas. O sistema conta com controle de acesso, com três níveis de usuários: User, Admin e Root.
 
 ## 📌 Tecnologias utilizadas
 
