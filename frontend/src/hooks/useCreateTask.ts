@@ -79,7 +79,7 @@ export const useCreateTask = (taskId?: string) => {
     if (taskReducer) {
       setTask({
         title: taskReducer.title,
-        description: taskReducer.description,
+        description: taskReducer.description || "",
         priority: taskReducer.priority,
         limitDate: String(format(taskReducer.limitDate, DATETIME_FORMAT.INPUT)),
         categoryId: taskReducer.category?.id,

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "start": "npx nodemon server.ts"
+    "start": "npx nodemon server.ts",
+    "migration:create": "npx typeorm migration:create"
   },
   "keywords": [],
   "author": "",
