@@ -8,6 +8,8 @@ import { CreateCategoryDto } from "../dtos/creates/createCategoryDto";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { UpdateCategoryDto } from "../dtos/updates/updateCategoryDto";
 import { CATEGORY, PAGINATION } from "../config/constants";
+import { HttpError } from "../utils/httpError";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 
 export class CategoryService {
   private readonly userService: UserService;
@@ -54,7 +56,8 @@ export class CategoryService {
     });
 
     if (!category) {
-      throw new Error(
+      throw new HttpError(
+        HttpStatusEnum.NotFound,
         ERROR_MESSAGES.CATEGORY.CATEGORY_ID_NOT_FOUND(categoryId, userId)
       );
     }
@@ -73,15 +76,16 @@ export class CategoryService {
     });
 
     if (existingCategory) {
-      throw new Error(ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS);
+      throw new HttpError(
+        HttpStatusEnum.Conflict,
+        ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS
+      );
     }
 
-    const category = this.categoryRepository.create({
+    const savedCategory = await this.categoryRepository.save({
       ...createCategoryDto,
       userId: userId,
     });
-
-    const savedCategory = await this.categoryRepository.save(category);
 
     return new ReturnCategoryDto(savedCategory);
   }
@@ -94,9 +98,7 @@ export class CategoryService {
       userId: userId,
     }));
 
-    const categories = this.categoryRepository.create(defaultCategories);
-
-    await this.categoryRepository.save(categories);
+    await this.categoryRepository.save(defaultCategories);
   }
 
   async updateCategory(
@@ -113,7 +115,10 @@ export class CategoryService {
     });
 
     if (existingCategory && existingCategory.id !== categoryId) {
-      throw new Error(ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS);
+      throw new HttpError(
+        HttpStatusEnum.Conflict,
+        ERROR_MESSAGES.CATEGORY.CATEGORY_ALREADY_EXISTS
+      );
     }
 
     const updatedCategory = await this.categoryRepository.save({

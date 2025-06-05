@@ -1,6 +1,9 @@
 export const ERROR_MESSAGES = {
   DEFAULT: "Erro.",
   TOKEN_USER_TYPE_ROOT: "E-mail ou senha inválidos.",
+  ENV: {
+    MISSING_BACKEND_API_PORT: "BACKEND_API_PORT não definido no arquivo .env.",
+  },
 };
 
 export const SUCCESS_MESSAGES = {

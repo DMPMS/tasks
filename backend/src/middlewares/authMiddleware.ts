@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 import { ERROR_MESSAGES } from "../utils/messages";
 import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
 import { UserTypeEnum } from "../enums/UserTypeEnum";
@@ -14,19 +14,21 @@ export const authMiddleware = (
 
   if (!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
     res
-      .status(HttpStatusCodeEnum.Unauthorized)
-      .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+      .status(HttpStatusEnum.Unauthorized)
+      .json(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
     return;
   }
 
-  if (!process.env.JWT_SECRET) {
+  const jwtSecret = process.env.JWT_SECRET;
+
+  if (!jwtSecret) {
     throw new Error(ERROR_MESSAGES.ENV.MISSING_JWT_SECRET);
   }
 
   const token = authorizationHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
+    const decoded = jwt.verify(token, jwtSecret) as {
       userId: number;
       userName: string;
       userEmail: string;
@@ -41,7 +43,7 @@ export const authMiddleware = (
     next();
   } catch (error) {
     res
-      .status(HttpStatusCodeEnum.Unauthorized)
-      .send(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
+      .status(HttpStatusEnum.Unauthorized)
+      .json(ERROR_MESSAGES.AUTH.ACCESS_DENIED);
   }
 };

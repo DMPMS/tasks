@@ -61,6 +61,8 @@ export const useCreateTask = (taskId?: string) => {
               message: responseErrorMessage,
               type: NotificationEnum.Error,
             });
+
+            navigate(TaskRoutesEnum.Tasks);
           });
       };
 
@@ -77,7 +79,7 @@ export const useCreateTask = (taskId?: string) => {
     if (taskReducer) {
       setTask({
         title: taskReducer.title,
-        description: taskReducer.description,
+        description: taskReducer.description || "",
         priority: taskReducer.priority,
         limitDate: String(format(taskReducer.limitDate, DATETIME_FORMAT.INPUT)),
         categoryId: taskReducer.category?.id,
@@ -256,8 +258,6 @@ export const useCreateTask = (taskId?: string) => {
             message: SUCCESS_MESSAGES.TASK.TASK_UPDATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(TaskRoutesEnum.Tasks);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -282,8 +282,6 @@ export const useCreateTask = (taskId?: string) => {
             message: SUCCESS_MESSAGES.TASK.TASK_CREATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(TaskRoutesEnum.Tasks);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -295,6 +293,8 @@ export const useCreateTask = (taskId?: string) => {
           });
         });
     }
+
+    navigate(TaskRoutesEnum.Tasks);
   };
 
   const handleOnReset = () => {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserDto } from "../dtos/creates/createUserDto";
 import { UserService } from "../services/userService";
-import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 import { PAGINATION } from "../config/constants";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { validateDto } from "../utils/validation";
@@ -9,6 +9,7 @@ import { AuthenticatedRequest } from "../types/AuthenticatedRequestType";
 import { plainToInstance } from "class-transformer";
 import { UpdateUserDto } from "../dtos/updates/updateUserDto";
 import { DeleteUserDto } from "../dtos/deletes/deleteUserDto";
+import { HttpError } from "../utils/httpError";
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -25,14 +26,14 @@ export class UserController {
         Number(limit)
       );
 
-      res.status(HttpStatusCodeEnum.Ok).json(users);
+      res.status(HttpStatusEnum.Ok).json(users);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.SELECT_USER_ERROR);
       }
     }
   }
@@ -43,21 +44,21 @@ export class UserController {
 
       if (!userId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
       const user = await this.userService.getUserInfo(userId);
 
-      res.status(HttpStatusCodeEnum.Ok).json(user);
+      res.status(HttpStatusEnum.Ok).json(user);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.SELECT_USER_INFO_ERROR);
       }
     }
   }
@@ -68,24 +69,24 @@ export class UserController {
         excludeExtraneousValues: true,
       });
 
-      const isValid = await validateDto(createUserDto, res);
+      const isValid = await validateDto(createUserDto);
       if (!isValid) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       const savedUser = await this.userService.createUser(createUserDto);
 
-      res.status(HttpStatusCodeEnum.Created).json(savedUser);
+      res.status(HttpStatusEnum.Created).json(savedUser);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
   }
@@ -99,25 +100,25 @@ export class UserController {
       const userId = req.userId;
       const userType = req.userType;
 
-      const isValid = await validateDto(createUserDto, res);
+      const isValid = await validateDto(createUserDto);
       if (!isValid) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
       if (!userType) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_TYPE_IS_REQUIRED);
         return;
       }
 
@@ -127,14 +128,14 @@ export class UserController {
         userType
       );
 
-      res.status(HttpStatusCodeEnum.Created).json(savedUser);
+      res.status(HttpStatusEnum.Created).json(savedUser);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.CREATE_USER_ERROR);
       }
     }
   }
@@ -147,18 +148,18 @@ export class UserController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(updateUserDto, res);
+      const isValid = await validateDto(updateUserDto);
       if (!isValid) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
@@ -167,14 +168,14 @@ export class UserController {
         updateUserDto
       );
 
-      res.status(HttpStatusCodeEnum.Ok).json(updatedUser);
+      res.status(HttpStatusEnum.Ok).json(updatedUser);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.UPDATE_USER_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.UPDATE_USER_ERROR);
       }
     }
   }
@@ -187,33 +188,33 @@ export class UserController {
 
       const userId = req.userId;
 
-      const isValid = await validateDto(deleteUserDto, res);
+      const isValid = await validateDto(deleteUserDto);
       if (!isValid) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       if (!userId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_ID_IS_REQUIRED);
         return;
       }
 
       await this.userService.deleteUserMy(userId, deleteUserDto);
 
       res
-        .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY);
+        .status(HttpStatusEnum.Ok)
+        .json(SUCCESS_MESSAGES.USER.USER_MY_DELETED_SUCCESSFULLY);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.DELETE_USER_MY_ERROR);
       }
     }
   }
@@ -224,8 +225,8 @@ export class UserController {
 
       if (!userDeleteId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.USER_DELETE_ID_IS_REQUIRED);
         return;
       }
 
@@ -233,23 +234,23 @@ export class UserController {
 
       if (isNaN(userDeleteIdNumber)) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.INVALID_USER_DELETE_ID);
         return;
       }
 
       await this.userService.deleteUser(userDeleteIdNumber);
 
       res
-        .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY);
+        .status(HttpStatusEnum.Ok)
+        .json(SUCCESS_MESSAGES.USER.USER_DELETED_SUCCESSFULLY);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_USER_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.DELETE_USER_ERROR);
       }
     }
   }
@@ -260,8 +261,8 @@ export class UserController {
 
       if (!adminDeleteId) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.ADMIN_DELETE_ID_IS_REQUIRED);
         return;
       }
 
@@ -269,23 +270,23 @@ export class UserController {
 
       if (isNaN(adminDeleteIdNumber)) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.USER.INVALID_ADMIN_DELETE_ID);
         return;
       }
 
       await this.userService.deleteAdmin(adminDeleteIdNumber);
 
       res
-        .status(HttpStatusCodeEnum.Ok)
-        .send(SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY);
+        .status(HttpStatusEnum.Ok)
+        .json(SUCCESS_MESSAGES.USER.ADMIN_DELETED_SUCCESSFULLY);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.USER.DELETE_ADMIN_ERROR);
       }
     }
   }

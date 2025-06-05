@@ -25,7 +25,7 @@ export class CreateTaskDto {
   @Expose()
   @IsString()
   @IsOptional()
-  description?: string | null;
+  description?: string;
 
   @Expose()
   @IsEnum(PriorityEnum)
@@ -33,5 +33,5 @@ export class CreateTaskDto {
 
   @Expose()
   @Validate(IsCustomTimestamp)
-  limitDate!: Date;
+  limitDate!: string;
 }

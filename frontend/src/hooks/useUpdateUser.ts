@@ -63,6 +63,8 @@ export const useUpdateUser = () => {
               message: responseErrorMessage,
               type: NotificationEnum.Error,
             });
+
+            logout(navigate);
           });
       };
 
@@ -332,10 +334,10 @@ export const useUpdateUser = () => {
 
     const updatedUser = {
       ...user,
-      newPassword: user.newPassword ? user.newPassword : null,
+      newPassword: user.newPassword ? user.newPassword : undefined,
       confirmNewPassword: user.confirmNewPassword
         ? user.confirmNewPassword
-        : null,
+        : undefined,
     };
 
     await request<UserType>({
@@ -391,6 +393,7 @@ export const useUpdateUser = () => {
       .catch((error: AxiosError) => {
         const responseErrorMessage =
           (error.response?.data as string) || ERROR_MESSAGES.DEFAULT;
+
         setNotification({
           message: responseErrorMessage,
           type: NotificationEnum.Error,

@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
-import { TASK } from "../config/constants";
 
 export class CreateTableTask1742389674953 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -9,7 +8,7 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         user_id INTEGER NOT NULL,
         category_id INTEGER,
         
-        title VARCHAR(${TASK.TITLE_LENGTH.MAX}) NOT NULL CHECK (LENGTH(title) >= ${TASK.TITLE_LENGTH.MIN}),
+        title VARCHAR(60) NOT NULL,
         description TEXT,
         priority INTEGER NOT NULL,
         completed_date TIMESTAMP WITHOUT TIME ZONE,
@@ -19,8 +18,8 @@ export class CreateTableTask1742389674953 implements MigrationInterface {
         updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW() NOT NULL,
 
         PRIMARY KEY (id),
-        foreign key (user_id) references public.user(id) ON DELETE CASCADE,
-        foreign key (category_id) references public.category(id) ON DELETE SET NULL
+        FOREIGN KEY (user_id) REFERENCES public.user(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES public.category(id) ON DELETE SET NULL ON UPDATE CASCADE
         );
     `);
   }

@@ -1,10 +1,11 @@
 import { AuthService } from "../services/authService";
 import { CreateAuthDto } from "../dtos/creates/createAuthDto";
 import { ERROR_MESSAGES } from "../utils/messages";
-import { HttpStatusCodeEnum } from "../enums/HttpStatusCodeEnum";
+import { HttpStatusEnum } from "../enums/HttpStatusEnum";
 import { Request, Response } from "express";
 import { validateDto } from "../utils/validation";
 import { plainToInstance } from "class-transformer";
+import { HttpError } from "../utils/httpError";
 
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -15,24 +16,24 @@ export class AuthController {
         excludeExtraneousValues: true,
       });
 
-      const isValid = await validateDto(createAuthDto, res);
+      const isValid = await validateDto(createAuthDto);
       if (!isValid) {
         res
-          .status(HttpStatusCodeEnum.BadRequest)
-          .send(ERROR_MESSAGES.DTO.INVALID_DATA);
+          .status(HttpStatusEnum.BadRequest)
+          .json(ERROR_MESSAGES.DTO.INVALID_DATA);
         return;
       }
 
       const returnAuthDto = await this.authService.login(createAuthDto);
 
-      res.status(HttpStatusCodeEnum.Created).json(returnAuthDto);
+      res.status(HttpStatusEnum.Ok).json(returnAuthDto);
     } catch (error) {
-      if (error instanceof Error) {
-        res.status(HttpStatusCodeEnum.BadRequest).send(error.message);
+      if (error instanceof HttpError) {
+        res.status(error.status).json(error.message);
       } else {
         res
-          .status(HttpStatusCodeEnum.InternalServerError)
-          .send(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
+          .status(HttpStatusEnum.InternalServerError)
+          .json(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
       }
     }
   }

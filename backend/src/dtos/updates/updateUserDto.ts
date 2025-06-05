@@ -19,13 +19,13 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   @Length(USER.PASSWORD_LENGTH.MIN, USER.PASSWORD_LENGTH.MAX)
-  newPassword!: string;
+  newPassword?: string;
 
   @Expose()
   @IsString()
   @IsOptional()
   @Length(USER.CONFIRM_PASSWORD_LENGTH.MIN, USER.CONFIRM_PASSWORD_LENGTH.MAX)
-  confirmNewPassword!: string;
+  confirmNewPassword?: string;
 
   @Expose()
   @IsString()

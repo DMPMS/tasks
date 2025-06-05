@@ -1,12 +1,16 @@
 import app from "./src/app";
 import dotenv from "dotenv";
 import { AppDataSource } from "./src/config/orm";
-import { SERVER } from "./src/config/constants";
-import { LOG_MESSAGES } from "./src/utils/messages";
+import { ERROR_MESSAGES, LOG_MESSAGES } from "./src/utils/messages";
 
 dotenv.config();
 
-const PORT = Number(process.env.API_PORT) || SERVER.DEFAULT_API_PORT;
+const apiPort = Number(process.env.API_PORT);
+
+if (!apiPort) {
+  console.log(ERROR_MESSAGES.ENV.MISSING_API_PORT);
+  process.exit(1);
+}
 
 AppDataSource.initialize()
   .then(async () => {
@@ -15,8 +19,8 @@ AppDataSource.initialize()
     await AppDataSource.runMigrations();
     console.log(LOG_MESSAGES.MIGRATIONS_EXECUTED);
 
-    app.listen(PORT, () => {
-      console.log(LOG_MESSAGES.SERVER_RUNNING(PORT));
+    app.listen(apiPort, () => {
+      console.log(LOG_MESSAGES.SERVER_RUNNING(apiPort));
     });
   })
   .catch((error) => {

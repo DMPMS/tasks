@@ -63,6 +63,8 @@ export const useCreateCategory = (categoryId?: string) => {
               message: responseErrorMessage,
               type: NotificationEnum.Error,
             });
+
+            navigate(CategoryRoutesEnum.Categories);
           });
       };
 
@@ -215,8 +217,6 @@ export const useCreateCategory = (categoryId?: string) => {
             message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_UPDATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(CategoryRoutesEnum.Categories);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -241,8 +241,6 @@ export const useCreateCategory = (categoryId?: string) => {
             message: SUCCESS_MESSAGES.CATEGORY.CATEGORY_CREATED_SUCCESSFULLY,
             type: NotificationEnum.Success,
           });
-
-          navigate(CategoryRoutesEnum.Categories);
         })
         .catch((error: AxiosError) => {
           const responseErrorMessage =
@@ -254,6 +252,8 @@ export const useCreateCategory = (categoryId?: string) => {
           });
         });
     }
+
+    navigate(CategoryRoutesEnum.Categories);
   };
 
   const handleOnReset = () => {

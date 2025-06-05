@@ -1,7 +1,3 @@
-export const SERVER = {
-  DEFAULT_API_PORT: 3000,
-};
-
 export const PAGINATION = {
   INITIAL_PAGE: 1,
   DEFAULT_PAGE: 1,
@@ -15,15 +11,15 @@ export const USER = {
   },
   EMAIL_LENGTH: {
     MIN: 8,
-    MAX: 255,
+    MAX: 100,
   },
   PASSWORD_LENGTH: {
     MIN: 8,
-    MAX: 255,
+    MAX: 100,
   },
   CONFIRM_PASSWORD_LENGTH: {
     MIN: 1,
-    MAX: 255,
+    MAX: 100,
   },
 };
 

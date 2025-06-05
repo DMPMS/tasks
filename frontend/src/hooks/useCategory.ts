@@ -11,6 +11,7 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../utils/messages";
 import { NotificationEnum } from "../enums/NotificationEnum";
 import { CategoryRoutesEnum } from "../routes/categoryRoutes";
 import { useTask } from "./useTask";
+import { logout } from "../utils/functions/auth";
 
 export const useCategory = () => {
   const { setNotification } = useGlobalReducer();
@@ -49,6 +50,8 @@ export const useCategory = () => {
           message: responseErrorMessage,
           type: NotificationEnum.Error,
         });
+
+        logout(navigate);
       });
   };
 
